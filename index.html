@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>瞳作｜客製彩色隱形眼鏡</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EDEFEE;--surface:#FFFFFF;--ink:#1F2429;--muted:#687077;--line:#D6DADB;--accent:#3D5E6C;--accent-ink:#FFFFFF;--gold:#A38A5E;--danger:#A2463A;--ok:#3E6B4F;--warn:#8F6418;--disc:#23282D;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131619;--surface:#1B1F23;--ink:#E5E8EA;--muted:#99A1A7;--line:#2D3338;--accent:#8BB2C2;--accent-ink:#0F171B;--gold:#C4AD84;--danger:#E08578;--ok:#83B794;--warn:#D9A95A;--disc:#0C0E10;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#131619;--surface:#1B1F23;--ink:#E5E8EA;--muted:#99A1A7;--line:#2D3338;--accent:#8BB2C2;--accent-ink:#0F171B;--gold:#C4AD84;--danger:#E08578;--ok:#83B794;--warn:#D9A95A;--disc:#0C0E10;color-scheme:dark}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
+body.noscroll{overflow:hidden}
+.serif{font-family:"Noto Serif TC","Songti TC","PMingLiU",serif}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+[hidden]{display:none!important}
+img{max-width:100%}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand .mark{font-family:"Noto Serif TC",serif;font-size:21px;letter-spacing:.32em;font-weight:600}
+.brand .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface);flex-shrink:0}
+.seg button{border:0;background:none;padding:5px 13px;border-radius:999px;cursor:pointer;color:var(--muted);font-size:14px;white-space:nowrap}
+.seg button.on{background:var(--ink);color:var(--bg)}
+.seg button:disabled{opacity:.4;cursor:default}
+
+/* steps */
+.steps{display:flex;gap:22px;margin:14px 0 18px;border-bottom:1px solid var(--line)}
+.steps button{display:flex;gap:8px;align-items:center;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 2px;color:var(--muted);cursor:pointer;font-size:15px}
+.steps button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.steps i{font-style:normal;font-family:"Noto Serif TC",serif;width:22px;height:22px;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;font-size:12px}
+
+/* studio */
+.studio{display:grid;gap:20px}
+@media (min-width:900px){.studio{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:start}.stage{position:sticky;top:calc(76px + env(safe-area-inset-top,0px))}}
+.eyebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.eyenote{font-size:13px;color:var(--muted)}
+.disc-wrap{position:relative;width:min(100%,500px);margin:0 auto;padding:16px}
+.gauge{position:absolute;inset:0;width:100%;height:100%;color:var(--muted);pointer-events:none}
+.disc{position:relative;aspect-ratio:1;border-radius:50%;background:var(--disc);box-shadow:0 0 0 1px var(--line),0 34px 60px -34px rgba(20,30,40,.55)}
+.disc canvas,.disc img{display:block;width:100%;height:100%;border-radius:50%}
+#lensCv.drawing{touch-action:none;cursor:crosshair}
+#lensCv.moving{touch-action:none;cursor:move}
+.stagebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--muted)}
+.stagebar .l{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.price-chip{font-family:"Noto Serif TC",serif;color:var(--ink);font-size:15px}
+.mini-sel{padding:3px 6px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px}
+.tabs{display:flex;gap:18px;border-bottom:1px solid var(--line);margin:-4px 0 16px}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:6px 0 10px;color:var(--muted);cursor:pointer}
+.tabs button.on{color:var(--ink);border-bottom-color:var(--ink)}
+.preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:14px 10px}
+.preset{background:none;border:0;padding:4px;border-radius:6px;cursor:pointer;display:grid;gap:6px;justify-items:center;font-size:13px;color:var(--ink)}
+.preset canvas{width:100%;max-width:96px;aspect-ratio:1;border-radius:50%;box-shadow:0 0 0 1px var(--line)}
+.preset:hover canvas{box-shadow:0 0 0 2px var(--accent)}
+.add-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.layer-list{list-style:none;margin:0 0 16px;padding:0;border-top:1px solid var(--line)}
+.layer-list li{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid var(--line)}
+.layer-list li.sel{background:color-mix(in srgb,var(--accent) 11%,transparent)}
+.layer-list li.empty{color:var(--muted);font-size:14px;padding:14px 4px}
+.layer-list .lname{flex:1;text-align:left;background:none;border:0;cursor:pointer;padding:4px 2px;min-width:0}
+.layer-list .sw{width:18px;height:18px;border-radius:50%;box-shadow:0 0 0 1px var(--line);flex-shrink:0}
+.ib{width:28px;height:28px;border:0;background:none;color:var(--muted);cursor:pointer;border-radius:4px;font-size:11px;flex-shrink:0}
+.ib:hover{background:var(--bg);color:var(--ink)}
+.layer-list input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px}
+.ph{font-size:16px;margin:0 0 10px;font-weight:600}
+.f{display:grid;gap:4px;margin-bottom:12px;font-size:14px}
+.f>span{display:flex;justify-content:space-between;color:var(--muted)}
+.f>span b{font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
+.f.c{grid-template-columns:1fr auto;align-items:center}
+.f input[type=range]{width:100%;accent-color:var(--accent)}
+.f input[type=color]{width:44px;height:30px;border:1px solid var(--line);border-radius:4px;padding:2px;background:var(--surface);cursor:pointer}
+.f input:not([type]),.f input[type=email],.f input[type=number],.f input[type=text],.f select,.f textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
+.hint{font-size:13px;color:var(--muted);margin:0 0 12px}
+.btn{border:1px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:4px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.ghost{background:none;border-color:transparent;color:var(--muted)}
+.btn.danger{color:var(--danger)}
+.btn.sm{padding:6px 11px;font-size:13px}
+.btn.wide{width:100%;padding:12px}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap}
+.next{display:flex;gap:8px;justify-content:flex-end;margin:22px 0 40px}
+
+/* try-on */
+.try-grid{display:grid;gap:18px}
+@media (min-width:900px){.try-grid{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);align-items:start}}
+.tryframe{position:relative;background:var(--disc);border-radius:6px;overflow:hidden;min-height:280px;display:grid;place-items:center}
+#tryCv{display:block;max-width:100%;max-height:72vh;width:auto;height:auto;touch-action:none}
+.try-empty{color:#c9cfd3;text-align:center;padding:40px 24px;max-width:340px;font-size:14px}
+.try-empty .serif{font-size:19px;color:#eef1f2;margin-bottom:6px}
+#tryVid{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.status{font-size:13px;color:var(--muted);margin:10px 0 0;min-height:1.5em}
+.file-btn{position:relative;overflow:hidden}
+.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
+
+/* order */
+.order-grid{display:grid;gap:18px;margin-bottom:40px}
+@media (min-width:900px){.order-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);align-items:start}.order-grid .summary{position:sticky;top:calc(76px + env(safe-area-inset-top,0px))}}
+.h2{font-size:19px;font-weight:600;margin:0 0 14px}
+.h1{font-size:24px;font-weight:600;margin:0}
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
+.pair figure{margin:0;text-align:center;font-size:13px;color:var(--muted)}
+.pair .disc{margin-bottom:6px}
+.plines{width:100%;border-collapse:collapse;font-size:14px}
+.plines td{padding:5px 0;border-bottom:1px solid var(--line)}
+.plines td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.plines tr.total td{border-bottom:0;padding-top:10px;font-family:"Noto Serif TC",serif;font-size:18px}
+.fine{font-size:12.5px;color:var(--muted);margin:10px 0 0}
+.row2{display:grid;gap:0 12px}
+@media (min-width:520px){.row2{grid-template-columns:1fr 1fr}}
+fieldset.rx{border:1px solid var(--line);border-radius:6px;padding:12px 12px 4px;margin:4px 0 12px}
+fieldset.rx legend{padding:0 6px;font-size:14px;color:var(--muted)}
+.rxrow{display:grid;grid-template-columns:44px 1fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:10px}
+.rxrow b{font-weight:500;font-size:14px}
+.rxrow select{width:100%;padding:8px 4px;border:1px solid var(--line);border-radius:4px;background:var(--surface);font-size:14px}
+.rxhead{display:grid;grid-template-columns:44px 1fr 1fr 1fr;gap:8px;font-size:12px;color:var(--muted);margin-bottom:4px}
+.notice{border-left:2px solid var(--gold);padding:8px 12px;background:color-mix(in srgb,var(--gold) 9%,transparent);font-size:13.5px;margin:0 0 14px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:6px 0 14px;cursor:pointer}
+.check input{margin-top:4px;accent-color:var(--accent);width:17px;height:17px;flex-shrink:0}
+.err{color:var(--danger);font-size:14px;margin:0 0 12px}
+.done{max-width:560px;margin:40px auto 60px;text-align:center}
+.done .disc{width:180px;margin:0 auto 22px}
+.done ol{text-align:left;display:inline-block;margin:10px 0 24px;padding-left:22px}
+.done .btn-row{justify-content:center}
+
+/* admin */
+.admin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 16px;flex-wrap:wrap}
+.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.chipbtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer;color:var(--muted)}
+.chipbtn.on{border-color:var(--ink);color:var(--ink)}
+.olist{display:grid;gap:8px}
+.orow{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;cursor:pointer}
+.orow:hover{border-color:var(--muted)}
+.minis{display:flex;gap:4px}
+.minis span{width:42px;height:42px;border-radius:50%;background:var(--disc);display:block;overflow:hidden}
+.minis img{width:100%;height:100%;display:block}
+.oinfo{min-width:0;font-size:13px;color:var(--muted)}
+.oinfo b{display:block;color:var(--ink);font-size:15px;font-weight:500}
+.oright{display:grid;justify-items:end;gap:4px}
+.chip{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+.chip.warn{color:var(--warn)}.chip.danger{color:var(--danger)}.chip.accent{color:var(--accent)}.chip.ok{color:var(--ok)}
+.risk{font-size:12px;color:var(--warn)}
+.admin-tools{display:flex;gap:8px;margin:18px 0}
+.empty-box{border:1px dashed var(--line);border-radius:6px;padding:30px 20px;text-align:center;color:var(--muted);font-size:14px}
+.proto{margin:24px 0 50px}
+.settings-grid{display:grid;gap:0 16px}
+@media (min-width:700px){.settings-grid{grid-template-columns:1fr 1fr 1fr}}
+.settings h3{font-size:15px;margin:18px 0 10px;font-weight:600}
+
+/* sheet */
+.sheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.sheet-head{position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--line)}
+.sheet-head .wrap{display:flex;align-items:center;gap:8px;min-height:56px}
+.grow{flex:1}
+.spec{max-width:940px;margin:0 auto;padding:22px 16px 60px}
+.spec-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.spec-top h2{margin:0;font-size:22px}
+.spec-top p{margin:2px 0 0;color:var(--muted);font-size:13px}
+.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px 18px;margin:0 0 20px;font-size:14px}
+.kv div span{display:block;font-size:12px;color:var(--muted)}
+.eyes{display:grid;gap:16px;margin-bottom:20px}
+@media (min-width:760px){.eyes{grid-template-columns:1fr 1fr}}
+.eye h3{margin:0 0 12px;font-size:16px}
+.eye .disc{width:min(100%,260px);margin:0 auto 14px}
+.eye h4{font-size:13px;color:var(--muted);font-weight:500;margin:14px 0 6px}
+.eye ol{margin:0;padding-left:20px;font-size:13.5px}
+.eye ol li{margin-bottom:3px}
+.swatches{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+.swatches span{display:flex;align-items:center;gap:5px}
+.swatches i{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 1px var(--line);display:inline-block}
+.checks{list-style:none;padding:0;margin:0;font-size:13.5px}
+.checks li{padding:6px 10px;border-left:2px solid;margin-bottom:5px}
+.checks li.warn{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 9%,transparent)}
+.checks li.info{border-color:var(--line);color:var(--muted)}
+.checks li.pass{border-color:var(--ok);color:var(--ok)}
+.rxline{font-size:14px;margin:0}
+.actions textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:4px;background:var(--surface);margin-bottom:10px}
+.hist{list-style:none;padding:0;margin:0;font-size:13px;color:var(--muted)}
+.hist li{padding:5px 0;border-bottom:1px solid var(--line)}
+.hist b{color:var(--ink);font-weight:500}
+
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:6px;font-size:14px;z-index:80;max-width:min(92vw,460px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+
+@media print{
+  body{background:#fff;color:#000}
+  body>*:not(#sheet){display:none!important}
+  #sheet{position:static;overflow:visible;background:#fff}
+  .noprint{display:none!important}
+  .spec{padding:0}
+  .eye{break-inside:avoid}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><span class="mark" id="brandName">瞳作</span><span class="sub">客製彩色隱形眼鏡</span></div>
+  <div class="seg" id="modeSeg"><button data-mode="shop" class="on">顧客端</button><button data-mode="admin">店家後台</button></div>
+</div></header>
+
+<main id="shop"><div class="wrap">
+  <nav class="steps" id="steps">
+    <button data-step="design" class="on"><i>1</i>設計</button>
+    <button data-step="tryon"><i>2</i>試戴</button>
+    <button data-step="order"><i>3</i>下單</button>
+  </nav>
+
+  <section id="s-design" class="screen">
+    <div class="studio">
+      <div class="stage">
+        <div class="eyebar">
+          <div class="seg" id="eyeSeg"><button data-eye="L">左眼</button><button data-eye="R">右眼</button></div>
+          <label class="check" style="margin:0"><input type="checkbox" id="syncBox" checked> 左右同步</label>
+        </div>
+        <div class="disc-wrap">
+          <svg class="gauge" id="gauge" viewBox="0 0 100 100" aria-hidden="true"></svg>
+          <div class="disc"><canvas id="lensCv" width="720" height="720" aria-label="鏡片設計預覽"></canvas></div>
+        </div>
+        <div class="stagebar">
+          <div class="l">
+            <span id="eyeNote">左右眼使用同一設計</span>
+            <label>底色 <select id="bgSel" class="mini-sel"><option value="iris">棕色眼睛</option><option value="dark">深色</option><option value="light">淺色</option></select></label>
+            <label><input type="checkbox" id="guideBox" checked> 參考線</label>
+          </div>
+          <span class="price-chip" id="priceChip"></span>
+        </div>
+      </div>
+
+      <div class="card panel">
+        <div class="tabs" id="panelTabs"><button data-tab="presets" class="on">現成圖案</button><button data-tab="layers">圖層</button></div>
+        <div id="tab-presets">
+          <p class="hint">挑一款當起點，再到「圖層」改顏色、加花紋或自己畫。</p>
+          <button class="btn sm" id="uploadOwn" style="margin-bottom:16px">上傳自己的圖片</button>
+          <div class="preset-grid" id="presetGrid"></div>
+        </div>
+        <div id="tab-layers" hidden>
+          <div class="add-row">
+            <button class="btn sm" data-add="pattern">＋ 花紋</button>
+            <button class="btn sm" data-add="ring">＋ 外圈</button>
+            <button class="btn sm" data-add="gradient">＋ 漸層</button>
+            <button class="btn sm" data-add="image">＋ 圖片</button>
+            <button class="btn sm" data-add="draw">＋ 手繪</button>
+          </div>
+          <ul class="layer-list" id="layerList"></ul>
+          <div id="props"></div>
+        </div>
+      </div>
+    </div>
+    <div class="next"><button class="btn primary" data-go="tryon">下一步：試戴</button></div>
+  </section>
+
+  <section id="s-tryon" class="screen" hidden>
+    <div class="try-grid">
+      <div>
+        <div class="tryframe" id="tryFrame">
+          <div class="try-empty" id="tryEmpty"><div class="serif">戴上看看</div>開啟鏡頭，或上傳一張正面、光線清楚的自拍。</div>
+          <canvas id="tryCv" hidden></canvas>
+          <video id="tryVid" playsinline muted></video>
+        </div>
+        <p class="status" id="tryStatus"></p>
+      </div>
+      <div class="card">
+        <div class="btn-row" style="margin-bottom:14px">
+          <button class="btn dark" id="camBtn">開啟鏡頭</button>
+          <label class="btn file-btn">上傳自拍照<input type="file" id="selfieFile" accept="image/*"></label>
+          <button class="btn" id="freezeBtn" hidden>定格畫面</button>
+        </div>
+        <label class="f"><span>對位方式</span></label>
+        <div class="seg" id="trackSeg" style="margin:-6px 0 14px"><button data-tm="track" class="on">自動追蹤</button><button data-tm="manual">手動對位</button></div>
+        <div id="manualCtl" hidden>
+          <label class="f"><span>對位圈大小<b id="irisV"></b></span><input type="range" id="irisSize" min="0.01" max="0.12" step="0.001" value="0.045"></label>
+          <label class="check" style="margin-top:0"><input type="checkbox" id="handleBox" checked> 顯示對位圈</label>
+        </div>
+        <label class="f"><span>顯色濃度<b id="opV">85%</b></span><input type="range" id="opRange" min="0.3" max="1" step="0.01" value="0.85"></label>
+        <label class="f"><span>鏡片大小微調<b id="scV">100%</b></span><input type="range" id="scRange" min="0.85" max="1.15" step="0.01" value="1"></label>
+        <p class="hint">預覽是模擬效果，實際顏色會因你的眼睛顏色和光線而不同。</p>
+      </div>
+    </div>
+    <div class="next"><button class="btn ghost" data-go="design">回到設計</button><button class="btn primary" data-go="order">下一步：下單</button></div>
+  </section>
+
+  <section id="s-order" class="screen" hidden>
+    <div class="order-grid">
+      <aside class="card summary">
+        <h2 class="serif h2">你的設計</h2>
+        <div class="pair" id="oThumbs"></div>
+        <div id="oPrice"></div>
+        <p class="fine">金額依設計複雜度試算，正式報價以店家審稿後為準。</p>
+      </aside>
+      <form id="orderForm" class="card" novalidate>
+        <h2 class="serif h2">訂購資料</h2>
+        <div class="row2">
+          <label class="f"><span>姓名</span><input name="name" autocomplete="name"></label>
+          <label class="f"><span>手機</span><input name="phone" inputmode="tel" autocomplete="tel"></label>
+        </div>
+        <label class="f"><span>Email（選填）</span><input name="email" type="email" autocomplete="email"></label>
+        <label class="f"><span>驗光門市</span><select name="store" id="storeSel"></select></label>
+        <fieldset class="rx"><legend>度數（自填參考）</legend>
+          <div class="rxhead"><span></span><span>近視／遠視</span><span>散光</span><span>軸度</span></div>
+          <div class="rxrow"><b>右眼</b><select name="sphR" class="sph"></select><select name="cylR" class="cyl"></select><select name="axR" class="ax" disabled></select></div>
+          <div class="rxrow"><b>左眼</b><select name="sphL" class="sph"></select><select name="cylL" class="cyl"></select><select name="axL" class="ax" disabled></select></div>
+        </fieldset>
+        <p class="notice">自填度數只是參考。為了配戴安全，每筆訂單都要到店驗光、確認度數後才會送廠製作。</p>
+        <div class="row2">
+          <label class="f"><span>數量（副）</span><select name="qty" id="qty"></select></label>
+        </div>
+        <label class="f"><span>備註（選填）</span><textarea name="note" rows="2"></textarea></label>
+        <label class="check"><input type="checkbox" name="agree"> 我了解需要到店驗光確認度數，確認後才會開始製作。</label>
+        <p class="err" id="formErr" hidden></p>
+        <button class="btn primary wide" type="submit">送出訂單</button>
+      </form>
+    </div>
+  </section>
+
+  <section id="s-done" class="screen" hidden>
+    <div class="done" id="doneBox"></div>
+  </section>
+</div></main>
+
+<main id="admin" hidden><div class="wrap">
+  <div class="admin-head">
+    <h1 class="serif h1">店家後台</h1>
+    <div class="seg" id="adminTabs"><button data-at="orders" class="on">訂單</button><button data-at="settings">設定</button></div>
+  </div>
+  <div id="at-orders">
+    <div class="filters" id="filters"></div>
+    <div class="olist" id="olist"></div>
+    <div class="admin-tools"><button class="btn sm" id="seedBtn">載入範例訂單</button><button class="btn sm ghost danger" id="clearBtn">清除全部訂單</button></div>
+  </div>
+  <form id="at-settings" class="card settings" hidden></form>
+  <p class="fine proto">原型說明：訂單只存在這個瀏覽器，換裝置或清除瀏覽資料就會消失，後台也沒有登入保護。正式上線需要接後端與帳號系統。</p>
+</div></main>
+
+<div id="sheet" class="sheet" hidden></div>
+<input type="file" id="imgFile" accept="image/*" hidden>
+<div class="toast" id="toast" role="status" hidden></div>
+<script>
+'use strict';
+const TAU=Math.PI*2;
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const K={orders:'lensatelier.orders.v1',cfg:'lensatelier.settings.v1',draft:'lensatelier.draft.v1'};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function lsGet(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
+function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
+const uid=()=>Math.random().toString(36).slice(2,10);
+const clone=o=>JSON.parse(JSON.stringify(o));
+const money=n=>'NT$ '+Math.round(n).toLocaleString('zh-TW');
+let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,3200)}
+
+const DEF={shopName:'瞳作',stores:'總店',lensD:14.2,printD:13.6,clearD:5.0,maxColors:3,minLine:0.08,base:1800,perLayer:150,image:400,draw:300,split:400,perColor:250,freeColors:2};
+let CFG=Object.assign({},DEF,lsGet(K.cfg,{}));
+let ORDERS=lsGet(K.orders,[]);
+const G=()=>({print:CFG.printD/CFG.lensD,clear:CFG.clearD/CFG.lensD,iris:11.7/CFG.lensD});
+const dia=r=>(r*CFG.lensD).toFixed(1)+' mm';
+const FMT={count:v=>Math.round(v),thick:v=>(+v).toFixed(2)+' mm',r0:dia,r1:dia,r:dia,rot:v=>Math.round(v)+'°',
+  width:v=>(v*CFG.lensD/2).toFixed(2)+' mm',soft:v=>Math.round(v*100)+'%',opacity:v=>Math.round(v*100)+'%',
+  scale:v=>(+v).toFixed(2)+'×',brushS:v=>(+v).toFixed(2)+' mm'};
+
+function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function rgba(hex,a){const n=parseInt(String(hex).slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
+
+/* image cache */
+const IMC=new Map();
+function getImg(src){if(!src)return null;let i=IMC.get(src);if(!i){i=new Image();i.onload=()=>refreshVisible();i.src=src;IMC.set(src,i)}return i.complete&&i.naturalWidth?i:null}
+
+/* layers */
+const TYPE_NAME={pattern:'花紋',ring:'外圈',gradient:'漸層',image:'圖片',draw:'手繪'};
+const PAT_NAME={fiber:'虹膜紋',spokes:'放射線',dots:'點點',petals:'花瓣',star:'星芒',lace:'波紋'};
+const layerName=L=>L.type==='pattern'?`花紋（${PAT_NAME[L.pattern]}）`:TYPE_NAME[L.type];
+function mk(type,o={}){const g=G();const r3=v=>+v.toFixed(3);
+  const d={
+    pattern:{pattern:'fiber',color:'#d9c7a3',r0:r3(g.clear+.02),r1:r3(g.print*.93),count:120,thick:.12,rot:0,seed:7},
+    ring:{color:'#2a2622',r:r3(g.print),width:.07,soft:.5},
+    gradient:{c0:'#b08a5a',c1:'#5a3d22',r0:r3(g.clear),r1:r3(g.print),opacity:.9},
+    image:{src:'',ow:0,oh:0,scale:1.3,rot:0,ox:0,oy:0,fill:true,r0:r3(g.clear),r1:r3(g.print)},
+    draw:{strokes:[],sym:6,brushC:'#f2e6d0',brushS:.25}
+  }[type];
+  return Object.assign({id:uid(),type,visible:true,opacity:1},d,o)}
+
+function ann(c,a,b){c.beginPath();c.arc(0,0,b,0,TAU);if(a>0){c.moveTo(a,0);c.arc(0,0,a,0,TAU,true)}}
+function drawLayer(c,L,R,mm){
+  const lo=Math.min(L.r0??0,L.r1??0)*R, hi=Math.max(L.r0??0,L.r1??0)*R;
+  switch(L.type){
+  case 'pattern':{
+    const r=rng(L.seed),a0=L.rot*Math.PI/180,n=Math.max(3,Math.round(L.count)),lw=Math.max(.5,L.thick*mm);
+    c.strokeStyle=c.fillStyle=L.color;c.lineWidth=lw;c.lineCap='round';c.lineJoin='round';
+    if(L.pattern==='fiber'){for(let i=0;i<n;i++){const a=a0+i/n*TAU+(r()-.5)*TAU/n,len=lo+(hi-lo)*(.55+.45*r()),b=(r()-.5)*.25,rm=(lo+len)/2;
+      c.beginPath();c.moveTo(Math.cos(a)*lo,Math.sin(a)*lo);c.quadraticCurveTo(Math.cos(a+b*1.5)*rm,Math.sin(a+b*1.5)*rm,Math.cos(a+b)*len,Math.sin(a+b)*len);c.stroke()}}
+    else if(L.pattern==='spokes'){for(let i=0;i<n;i++){const a=a0+i/n*TAU,len=i%2?hi:lo+(hi-lo)*.72;c.beginPath();c.moveTo(Math.cos(a)*lo,Math.sin(a)*lo);c.lineTo(Math.cos(a)*len,Math.sin(a)*len);c.stroke()}}
+    else if(L.pattern==='dots'){const dr=lw*1.5;for(let k=0;k<4;k++){const rr=lo+(k+.5)/4*(hi-lo),m=Math.max(3,Math.round(n*rr/Math.max(hi,1)/2));for(let j=0;j<m;j++){const a=a0+j/m*TAU+(k%2)*Math.PI/m;c.beginPath();c.arc(Math.cos(a)*rr,Math.sin(a)*rr,dr,0,TAU);c.fill()}}}
+    else if(L.pattern==='petals'){const rm=(lo+hi)/2,rx=(hi-lo)/2,ry=Math.min(rx,Math.PI*rm/n*.9);for(let i=0;i<n;i++){c.save();c.rotate(a0+i/n*TAU);c.beginPath();c.ellipse(rm,0,Math.max(.5,rx),Math.max(.5,ry),0,0,TAU);c.fill();c.restore()}}
+    else if(L.pattern==='star'){const h=Math.PI/n*.7;for(let i=0;i<n;i++){const a=a0+i/n*TAU;c.beginPath();c.moveTo(Math.cos(a-h)*hi,Math.sin(a-h)*hi);c.lineTo(Math.cos(a+h)*hi,Math.sin(a+h)*hi);c.lineTo(Math.cos(a)*lo,Math.sin(a)*lo);c.closePath();c.fill()}}
+    else if(L.pattern==='lace'){const amp=(hi-lo)/10;for(let k=0;k<3;k++){const rr=lo+(k+.5)/3*(hi-lo),f=Math.max(3,Math.round(n/8))+k*2;c.beginPath();for(let s=0;s<=360;s++){const t=s/360*TAU,q=rr+amp*Math.sin(f*t+a0);s?c.lineTo(Math.cos(t)*q,Math.sin(t)*q):c.moveTo(Math.cos(t)*q,Math.sin(t)*q)}c.stroke()}}
+    break}
+  case 'ring':{
+    const ro=L.r*R,ri=Math.max(0,L.r-L.width)*R,f=L.soft*(ro-ri),a=Math.max(0,ri-f),b=Math.min(ro,ri+f),span=Math.max(1e-3,ro-a);
+    const g=c.createRadialGradient(0,0,a,0,0,ro);g.addColorStop(0,rgba(L.color,0));g.addColorStop(Math.min(1,Math.max(.001,(b-a)/span)),L.color);g.addColorStop(1,L.color);
+    c.fillStyle=g;ann(c,a,ro);c.fill();break}
+  case 'gradient':{
+    if(hi<=lo)break;const g=c.createRadialGradient(0,0,lo,0,0,hi);g.addColorStop(0,L.c0);g.addColorStop(1,L.c1);c.fillStyle=g;ann(c,lo,hi);c.fill();break}
+  case 'image':{
+    const im=getImg(L.src);if(!im||hi<=lo)break;ann(c,lo,hi);c.clip();c.translate((L.ox||0)*R,(L.oy||0)*R);c.rotate(L.rot*Math.PI/180);
+    const w=im.naturalWidth,h=im.naturalHeight,s=2*hi*L.scale/Math.min(w,h);c.drawImage(im,-w*s/2,-h*s/2,w*s,h*s);break}
+  case 'draw':{
+    c.lineCap='round';c.lineJoin='round';const sym=Math.max(1,L.sym|0);
+    for(const st of L.strokes){const lw=Math.max(.5,st.s*mm);c.strokeStyle=c.fillStyle=st.c;c.lineWidth=lw;
+      for(let k=0;k<sym;k++){c.save();c.rotate(k/sym*TAU);c.beginPath();
+        if(st.pts.length===1){c.arc(st.pts[0][0]*R,st.pts[0][1]*R,lw/2,0,TAU);c.fill()}
+        else{st.pts.forEach((p,i)=>i?c.lineTo(p[0]*R,p[1]*R):c.moveTo(p[0]*R,p[1]*R));c.stroke()}
+        c.restore()}}
+    break}
+  }
+}
+function renderLens(c,d,N){const R=N/2,mm=N/CFG.lensD;c.save();c.clearRect(0,0,N,N);c.translate(R,R);c.beginPath();c.arc(0,0,R,0,TAU);c.clip();
+  for(const L of d.layers){if(!L.visible)continue;c.save();c.globalAlpha=L.opacity;drawLayer(c,L,R,mm);c.restore()}c.restore()}
+function lensCanvas(d,N){const cv=document.createElement('canvas');cv.width=cv.height=N;renderLens(cv.getContext('2d'),d,N);return cv}
+
+function drawBackdrop(c,N,kind){const R=N/2;c.save();c.translate(R,R);
+  if(kind==='dark'){c.fillStyle='#1d2126';c.fillRect(-R,-R,N,N)}
+  else if(kind==='light'){c.fillStyle='#f3f3f1';c.fillRect(-R,-R,N,N)}
+  else{const sc=c.createRadialGradient(0,0,R*.6,0,0,R);sc.addColorStop(0,'#efe9e3');sc.addColorStop(1,'#d6ccc3');c.fillStyle=sc;c.fillRect(-R,-R,N,N);
+    const ir=G().iris*R,pr=1.9/(CFG.lensD/2)*R;
+    const g=c.createRadialGradient(0,0,pr,0,0,ir);g.addColorStop(0,'#3b2616');g.addColorStop(.55,'#5b3c22');g.addColorStop(.9,'#3a2514');g.addColorStop(1,'#1a0f08');
+    c.fillStyle=g;c.beginPath();c.arc(0,0,ir,0,TAU);c.fill();
+    const r=rng(11);c.lineWidth=Math.max(.6,N/500);
+    for(let i=0;i<160;i++){const a=r()*TAU,l=pr+(ir-pr)*(.5+.5*r());c.strokeStyle=`rgba(${150+r()*60|0},${110+r()*40|0},${60+r()*30|0},${(.18+r()*.25).toFixed(2)})`;
+      c.beginPath();c.moveTo(Math.cos(a)*pr*1.05,Math.sin(a)*pr*1.05);const b=a+(r()-.5)*.08;c.lineTo(Math.cos(b)*l,Math.sin(b)*l);c.stroke()}
+    c.fillStyle='#0a0706';c.beginPath();c.arc(0,0,pr,0,TAU);c.fill()}
+  c.restore()}
+function drawCatch(c,N){const R=N/2,pr=1.9/(CFG.lensD/2)*R;c.save();c.translate(R,R);c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.ellipse(-pr*.95,-pr*1.15,pr*.32,pr*.22,-.5,0,TAU);c.fill();c.restore()}
+function composite(c,d,N,kind){c.save();c.clearRect(0,0,N,N);c.beginPath();c.arc(N/2,N/2,N/2,0,TAU);c.clip();drawBackdrop(c,N,kind);c.drawImage(lensCanvas(d,N),0,0);if(kind==='iris')drawCatch(c,N);c.restore()}
+function drawGuides(c,N){const g=G(),R=N/2;c.save();c.translate(R,R);c.setLineDash([N/110,N/110]);
+  for(const r of [g.print,g.clear]){c.strokeStyle='rgba(0,0,0,.35)';c.lineWidth=N/260;c.beginPath();c.arc(0,0,r*R,0,TAU);c.stroke();c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=N/520;c.beginPath();c.arc(0,0,r*R,0,TAU);c.stroke()}
+  c.restore()}
+function snap(d,N,kind,guides){const cv=document.createElement('canvas');cv.width=cv.height=N;const c=cv.getContext('2d');composite(c,d,N,kind);if(guides)drawGuides(c,N);return cv.toDataURL('image/png')}
+
+/* analysis: estimated colours + zone intrusion */
+function analyze(d){
+  const N=128,px=lensCanvas(d,N).getContext('2d').getImageData(0,0,N,N).data,g=G(),R=N/2;
+  const hist=new Map();let tot=0,cH=0,cT=0,oH=0,oT=0;
+  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const rr=Math.hypot(x+.5-R,y+.5-R)/R;if(rr>1)continue;const i=(y*N+x)*4,a=px[i+3];
+    const tol=1.5/R;if(rr<g.clear-tol){cT++;if(a>30)cH++}else if(rr>g.print+tol){oT++;if(a>30)oH++}
+    if(a>60){tot++;const k=(px[i]>>4)<<8|(px[i+1]>>4)<<4|(px[i+2]>>4);hist.set(k,(hist.get(k)||0)+1)}}
+  const cl=[];
+  [...hist.entries()].sort((a,b)=>b[1]-a[1]).forEach(([k,n])=>{const share=n/tot;if(share<.004)return;
+    const rgb=[(k>>8&15)*16+8,(k>>4&15)*16+8,(k&15)*16+8];let best=null,bd=1e9;
+    for(const q of cl){const dd=Math.hypot(q.r-rgb[0],q.g-rgb[1],q.b-rgb[2]);if(dd<bd){bd=dd;best=q}}
+    if(best&&bd<60){const w=best.n+n;best.r=(best.r*best.n+rgb[0]*n)/w;best.g=(best.g*best.n+rgb[1]*n)/w;best.b=(best.b*best.n+rgb[2]*n)/w;best.n=w}
+    else if(share>=.03)cl.push({r:rgb[0],g:rgb[1],b:rgb[2],n})});
+  const hx=v=>Math.round(v).toString(16).padStart(2,'0');
+  return{colors:cl.sort((a,b)=>b.n-a.n).map(q=>({hex:'#'+hx(q.r)+hx(q.g)+hx(q.b),share:q.n/tot})),clearPct:cT?cH/cT*100:0,outPct:oT?oH/oT*100:0}}
+
+const sameDesign=(a,b)=>JSON.stringify(a.layers.map(({id,...r})=>r))===JSON.stringify(b.layers.map(({id,...r})=>r));
+function priceOf(dL,dR,aL,aR,qty){
+  const lines=[['基本製作',CFG.base]];let u=CFG.base;const vis=d=>d.layers.filter(l=>l.visible);
+  const nl=Math.max(vis(dL).length,vis(dR).length);if(nl>2){const v=(nl-2)*CFG.perLayer;lines.push([`圖層 ${nl} 層（超過 2 層）`,v]);u+=v}
+  const all=[...vis(dL),...vis(dR)],has=t=>all.some(l=>l.type===t);
+  if(has('image')){lines.push(['含上傳圖片',CFG.image]);u+=CFG.image}
+  if(has('draw')){lines.push(['含手繪',CFG.draw]);u+=CFG.draw}
+  if(!sameDesign(dL,dR)){lines.push(['左右眼不同設計',CFG.split]);u+=CFG.split}
+  const nc=Math.max(aL.colors.length,aR.colors.length);if(nc>CFG.freeColors){const v=(nc-CFG.freeColors)*CFG.perColor;lines.push([`估算 ${nc} 色（超過 ${CFG.freeColors} 色）`,v]);u+=v}
+  return{unit:u,qty,total:u*qty,lines}}
+
+/* presets */
+const PRESETS=[
+  {name:'蜂蜜棕',make:()=>[mk('gradient',{c0:'#c8914c',c1:'#7a4a22'}),mk('pattern',{pattern:'fiber',color:'#ecc585',count:150,thick:.1}),mk('ring',{color:'#3b2515',width:.08,soft:.6})]},
+  {name:'霧灰琉璃',make:()=>[mk('gradient',{c0:'#a3aab1',c1:'#5d646b'}),mk('pattern',{pattern:'fiber',color:'#dfe3e6',count:140,thick:.1}),mk('ring',{color:'#2a2e33',width:.07,soft:.6})]},
+  {name:'冰川藍',make:()=>[mk('gradient',{c0:'#8cbadb',c1:'#2f5f86'}),mk('pattern',{pattern:'spokes',color:'#e3f1f9',count:72,thick:.1}),mk('ring',{color:'#1a2f45',width:.06,soft:.4})]},
+  {name:'橄欖綠',make:()=>[mk('gradient',{c0:'#98a863',c1:'#4d5a2e'}),mk('pattern',{pattern:'dots',color:'#dfe6b0',count:90,thick:.1}),mk('ring',{color:'#283018',width:.07,soft:.5})]},
+  {name:'紫晶花',make:()=>[mk('gradient',{c0:'#ab93cc',c1:'#5e4a86'}),mk('pattern',{pattern:'petals',color:'#e3d4f3',count:14,opacity:.75}),mk('ring',{color:'#2f2346',width:.06,soft:.4})]},
+  {name:'星芒黑',make:()=>{const g=G();return[mk('pattern',{pattern:'star',color:'#17181a',count:36,r0:+(g.clear+.08).toFixed(3),r1:+g.print.toFixed(3)}),mk('ring',{color:'#050505',width:.1,soft:.3})]}},
+  {name:'只有外圈',make:()=>[mk('ring',{color:'#1b1714',width:.09,soft:.7})]},
+  {name:'空白',make:()=>[]}
+];
+
+/* state */
+const ST={mode:'shop',step:'design',eye:'L',sync:true,design:{L:{layers:[]},R:{layers:[]}},sel:null,bg:'iris',guides:true,tab:'presets'};
+(function(){const dr=lsGet(K.draft,null);if(dr&&dr.design&&dr.design.L){ST.design=dr.design;if(!ST.design.R)ST.design.R=clone(ST.design.L);ST.sync=dr.sync!==false}else{ST.design.L.layers=PRESETS[0].make();ST.design.R=clone(ST.design.L)}})();
+const designFor=e=>ST.sync?ST.design.L:ST.design[e];
+const cur=()=>designFor(ST.eye);
+const selLayer=()=>cur().layers.find(l=>l.id===ST.sel)||null;
+const hasDesign=()=>designFor('L').layers.some(l=>l.visible)||designFor('R').layers.some(l=>l.visible);
+
+let rq=0;function redraw(){if(rq)return;rq=requestAnimationFrame(()=>{rq=0;renderEditor()})}
+let dT,eT;function changed(){redraw();clearTimeout(dT);dT=setTimeout(()=>lsSet(K.draft,{design:ST.design,sync:ST.sync}),600);clearTimeout(eT);eT=setTimeout(updateEstimate,250)}
+function renderEditor(){const cv=$('#lensCv'),c=cv.getContext('2d'),N=cv.width;composite(c,cur(),N,ST.bg);if(ST.guides)drawGuides(c,N)}
+function currentPrice(qty){const dL=designFor('L'),dR=designFor('R'),aL=analyze(dL),aR=ST.sync?aL:analyze(dR);return priceOf(dL,dR,aL,aR,qty)}
+function updateEstimate(){$('#priceChip').textContent='預估 '+money(currentPrice(1).unit)+' ／ 副';if(ST.step==='order')renderPrice()}
+
+function renderGauge(){let s='';for(let i=0;i<180;i++){const a=i/180*TAU-Math.PI/2,long=i%15===0,r1=49.6,r0=long?47.4:48.6;
+  s+=`<line x1="${(50+Math.cos(a)*r0).toFixed(2)}" y1="${(50+Math.sin(a)*r0).toFixed(2)}" x2="${(50+Math.cos(a)*r1).toFixed(2)}" y2="${(50+Math.sin(a)*r1).toFixed(2)}" stroke="currentColor" stroke-width="${long?.28:.16}" opacity="${long?.8:.5}"/>`}
+  $('#gauge').innerHTML=s}
+
+function renderEyebar(){$$('#eyeSeg button').forEach(b=>{b.classList.toggle('on',!ST.sync&&b.dataset.eye===ST.eye);b.disabled=ST.sync});$('#syncBox').checked=ST.sync;
+  $('#eyeNote').textContent=ST.sync?'左右眼使用同一設計':(ST.eye==='L'?'正在設計左眼':'正在設計右眼')}
+function renderPresets(){$('#presetGrid').innerHTML=PRESETS.map((p,i)=>`<button class="preset" data-i="${i}"><canvas width="160" height="160"></canvas><span>${p.name}</span></button>`).join('');
+  $$('#presetGrid canvas').forEach((cv,i)=>composite(cv.getContext('2d'),{layers:PRESETS[i].make()},160,'iris'))}
+function swatch(L){if(L.type==='gradient')return`linear-gradient(135deg,${L.c0},${L.c1})`;if(L.type==='image')return L.src?`url(${L.src}) center/cover`:'var(--line)';if(L.type==='draw')return(L.strokes[0]||{}).c||L.brushC;return L.color}
+function renderList(){const d=cur(),ul=$('#layerList');
+  if(!d.layers.length){ul.innerHTML='<li class="empty">還沒有圖層。從上面新增，或到「現成圖案」挑一款當起點。</li>';return}
+  if(!selLayer())ST.sel=d.layers[d.layers.length-1].id;
+  ul.innerHTML=[...d.layers].reverse().map(L=>`<li class="${L.id===ST.sel?'sel':''}" data-id="${L.id}"><input type="checkbox" class="vis" ${L.visible?'checked':''} aria-label="顯示這個圖層"><button class="lname" data-act="sel">${esc(layerName(L))}</button><span class="sw" style="background:${swatch(L)}"></span><button class="ib" data-act="up" aria-label="上移">▲</button><button class="ib" data-act="down" aria-label="下移">▼</button><button class="ib" data-act="del" aria-label="刪除">✕</button></li>`).join('')}
+function renderLayers(){renderList();renderProps();syncDrawMode()}
+function renderProps(){const L=selLayer(),p=$('#props');if(!L){p.innerHTML='';return}
+  const col=(k,t)=>`<label class="f c"><span>${t}</span><input type="color" data-k="${k}" value="${L[k]}"></label>`;
+  const rg=(k,t,min,max,step)=>`<label class="f"><span>${t}<b data-v="${k}">${FMT[k]?FMT[k](L[k]):L[k]}</b></span><input type="range" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${L[k]}"></label>`;
+  let h=`<h3 class="ph serif">${esc(layerName(L))}</h3>`;
+  if(L.type==='pattern')h+=`<label class="f"><span>樣式</span><select data-k="pattern">${Object.entries(PAT_NAME).map(([k,v])=>`<option value="${k}" ${k===L.pattern?'selected':''}>${v}</option>`).join('')}</select></label>`+col('color','顏色')+rg('count','密度',3,240,1)+rg('thick','線寬／點大小',.03,.6,.01)+rg('r0','內徑',0,1,.005)+rg('r1','外徑',0,1,.005)+rg('rot','旋轉',0,360,1)+`<p><button class="btn sm" data-do="seed" type="button">重新隨機排列</button></p>`;
+  else if(L.type==='ring')h+=col('color','顏色')+rg('r','外徑',.2,1,.005)+rg('width','寬度',.01,.4,.005)+rg('soft','內側柔邊',0,1,.01);
+  else if(L.type==='gradient')h+=col('c0','內側顏色')+col('c1','外側顏色')+rg('r0','內徑',0,1,.005)+rg('r1','外徑',0,1,.005);
+  else if(L.type==='image')h+=(L.src?`<p class="hint">原始尺寸 ${L.ow}×${L.oh}px</p>`:'<p class="hint">還沒有圖片。</p>')+(L.src?`<p class="hint">在鏡片上拖曳可以移動圖片位置。</p><label class="check" style="margin-top:0"><input type="checkbox" data-k="fill" ${L.fill!==false?'checked':''}> 保持鋪滿（拖曳時不露出空白）</label>`:'')+`<div class="btn-row" style="margin-bottom:12px"><button class="btn sm" data-do="img" type="button">${L.src?'更換圖片':'選擇圖片'}</button>${L.src?'<button class="btn sm" data-do="center" type="button">回到正中央</button>':''}</div>`+rg('scale','縮放',.3,3,.01)+rg('rot','旋轉',0,360,1)+rg('r0','內徑',0,1,.005)+rg('r1','外徑',0,1,.005);
+  else if(L.type==='draw')h+=`<p class="hint">${ST.tab==='layers'?'直接在鏡片上畫。':''}對稱數會把每一筆複製成放射狀排列。</p>`+col('brushC','筆刷顏色')+rg('brushS','筆刷粗細',.03,.8,.01)+`<label class="f"><span>對稱</span><select data-k="sym">${[1,2,3,4,6,8,12,16].map(n=>`<option value="${n}" ${n==L.sym?'selected':''}>${n===1?'不對稱':n+' 重對稱'}</option>`).join('')}</select></label><div class="btn-row" style="margin-bottom:12px"><button class="btn sm" data-do="undo" type="button">復原一筆</button><button class="btn sm ghost danger" data-do="clear" type="button">清除全部筆畫</button><span class="hint" style="margin:0;align-self:center">${L.strokes.length} 筆</span></div>`;
+  h+=rg('opacity','不透明度',.1,1,.01);
+  p.innerHTML=h}
+
+function clampImg(L){if(L.type!=='image'||L.fill===false||!L.ow)return;const outer=Math.max(L.r0,L.r1),m=Math.min(L.ow,L.oh);
+  let hw=outer*L.scale*L.ow/m,hh=outer*L.scale*L.oh/m;const q=((L.rot%180)+180)%180;if(q===90)[hw,hh]=[hh,hw];
+  if(q===0||q===90){const ax=Math.max(0,hw-outer),ay=Math.max(0,hh-outer);L.ox=Math.max(-ax,Math.min(ax,L.ox||0));L.oy=Math.max(-ay,Math.min(ay,L.oy||0))}
+  else{const lim=Math.max(0,Math.min(hw,hh)-outer),d=Math.hypot(L.ox||0,L.oy||0);if(d>lim){const k=lim/d;L.ox*=k;L.oy*=k}}}
+function syncDrawMode(){const L=selLayer();const ok=ST.mode==='shop'&&ST.step==='design'&&ST.tab==='layers'&&L;
+  const m=ok&&L.type==='draw'?'draw':ok&&L.type==='image'&&L.src?'image':null;
+  $('#lensCv').classList.toggle('drawing',m==='draw');$('#lensCv').classList.toggle('moving',m==='image');return m}
+
+let imgTarget=null;
+const IMG_ERR={heic:'這是 iPhone 的 HEIC 格式，這個瀏覽器讀不了。請改用 JPG（iPhone 設定 > 相機 > 格式 > 選「最相容」），或先截圖再上傳。',decode:'這個檔案無法解碼成圖片，請換一張 JPG 或 PNG。'};
+function fileToDataURL(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(f)})}
+function loadImg(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src})}
+async function decodeFile(f){
+  if(window.createImageBitmap){try{const b=await createImageBitmap(f);return{el:b,w:b.width,h:b.height}}catch(e){}}
+  try{const im=await loadImg(await fileToDataURL(f));return{el:im,w:im.naturalWidth,h:im.naturalHeight}}catch(e){}
+  const u=URL.createObjectURL(f);try{const im=await loadImg(u);return{el:im,w:im.naturalWidth,h:im.naturalHeight}}catch(e){return null}finally{URL.revokeObjectURL(u)}}
+async function readImage(f,max){const d=await decodeFile(f);
+  if(!d||!d.w)return{error:/hei[cf]/i.test(f.type)||/\.hei[cf]$/i.test(f.name||'')?'heic':'decode'};
+  const s=Math.min(1,max/Math.max(d.w,d.h)),cv=document.createElement('canvas');cv.width=Math.round(d.w*s);cv.height=Math.round(d.h*s);
+  cv.getContext('2d').drawImage(d.el,0,0,cv.width,cv.height);if(d.el.close)d.el.close();
+  const alpha=/png|webp|gif/.test(f.type);return{src:cv.toDataURL(alpha?'image/png':'image/jpeg',.88),w:d.w,h:d.h}}
+
+function initEditor(){
+  renderGauge();renderPresets();renderEyebar();renderLayers();redraw();updateEstimate();
+  $('#bgSel').addEventListener('change',e=>{ST.bg=e.target.value;redraw()});
+  $('#guideBox').addEventListener('change',e=>{ST.guides=e.target.checked;redraw()});
+  $('#panelTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(!b)return;ST.tab=b.dataset.tab;$$('#panelTabs button').forEach(x=>x.classList.toggle('on',x===b));$('#tab-presets').hidden=ST.tab!=='presets';$('#tab-layers').hidden=ST.tab!=='layers';renderLayers()});
+  $('#uploadOwn').addEventListener('click',()=>{imgTarget='new';$('#panelTabs [data-tab=layers]').click();$('#imgFile').click()});
+  $('#presetGrid').addEventListener('click',e=>{const b=e.target.closest('.preset');if(!b)return;const p=PRESETS[+b.dataset.i],layers=p.make();cur().layers=layers;ST.sel=layers.length?layers[layers.length-1].id:null;renderLayers();changed();
+    toast(`已套用「${p.name}」${ST.sync?'':'到'+(ST.eye==='L'?'左眼':'右眼')}。到「圖層」可以改顏色和細節。`)});
+  $('#eyeSeg').addEventListener('click',e=>{const b=e.target.closest('button[data-eye]');if(!b||ST.sync)return;ST.eye=b.dataset.eye;ST.sel=null;renderEyebar();renderLayers();changed()});
+  $('#syncBox').addEventListener('change',e=>{
+    if(e.target.checked){const from=ST.eye==='L'?'左':'右';if(!sameDesign(ST.design.L,ST.design.R)&&!confirm(`左右眼會統一使用${from}眼目前的設計，另一眼的設計將被取代。`)){e.target.checked=false;return}
+      ST.design.L=clone(ST.design[ST.eye]);ST.design.R=clone(ST.design.L);ST.sync=true;ST.eye='L'}
+    else{ST.design.R=clone(ST.design.L);ST.sync=false;ST.eye='L';toast('現在可以分別設計左右眼了。')}
+    ST.sel=null;renderEyebar();renderLayers();changed()});
+  $('.add-row').addEventListener('click',e=>{const b=e.target.closest('button[data-add]');if(!b)return;const t=b.dataset.add;
+    if(t==='image'){imgTarget='new';$('#imgFile').click();return}
+    const L=mk(t);cur().layers.push(L);ST.sel=L.id;renderLayers();changed();if(t==='draw')toast('直接在鏡片上畫，每一筆都會依對稱數複製。')});
+  $('#layerList').addEventListener('click',e=>{const li=e.target.closest('li[data-id]');if(!li)return;const d=cur(),i=d.layers.findIndex(l=>l.id===li.dataset.id);if(i<0)return;const L=d.layers[i];
+    if(e.target.classList.contains('vis')){L.visible=e.target.checked;changed();return}
+    const act=(e.target.closest('[data-act]')||{}).dataset?.act;
+    if(act==='up'){if(i<d.layers.length-1)[d.layers[i],d.layers[i+1]]=[d.layers[i+1],d.layers[i]]}
+    else if(act==='down'){if(i>0)[d.layers[i],d.layers[i-1]]=[d.layers[i-1],d.layers[i]]}
+    else if(act==='del'){d.layers.splice(i,1);if(ST.sel===L.id)ST.sel=null}
+    else ST.sel=L.id;
+    renderLayers();changed()});
+  $('#props').addEventListener('input',e=>{const t=e.target,k=t.dataset.k,L=selLayer();if(!k||!L)return;
+    let v=t.value;if(t.type==='range'||k==='sym')v=parseFloat(v);if(t.type==='checkbox')v=t.checked;L[k]=v;clampImg(L);const b=$(`[data-v="${k}"]`,$('#props'));if(b)b.textContent=FMT[k]?FMT[k](v):v;
+    if(t.type==='color'||k==='pattern')renderList();if(k==='pattern')$('#props .ph').textContent=layerName(L);changed()});
+  $('#props').addEventListener('click',e=>{const b=e.target.closest('[data-do]'),L=selLayer();if(!b||!L)return;const a=b.dataset.do;
+    if(a==='seed')L.seed=Math.random()*1e9|0;
+    else if(a==='img'){imgTarget=L.id;$('#imgFile').click();return}
+    else if(a==='center'){L.ox=0;L.oy=0}
+    else if(a==='undo')L.strokes.pop();
+    else if(a==='clear'){if(!L.strokes.length||!confirm('清除這個手繪圖層的所有筆畫？'))return;L.strokes=[]}
+    renderProps();changed()});
+  $('#imgFile').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const r=await readImage(f,900);
+    if(r.error){toast(IMG_ERR[r.error]);return}
+    let L;if(imgTarget==='new'){L=mk('image',{src:r.src,ow:r.w,oh:r.h,r0:0});cur().layers.push(L)}else{L=cur().layers.find(l=>l.id===imgTarget);if(!L)return;Object.assign(L,{src:r.src,ow:r.w,oh:r.h})}
+    ST.sel=L.id;renderLayers();changed()});
+  const cv=$('#lensCv');let stroke=null;
+  const pt=e=>{const r=cv.getBoundingClientRect();return[+(((e.clientX-r.left)/r.width-.5)*2).toFixed(4),+(((e.clientY-r.top)/r.height-.5)*2).toFixed(4)]};
+  let mv=null;
+  cv.addEventListener('pointerdown',e=>{const m=syncDrawMode();if(!m)return;const L=selLayer();e.preventDefault();cv.setPointerCapture(e.pointerId);
+    if(m==='image'){const p=pt(e);mv={L,x:p[0],y:p[1],ox:L.ox||0,oy:L.oy||0};return}
+    stroke={c:L.brushC,s:L.brushS,pts:[pt(e)]};L.strokes.push(stroke);redraw()});
+  cv.addEventListener('pointermove',e=>{if(mv){const p=pt(e),cl=v=>Math.max(-1,Math.min(1,v));mv.L.ox=+cl(mv.ox+p[0]-mv.x).toFixed(4);mv.L.oy=+cl(mv.oy+p[1]-mv.y).toFixed(4);clampImg(mv.L);redraw();return}
+    if(!stroke)return;const p=pt(e),q=stroke.pts[stroke.pts.length-1];if(Math.hypot(p[0]-q[0],p[1]-q[1])>.006){stroke.pts.push(p);redraw()}});
+  const end=()=>{if(mv){mv=null;changed();return}if(!stroke)return;stroke=null;renderList();renderProps();changed()};
+  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+}
+
+/* ---------- try-on ---------- */
+const FM_BASE='https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/';
+const EYE={L:{c:473,ring:[474,475,476,477],poly:[263,249,390,373,374,380,381,382,362,398,384,385,386,387,388,466]},
+           R:{c:468,ring:[469,470,471,472],poly:[33,7,163,144,145,153,154,155,133,173,157,158,159,160,161,246]}};
+const T={src:null,video:null,photo:null,frame:null,stream:null,fm:null,fmState:'idle',fmP:null,lm:null,sm:{},mode:'track',
+  manual:{L:{x:.6,y:.42,r:.045},R:{x:.4,y:.42,r:.045}},handles:true,opacity:.85,size:1,frozen:false,busy:false,detectLeft:0,lens:{},raf:0,drag:null,msg:''};
+
+function tryStatus(){let s='';
+  if(T.msg)s=T.msg;
+  else if(T.mode==='manual')s=T.fmState==='failed'?'自動追蹤載入失敗（可能被網路或安全設定擋住），已改為手動對位：拖曳圓圈對準黑眼球，再用滑桿調整大小。':'手動對位：拖曳圓圈對準黑眼球，再用滑桿調整大小。';
+  else if(T.fmState==='loading')s='正在載入臉部追蹤…';
+  else if(T.fmState==='ready')s=T.src&&!T.lm?'偵測不到臉部。請正對鏡頭，光線充足一點。':'臉部追蹤已啟用。';
+  $('#tryStatus').textContent=s}
+function setMode(m){if(m==='track'&&T.fmState==='failed'){toast('自動追蹤無法在這個環境載入，請使用手動對位。');m='manual'}
+  T.mode=m;T.msg='';$$('#trackSeg button').forEach(b=>b.classList.toggle('on',b.dataset.tm===m));$('#manualCtl').hidden=m!=='manual';
+  if(m==='track'){loadFM();if(T.src==='photo')T.detectLeft=3}tryStatus()}
+function loadFM(){if(T.fmState!=='idle')return T.fmP;T.fmState='loading';tryStatus();
+  T.fmP=new Promise(res=>{const fail=()=>{T.fmState='failed';if(T.mode==='track')setMode('manual');else tryStatus();res()};
+    const s=document.createElement('script');s.src=FM_BASE+'face_mesh.js';s.crossOrigin='anonymous';
+    s.onload=async()=>{try{const fm=new window.FaceMesh({locateFile:f=>FM_BASE+f});
+      fm.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:.5,minTrackingConfidence:.5});
+      fm.onResults(r=>{T.lm=(r.multiFaceLandmarks&&r.multiFaceLandmarks[0])||null;if(!T.lm)T.sm={};
+        if(T.lm)T.msg='';tryStatus()});
+      await Promise.race([fm.initialize(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),25000))]);
+      T.fm=fm;T.fmState='ready';tryStatus();res()}catch(e){console.warn(e);fail()}};
+    s.onerror=fail;document.head.appendChild(s)});
+  return T.fmP}
+function refreshTryLens(){T.lens.L=lensCanvas(designFor('L'),360);T.lens.R=lensCanvas(designFor('R'),360)}
+function enterTry(){refreshTryLens();if(T.mode==='track')loadFM();if(!T.raf)T.raf=requestAnimationFrame(tick);tryStatus()}
+function leaveTry(){stopCam();if(T.raf){cancelAnimationFrame(T.raf);T.raf=0}}
+function stopCam(){if(T.stream){T.stream.getTracks().forEach(t=>t.stop());T.stream=null}if(T.src==='cam'){T.src=null;T.frozen=false}showTryCanvas()}
+function showTryCanvas(){$('#tryCv').hidden=!T.src;$('#tryEmpty').hidden=!!T.src;$('#freezeBtn').hidden=T.src!=='cam';$('#freezeBtn').textContent=T.frozen?'繼續即時預覽':'定格畫面'}
+async function startCam(){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast('這個瀏覽器不支援開啟鏡頭，請改用「上傳自拍照」。');return}
+  try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1280},height:{ideal:720}},audio:false});
+    stopCam();T.stream=s;T.video.srcObject=s;await T.video.play();T.src='cam';T.frozen=false;T.lm=null;T.sm={};T.msg='';showTryCanvas();tryStatus()}
+  catch(e){T.msg=e&&e.name==='NotAllowedError'?'相機權限被拒絕。請在瀏覽器設定允許使用相機，或改用「上傳自拍照」。':'無法開啟鏡頭（這個環境可能不允許使用相機），請改用「上傳自拍照」。';tryStatus()}}
+function activeSrc(){return T.frozen?T.frame:T.src==='cam'?T.video:T.src==='photo'?T.photo:null}
+async function tick(){T.raf=requestAnimationFrame(tick);const src=activeSrc();if(!src)return;
+  if(T.mode==='track'&&T.fmState==='ready'&&!T.busy&&!T.frozen){const live=T.src==='cam'&&T.video.readyState>=2;
+    if(live||(T.src==='photo'&&T.detectLeft>0)){T.busy=true;try{await T.fm.send({image:live?T.video:T.photo})}catch(e){console.warn(e)}T.busy=false;if(!live){T.detectLeft--;if(T.detectLeft===0&&!T.lm){setMode('manual');T.msg='照片裡偵測不到臉部，已改成手動對位：拖曳圓圈對準黑眼球，再用滑桿調整大小。';tryStatus()}}}}
+  drawTry(src)}
+function eyePositions(W,H){const out={};
+  if(T.mode==='track'){const lm=T.lm;if(!lm)return out;
+    for(const e of ['L','R']){const d=EYE[e],c=lm[d.c];if(!c)continue;const x=c.x*W,y=c.y*H;let r=0;
+      for(const i of d.ring){const q=lm[i];if(q)r=Math.max(r,Math.hypot(q.x*W-x,q.y*H-y))}if(!r)continue;
+      const s=T.sm[e],k=T.src==='cam'&&!T.frozen?.45:1,n=s?{x:s.x+(x-s.x)*k,y:s.y+(y-s.y)*k,r:s.r+(r-s.r)*k}:{x,y,r};T.sm[e]=n;
+      out[e]=Object.assign({},n,{poly:d.poly.map(i=>[lm[i].x*W,lm[i].y*H])})}}
+  else for(const e of ['L','R']){const m=T.manual[e];out[e]={x:m.x*W,y:m.y*H,r:m.r*W}}
+  return out}
+function drawTry(src){const cv=$('#tryCv'),c=cv.getContext('2d');const W=src.videoWidth||src.naturalWidth||src.width,H=src.videoHeight||src.naturalHeight||src.height;if(!W||!H)return;
+  if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
+  const mir=T.src==='cam';c.setTransform(mir?-1:1,0,0,1,mir?W:0,0);c.drawImage(src,0,0,W,H);
+  const eyes=eyePositions(W,H);
+  for(const e of ['L','R']){const p=eyes[e];if(!p||!T.lens[e])continue;const pxmm=2*p.r/11.7*T.size,sz=CFG.lensD*pxmm;c.save();
+    if(p.poly){c.beginPath();p.poly.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.clip()}
+    c.globalAlpha=T.opacity;c.drawImage(T.lens[e],p.x-sz/2,p.y-sz/2,sz,sz);c.restore()}
+  if(T.mode==='manual'&&T.handles){for(const e of ['L','R']){const p=eyes[e];c.save();c.setLineDash([6,5]);c.lineWidth=Math.max(1.5,W/500);c.strokeStyle='rgba(255,255,255,.9)';c.beginPath();c.arc(p.x,p.y,p.r,0,TAU);c.stroke();c.restore()}
+    c.setTransform(1,0,0,1,0,0);c.font=`${Math.max(12,Math.round(W/42))}px "Noto Sans TC",sans-serif`;c.textAlign='center';c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.6)';c.shadowBlur=4;
+    for(const e of ['L','R']){const p=eyes[e],sx=mir?W-p.x:p.x;c.fillText(e==='L'?'左眼':'右眼',sx,p.y-p.r-W/90)}c.shadowBlur=0}
+  c.setTransform(1,0,0,1,0,0)}
+function initTry(){
+  T.video=$('#tryVid');
+  $('#camBtn').addEventListener('click',startCam);
+  $('#selfieFile').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;T.msg='正在讀取照片…';tryStatus();const r=await readImage(f,1280);if(r.error){T.msg=IMG_ERR[r.error];tryStatus();toast(IMG_ERR[r.error]);return}
+    const im=new Image();im.onload=()=>{stopCam();T.photo=im;T.src='photo';T.frozen=false;T.lm=null;T.sm={};T.msg='';T.detectLeft=3;showTryCanvas();if(T.mode==='track')loadFM();tryStatus()};im.src=r.src});
+  $('#freezeBtn').addEventListener('click',()=>{if(T.src!=='cam')return;if(!T.frozen){const f=document.createElement('canvas');f.width=T.video.videoWidth;f.height=T.video.videoHeight;f.getContext('2d').drawImage(T.video,0,0);T.frame=f;T.frozen=true}else T.frozen=false;showTryCanvas()});
+  $('#trackSeg').addEventListener('click',e=>{const b=e.target.closest('button[data-tm]');if(b)setMode(b.dataset.tm)});
+  const iv=$('#irisSize');const upd=()=>{$('#irisV').textContent=Math.round(iv.value*1000)/10+'%'};upd();
+  iv.addEventListener('input',()=>{T.manual.L.r=T.manual.R.r=+iv.value;upd()});
+  $('#handleBox').addEventListener('change',e=>T.handles=e.target.checked);
+  $('#opRange').addEventListener('input',e=>{T.opacity=+e.target.value;$('#opV').textContent=Math.round(T.opacity*100)+'%'});
+  $('#scRange').addEventListener('input',e=>{T.size=+e.target.value;$('#scV').textContent=Math.round(T.size*100)+'%'});
+  const cv=$('#tryCv');
+  const pt=e=>{const r=cv.getBoundingClientRect();let x=(e.clientX-r.left)/r.width;const y=(e.clientY-r.top)/r.height;if(T.src==='cam')x=1-x;return{x,y}};
+  cv.addEventListener('pointerdown',e=>{if(T.mode!=='manual')return;const p=pt(e),W=cv.width,H=cv.height;let best=null,bd=1e9;
+    for(const k of ['L','R']){const m=T.manual[k],d=Math.hypot((p.x-m.x)*W,(p.y-m.y)*H);if(d<bd){bd=d;best=k}}
+    if(best&&bd<T.manual[best].r*W*2.2+30){T.drag={k:best,dx:p.x-T.manual[best].x,dy:p.y-T.manual[best].y};cv.setPointerCapture(e.pointerId);e.preventDefault()}});
+  cv.addEventListener('pointermove',e=>{if(!T.drag)return;const p=pt(e),m=T.manual[T.drag.k];m.x=Math.min(1,Math.max(0,p.x-T.drag.dx));m.y=Math.min(1,Math.max(0,p.y-T.drag.dy))});
+  const end=()=>T.drag=null;cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+}
+
+/* ---------- order ---------- */
+const fmtD=v=>(v>0?'+':'')+v.toFixed(2);
+function sphOptions(){let o='<option value="">選擇</option><option value="unknown">不確定</option><option value="0">0.00</option>';
+  const v=[];for(let i=2;i<=24;i++)v.push(-i*.25);for(let i=13;i<=20;i++)v.push(-i*.5);for(let i=2;i<=16;i++)v.push(i*.25);
+  return o+v.map(x=>`<option value="${x}">${fmtD(x)}</option>`).join('')}
+function rxText(r){if(!r)return'—';const s=r.sph==='unknown'?'不確定':r.sph===''?'—':fmtD(+r.sph);return r.cyl&&+r.cyl!==0?`${s}　散光 ${(+r.cyl).toFixed(2)} × ${r.ax}°`:s}
+function renderOrder(){const L=designFor('L'),R=designFor('R');
+  $('#oThumbs').innerHTML=[['R','右眼',R],['L','左眼',L]].map(([k,t,d])=>`<figure><div class="disc"><img alt="${t}設計" src="${snap(d,240,'iris')}"></div>${t}</figure>`).join('');
+  renderPrice()}
+function renderPrice(){const q=+$('#qty').value||1,p=currentPrice(q);
+  $('#oPrice').innerHTML=`<table class="plines">${p.lines.map(([t,v])=>`<tr><td>${esc(t)}</td><td>${money(v)}</td></tr>`).join('')}<tr><td>每副小計</td><td>${money(p.unit)}</td></tr><tr><td>數量</td><td>${q} 副</td></tr><tr class="total"><td>預估總額</td><td>${money(p.total)}</td></tr></table>`}
+function newId(){const d=new Date(),p=n=>String(n).padStart(2,'0');return`TZ${String(d.getFullYear()).slice(2)}${p(d.getMonth()+1)}${p(d.getDate())}-${Math.random().toString(36).slice(2,5).toUpperCase()}`}
+function buildOrder(f){const dL=clone(f.dL),dR=clone(f.dR),aL=analyze(dL),aR=analyze(dR);
+  return{id:newId(),at:f.at||Date.now(),status:'review',name:f.name,phone:f.phone,email:f.email||'',store:f.store,note:f.note||'',qty:f.qty,rx:f.rx,sync:sameDesign(dL,dR),
+    design:{L:dL,R:dR},thumbs:{L:lensCanvas(dL,200).toDataURL('image/png'),R:lensCanvas(dR,200).toDataURL('image/png')},price:priceOf(dL,dR,aL,aR,f.qty),
+    spec:{lensD:CFG.lensD,printD:CFG.printD,clearD:CFG.clearD},history:[{at:f.at||Date.now(),s:'review',note:'顧客送出訂單'}],rxConfirmed:null}}
+function saveOrders(){return lsSet(K.orders,ORDERS)}
+function initOrder(){
+  $$('.sph').forEach(s=>s.innerHTML=sphOptions());
+  $$('.cyl').forEach(s=>s.innerHTML='<option value="0">無</option>'+[-.75,-1.25,-1.75,-2.25].map(v=>`<option value="${v}">${v.toFixed(2)}</option>`).join(''));
+  $$('.ax').forEach(s=>s.innerHTML=Array.from({length:18},(_,i)=>`<option value="${(i+1)*10}">${(i+1)*10}°</option>`).join(''));
+  $('#qty').innerHTML=Array.from({length:10},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
+  $('#qty').addEventListener('change',renderPrice);
+  $$('.cyl').forEach(s=>s.addEventListener('change',()=>{s.parentElement.querySelector('.ax').disabled=+s.value===0}));
+  $('#orderForm').addEventListener('submit',e=>{e.preventDefault();const F=e.target,v=n=>(F.elements[n].value||'').trim(),err=$('#formErr');const miss=[];
+    if(!v('name'))miss.push('姓名');if(!v('phone'))miss.push('手機');if(!v('sphR')||!v('sphL'))miss.push('左右眼度數（不確定可選「不確定」）');
+    if(miss.length){err.textContent='請填寫：'+miss.join('、');err.hidden=false;return}
+    if(!F.elements.agree.checked){err.textContent='請勾選同意到店驗光確認度數。';err.hidden=false;return}
+    err.hidden=true;const rx=k=>({sph:v('sph'+k),cyl:v('cyl'+k),ax:+v('cyl'+k)?v('ax'+k):''});
+    const o=buildOrder({dL:designFor('L'),dR:designFor('R'),name:v('name'),phone:v('phone'),email:v('email'),store:v('store'),note:v('note'),qty:+v('qty')||1,rx:{L:rx('L'),R:rx('R')}});
+    ORDERS.unshift(o);if(!saveOrders()){ORDERS.shift();err.textContent='瀏覽器儲存空間不足，通常是上傳的圖片太大。請移除或換小一點的圖片再送出。';err.hidden=false;return}
+    showDone(o)})}
+function fillStores(){$('#storeSel').innerHTML=CFG.stores.split('\n').map(s=>s.trim()).filter(Boolean).map(s=>`<option>${esc(s)}</option>`).join('')}
+function showDone(o){$('#doneBox').innerHTML=`<div class="disc"><img alt="" src="${snap(o.design.L,240,'iris')}"></div>
+  <h2 class="serif h1">訂單已送出</h2><p style="color:var(--muted);margin:6px 0 0">訂單編號 ${o.id}</p>
+  <ol><li>店家審稿你的設計，確認可以生產</li><li>通知你到${esc(o.store)}驗光</li><li>度數確認後送廠製作</li></ol>
+  <div class="btn-row"><button class="btn" id="againBtn">再設計一副</button><button class="btn primary" id="toAdminBtn">到店家後台看這筆訂單</button></div>`;
+  $('#orderForm').reset();$$('.ax').forEach(s=>s.disabled=true);go('done');
+  $('#againBtn').onclick=()=>go('design');$('#toAdminBtn').onclick=()=>{setAppMode('admin');openOrder(o.id)}}
+
+/* ---------- admin ---------- */
+const STATUS={review:['待審稿','warn'],revise:['需修改','danger'],fitting:['待驗光','accent'],sent:['已送廠','ok']};
+let AF='all',OPEN=null,ATAB='orders';
+const dt=t=>{const d=new Date(t),p=n=>String(n).padStart(2,'0');return`${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`};
+function checks(d,a){const out=[],n=a.colors.length;
+  if(n>CFG.maxColors)out.push(['warn',`估算 ${n} 色，超過上限 ${CFG.maxColors} 色`]);
+  if(a.clearPct>1)out.push(['warn',`圖案進入中央透明區，約占該區 ${Math.round(a.clearPct)}%`]);
+  if(a.outPct>1)out.push(['warn',`圖案超出著色外徑，約占外緣 ${Math.round(a.outPct)}%`]);
+  for(const L of d.layers.filter(l=>l.visible)){
+    if(L.type==='pattern'&&['fiber','spokes','lace'].includes(L.pattern)&&L.thick<CFG.minLine)out.push(['warn',`${layerName(L)}線寬 ${(+L.thick).toFixed(2)} mm，低於最小線寬 ${CFG.minLine} mm`]);
+    if(L.type==='pattern'&&L.pattern==='dots'&&L.thick*3<CFG.minLine)out.push(['warn',`點點直徑低於最小線寬 ${CFG.minLine} mm`]);
+    if(L.type==='draw'){const thin=L.strokes.filter(s=>s.s<CFG.minLine).length;if(thin)out.push(['warn',`手繪有 ${thin} 筆線寬低於 ${CFG.minLine} mm`]);if(!L.strokes.length)out.push(['info','手繪圖層沒有筆畫'])}
+    if(L.type==='image'){out.push(['info','含上傳圖片：細節與實際色數需人工確認']);if(L.src&&Math.min(L.ow,L.oh)<500)out.push(['warn',`圖片解析度偏低（${L.ow}×${L.oh}px），印出來可能模糊`])}
+    if(L.type==='gradient')out.push(['info','含漸層：需用網點呈現，請確認廠商可印製'])
+    if(L.opacity<.95)out.push(['info',`${layerName(L)}半透明（${Math.round(L.opacity*100)}%），印刷濃度需與廠商確認`])}
+  return out}
+function orderChecks(o){const aL=analyze(o.design.L),aR=analyze(o.design.R);return{aL,aR,cL:checks(o.design.L,aL),cR:checks(o.design.R,aR)}}
+function renderFilters(){const cnt=s=>ORDERS.filter(o=>s==='all'||o.status===s).length;
+  $('#filters').innerHTML=[['all','全部'],...Object.entries(STATUS).map(([k,v])=>[k,v[0]])].map(([k,t])=>`<button class="chipbtn ${AF===k?'on':''}" data-f="${k}">${t} ${cnt(k)}</button>`).join('')}
+function renderOrderList(){renderFilters();const list=ORDERS.filter(o=>AF==='all'||o.status===AF);
+  if(!ORDERS.length){$('#olist').innerHTML='<div class="empty-box">還沒有訂單。到顧客端送出一筆，或按下方「載入範例訂單」看看審稿流程。</div>';return}
+  if(!list.length){$('#olist').innerHTML='<div class="empty-box">這個狀態沒有訂單。</div>';return}
+  $('#olist').innerHTML=list.map(o=>{const c=orderChecks(o),w=[...c.cL,...c.cR].filter(x=>x[0]==='warn').length,s=STATUS[o.status];
+    return`<button class="orow" data-id="${o.id}"><span class="minis"><span><img alt="右眼" src="${o.thumbs.R}"></span><span><img alt="左眼" src="${o.thumbs.L}"></span></span>
+    <span class="oinfo"><b>${esc(o.name)}</b>${o.id}<br>${dt(o.at)}</span>
+    <span class="oright"><span class="chip ${s[1]}">${s[0]}</span>${w&&o.status==='review'?`<span class="risk">${w} 項需注意</span>`:''}</span></button>`}).join('')}
+function layerDesc(L){const op=L.opacity<.99?`，不透明度 ${Math.round(L.opacity*100)}%`:'';
+  switch(L.type){case'pattern':return`${layerName(L)}：${L.color}，密度 ${Math.round(L.count)}，線寬 ${(+L.thick).toFixed(2)} mm，範圍 Ø${dia(Math.min(L.r0,L.r1))}–${dia(Math.max(L.r0,L.r1))}${op}`;
+    case'ring':return`外圈：${L.color}，外徑 Ø${dia(L.r)}，寬 ${FMT.width(L.width)}，柔邊 ${FMT.soft(L.soft)}${op}`;
+    case'gradient':return`漸層：${L.c0} → ${L.c1}，範圍 Ø${dia(Math.min(L.r0,L.r1))}–${dia(Math.max(L.r0,L.r1))}${op}`;
+    case'image':return`圖片：原始 ${L.ow}×${L.oh}px，縮放 ${FMT.scale(L.scale)}，旋轉 ${Math.round(L.rot)}°，${L.ox||L.oy?`偏移 ${((L.ox||0)*CFG.lensD/2).toFixed(1)}, ${((L.oy||0)*CFG.lensD/2).toFixed(1)} mm`:'置中'}，範圍 Ø${dia(Math.min(L.r0,L.r1))}–${dia(Math.max(L.r0,L.r1))}${op}`;
+    case'draw':return`手繪：${L.strokes.length} 筆，${L.sym>1?L.sym+' 重對稱':'不對稱'}${op}`}}
+function eyeBlock(o,k,a,cs){const d=o.design[k],t=k==='L'?'左眼':'右眼',vis=[...d.layers].filter(l=>l.visible).reverse();
+  return`<div class="card eye"><h3 class="serif">${t}</h3><div class="disc"><img alt="${t}設計" src="${snap(d,360,'dark',true)}"></div>
+  <h4>度數（顧客自填）</h4><p class="rxline">${rxText(o.rx[k])}</p>
+  ${o.rxConfirmed?`<h4>驗光確認度數</h4><p class="rxline">${esc(o.rxConfirmed[k])||'—'}</p>`:''}
+  <h4>估算色數：${a.colors.length} 色</h4><div class="swatches">${a.colors.map(c=>`<span><i style="background:${c.hex}"></i>${c.hex} ${Math.round(c.share*100)}%</span>`).join('')||'無'}</div>
+  <h4>圖層（上到下）</h4>${vis.length?`<ol>${vis.map(L=>`<li>${esc(layerDesc(L))}</li>`).join('')}</ol>`:'<p class="rxline">無</p>'}
+  <h4>可生產性檢查</h4><ul class="checks">${cs.length?cs.map(([lv,m])=>`<li class="${lv}">${esc(m)}</li>`).join(''):'<li class="pass">沒有發現問題</li>'}</ul></div>`}
+function renderSheet(){const o=ORDERS.find(x=>x.id===OPEN);if(!o){closeSheet();return}const c=orderChecks(o),s=STATUS[o.status];
+  let act='';
+  if(o.status==='review')act=`<h3 class="ph serif">審稿</h3><textarea id="revNote" rows="2" placeholder="審稿備註；退回時請寫明要修改的地方"></textarea><div class="btn-row"><button class="btn primary" data-a="approve">通過審稿，通知驗光</button><button class="btn danger" data-a="revise">退回修改</button></div>`;
+  else if(o.status==='revise')act=`<h3 class="ph serif">已退回修改</h3><p class="hint">正式上線時，這裡要通知顧客修改設計。</p><button class="btn" data-a="reopen">改回待審稿</button>`;
+  else if(o.status==='fitting')act=`<h3 class="ph serif">驗光確認</h3><div class="row2"><label class="f"><span>右眼度數</span><input type="text" id="rxcR" value="${esc(rxText(o.rx.R))}"></label><label class="f"><span>左眼度數</span><input type="text" id="rxcL" value="${esc(rxText(o.rx.L))}"></label></div><button class="btn primary" data-a="send">驗光完成，送廠製作</button>`;
+  else act=`<h3 class="ph serif">已送廠</h3><p class="hint">這筆訂單已經送廠製作。</p>`;
+  $('#sheet').innerHTML=`<div class="sheet-head noprint"><div class="wrap"><button class="btn ghost" data-a="close">← 回訂單列表</button><div class="grow"></div><button class="btn" data-a="print">列印規格單</button></div></div>
+  <article class="spec">
+    <div class="spec-top"><div><h2 class="serif">規格單 ${o.id}</h2><p>${dt(o.at)}　${esc(CFG.shopName)}</p></div><span class="chip ${s[1]}">${s[0]}</span></div>
+    <div class="kv">
+      <div><span>顧客</span>${esc(o.name)}</div><div><span>手機</span>${esc(o.phone)}</div><div><span>Email</span>${esc(o.email)||'—'}</div><div><span>驗光門市</span>${esc(o.store)}</div>
+      <div><span>數量</span>${o.qty} 副</div><div><span>預估金額</span>${money(o.price.total)}（每副 ${money(o.price.unit)}）</div>
+      <div><span>鏡片規格</span>Ø${o.spec.lensD} mm，著色外徑 Ø${o.spec.printD} mm，透明區 Ø${o.spec.clearD} mm</div><div><span>左右設計</span>${o.sync?'相同':'不同'}</div>
+      ${o.note?`<div style="grid-column:1/-1"><span>顧客備註</span>${esc(o.note)}</div>`:''}
+    </div>
+    <p class="fine" style="margin:-8px 0 16px">虛線為著色外徑與中央透明區。檢查依目前設定：色數上限 ${CFG.maxColors} 色、最小線寬 ${CFG.minLine} mm；色數為估算值，以廠商判定為準。</p>
+    <div class="eyes">${eyeBlock(o,'R',c.aR,c.cR)}${eyeBlock(o,'L',c.aL,c.cL)}</div>
+    <div class="card actions noprint" style="margin-bottom:16px">${act}</div>
+    <h3 class="ph serif">處理紀錄</h3><ul class="hist">${o.history.map(h=>`<li>${dt(h.at)}　<b>${STATUS[h.s][0]}</b>　${esc(h.note)}</li>`).join('')}</ul>
+    <p class="noprint" style="margin-top:22px"><button class="btn sm ghost danger" data-a="delete">刪除這筆訂單</button></p>
+  </article>`}
+function setStatus(o,s,note){o.status=s;o.history.push({at:Date.now(),s,note});saveOrders();renderSheet();renderOrderList();$('#sheet').scrollTop=0}
+function openOrder(id){OPEN=id;renderSheet();$('#sheet').hidden=false;$('#sheet').scrollTop=0;document.body.classList.add('noscroll')}
+function closeSheet(){OPEN=null;$('#sheet').hidden=true;document.body.classList.remove('noscroll')}
+function renderSettings(){const n=(k,t,step,u='')=>`<label class="f"><span>${t}${u?`（${u}）`:''}</span><input type="number" name="${k}" step="${step}" value="${CFG[k]}"></label>`;
+  $('#at-settings').innerHTML=`<h3 class="serif">店家</h3><div class="settings-grid"><label class="f"><span>店名</span><input type="text" name="shopName" value="${esc(CFG.shopName)}"></label><label class="f" style="grid-column:span 2"><span>驗光門市（一行一間）</span><textarea name="stores" rows="2">${esc(CFG.stores)}</textarea></label></div>
+  <h3 class="serif">印刷限制（先用常見假設值，請向廠商確認）</h3><div class="settings-grid">${n('lensD','鏡片直徑',.1,'mm')}${n('printD','著色外徑',.1,'mm')}${n('clearD','中央透明區直徑',.1,'mm')}${n('maxColors','色數上限',1,'色')}${n('minLine','最小線寬',.01,'mm')}</div>
+  <h3 class="serif">試算價格</h3><div class="settings-grid">${n('base','基本製作',50,'元／副')}${n('perLayer','超過 2 層每層',10,'元')}${n('image','含上傳圖片',10,'元')}${n('draw','含手繪',10,'元')}${n('split','左右不同設計',10,'元')}${n('perColor','每多一色',10,'元')}${n('freeColors','不加價色數',1,'色')}</div>
+  <div class="btn-row" style="margin-top:8px"><button class="btn primary" type="submit">儲存設定</button><button class="btn ghost" type="button" id="resetCfg">還原預設值</button></div>`;
+  $('#resetCfg').onclick=()=>{if(!confirm('還原成預設值？'))return;CFG=Object.assign({},DEF);lsSet(K.cfg,CFG);afterCfg();renderSettings();toast('已還原預設值。')}}
+function afterCfg(){$('#brandName').textContent=CFG.shopName;document.title=CFG.shopName+'｜客製彩色隱形眼鏡';fillStores();renderPresets();redraw();updateEstimate();renderOrderList()}
+function seedOrders(){const g=G(),P=i=>({layers:PRESETS[i].make()}),now=Date.now(),H=3600e3;
+  const d2L=P(4),d2R=P(5);d2R.layers.splice(0,0,mk('gradient',{c0:'#c7a36a',c1:'#6b2e2e'}));
+  const dr=mk('draw',{sym:8,strokes:[{c:'#f6e7c8',s:.05,pts:[[.2,-.02],[.3,-.06],[.42,-.04],[.5,0]]},{c:'#f6e7c8',s:.2,pts:[[.36,.08],[.44,.12]]}]});d2L.layers.push(dr);
+  const d3=P(2);d3.layers.push(mk('pattern',{pattern:'dots',color:'#ffffff',count:60,thick:.05,r0:+(g.clear-.08).toFixed(3),r1:+(g.clear+.1).toFixed(3)}));
+  const mkO=(f,st,hist)=>{const o=buildOrder(f);o.status=st;o.history.push(...hist);return o};
+  const list=[
+    mkO({dL:P(2),dR:P(2),name:'陳小姐',phone:'0912-345-678',store:CFG.stores.split('\n')[0],qty:2,at:now-2*H,rx:{L:{sph:'-3',cyl:'0',ax:''},R:{sph:'-3.25',cyl:'0',ax:''}}},'review',[]),
+    mkO({dL:d2L,dR:d2R,name:'林先生',phone:'0987-111-222',store:CFG.stores.split('\n')[0],qty:1,at:now-5*H,note:'左右想要不同，右眼偏暖色',rx:{L:{sph:'unknown',cyl:'0',ax:''},R:{sph:'unknown',cyl:'0',ax:''}}},'review',[]),
+    mkO({dL:d3,dR:d3,name:'王小姐',phone:'0955-888-000',store:CFG.stores.split('\n')[0],qty:1,at:now-30*H,rx:{L:{sph:'-5.5',cyl:'-0.75',ax:'180'},R:{sph:'-5',cyl:'0',ax:''}}},'fitting',[{at:now-26*H,s:'fitting',note:'通過審稿'}])];
+  ORDERS=[...list,...ORDERS];if(!saveOrders())toast('儲存空間不足，範例訂單沒有存起來。');renderOrderList();toast('已載入 3 筆範例訂單。')}
+function initAdmin(){
+  $('#filters').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;AF=b.dataset.f;renderOrderList()});
+  $('#olist').addEventListener('click',e=>{const b=e.target.closest('.orow');if(b)openOrder(b.dataset.id)});
+  $('#adminTabs').addEventListener('click',e=>{const b=e.target.closest('[data-at]');if(!b)return;ATAB=b.dataset.at;$$('#adminTabs button').forEach(x=>x.classList.toggle('on',x===b));$('#at-orders').hidden=ATAB!=='orders';$('#at-settings').hidden=ATAB!=='settings';if(ATAB==='settings')renderSettings()});
+  $('#seedBtn').addEventListener('click',seedOrders);
+  $('#clearBtn').addEventListener('click',()=>{if(!ORDERS.length||!confirm('刪除這個瀏覽器裡的全部訂單？'))return;ORDERS=[];saveOrders();renderOrderList()});
+  $('#at-settings').addEventListener('submit',e=>{e.preventDefault();const F=e.target,nv=k=>parseFloat(F.elements[k].value),next=Object.assign({},CFG);
+    for(const k of Object.keys(DEF)){if(k==='shopName'||k==='stores')next[k]=F.elements[k].value.trim()||DEF[k];else{const v=nv(k);if(!isFinite(v)||v<0){toast('「'+k+'」需要是正數。');return}next[k]=v}}
+    if(!(next.clearD<next.printD&&next.printD<=next.lensD)){toast('尺寸需符合：透明區直徑 < 著色外徑 ≤ 鏡片直徑。');return}
+    CFG=next;lsSet(K.cfg,CFG);afterCfg();toast('設定已儲存。')});
+  $('#sheet').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,o=ORDERS.find(x=>x.id===OPEN);
+    if(a==='close')return closeSheet();if(a==='print')return window.print();if(!o)return;
+    const note=($('#revNote')||{}).value?.trim()||'';
+    if(a==='approve')setStatus(o,'fitting',note||'通過審稿');
+    else if(a==='revise'){if(!note){toast('請先寫下要顧客修改的地方。');$('#revNote').focus();return}setStatus(o,'revise',note)}
+    else if(a==='reopen')setStatus(o,'review','重新審稿');
+    else if(a==='send'){o.rxConfirmed={R:$('#rxcR').value.trim(),L:$('#rxcL').value.trim()};setStatus(o,'sent',`驗光確認：右 ${o.rxConfirmed.R}／左 ${o.rxConfirmed.L}`)}
+    else if(a==='delete'){if(!confirm('刪除這筆訂單？'))return;ORDERS=ORDERS.filter(x=>x!==o);saveOrders();closeSheet();renderOrderList()}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&OPEN)closeSheet()})}
+
+/* ---------- navigation ---------- */
+function go(step){if(step==='order'&&!hasDesign()){toast('先設計至少一眼的圖案再下單。');return}
+  const prev=ST.step;ST.step=step;$$('#steps button').forEach(b=>b.classList.toggle('on',b.dataset.step===step));$$('#shop .screen').forEach(s=>s.hidden=s.id!=='s-'+step);
+  if(step==='tryon')enterTry();else if(prev==='tryon')leaveTry();
+  if(step==='order')renderOrder();if(step==='design')redraw();syncDrawMode();window.scrollTo(0,0)}
+function setAppMode(m){ST.mode=m;$$('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));$('#shop').hidden=m!=='shop';$('#admin').hidden=m!=='admin';
+  if(m==='admin'){if(ST.step==='tryon')leaveTry();renderOrderList()}else{closeSheet();if(ST.step==='tryon')enterTry()}syncDrawMode();window.scrollTo(0,0)}
+function refreshVisible(){if(ST.mode==='shop'){redraw();updateEstimate();if(ST.step==='tryon')refreshTryLens();renderList()}else{renderOrderList();if(OPEN)renderSheet()}}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  $('#brandName').textContent=CFG.shopName;document.title=CFG.shopName+'｜客製彩色隱形眼鏡';
+  initEditor();initTry();initOrder();fillStores();initAdmin();
+  $('#steps').addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(b)go(b.dataset.step)});
+  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go)});
+  $('#modeSeg').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setAppMode(b.dataset.mode)});
+});
+</script>
+</body></html>
