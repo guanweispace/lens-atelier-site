@@ -3,838 +3,1292 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>瞳作｜客製彩色隱形眼鏡</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@400;600&display=swap" rel="stylesheet">
+<title>瞳畫｜訂製你的鏡片花紋</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
 <style>
-:root{--bg:#EDEFEE;--surface:#FFFFFF;--ink:#1F2429;--muted:#687077;--line:#D6DADB;--accent:#3D5E6C;--accent-ink:#FFFFFF;--gold:#A38A5E;--danger:#A2463A;--ok:#3E6B4F;--warn:#8F6418;--disc:#23282D;color-scheme:light}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#131619;--surface:#1B1F23;--ink:#E5E8EA;--muted:#99A1A7;--line:#2D3338;--accent:#8BB2C2;--accent-ink:#0F171B;--gold:#C4AD84;--danger:#E08578;--ok:#83B794;--warn:#D9A95A;--disc:#0C0E10;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#131619;--surface:#1B1F23;--ink:#E5E8EA;--muted:#99A1A7;--line:#2D3338;--accent:#8BB2C2;--accent-ink:#0F171B;--gold:#C4AD84;--danger:#E08578;--ok:#83B794;--warn:#D9A95A;--disc:#0C0E10;color-scheme:dark}
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{scroll-padding-top:env(safe-area-inset-top,0px)}
-*,*::before,*::after{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased}
-body.noscroll{overflow:hidden}
-.serif{font-family:"Noto Serif TC","Songti TC","PMingLiU",serif}
-button,input,select,textarea{font:inherit;color:inherit}
-:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
-[hidden]{display:none!important}
-img{max-width:100%}
-.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
 
-/* header */
-.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:60px}
-.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
-.brand .mark{font-family:"Noto Serif TC",serif;font-size:21px;letter-spacing:.32em;font-weight:600}
-.brand .sub{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface);flex-shrink:0}
-.seg button{border:0;background:none;padding:5px 13px;border-radius:999px;cursor:pointer;color:var(--muted);font-size:14px;white-space:nowrap}
-.seg button.on{background:var(--ink);color:var(--bg)}
-.seg button:disabled{opacity:.4;cursor:default}
-
-/* steps */
-.steps{display:flex;gap:22px;margin:14px 0 18px;border-bottom:1px solid var(--line)}
-.steps button{display:flex;gap:8px;align-items:center;background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:10px 2px;color:var(--muted);cursor:pointer;font-size:15px}
-.steps button.on{color:var(--ink);border-bottom-color:var(--ink)}
-.steps i{font-style:normal;font-family:"Noto Serif TC",serif;width:22px;height:22px;border:1px solid currentColor;border-radius:50%;display:grid;place-items:center;font-size:12px}
-
-/* studio */
-.studio{display:grid;gap:20px}
-@media (min-width:900px){.studio{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:start}.stage{position:sticky;top:calc(76px + env(safe-area-inset-top,0px))}}
-.eyebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:14px}
-.eyenote{font-size:13px;color:var(--muted)}
-.disc-wrap{position:relative;width:min(100%,500px);margin:0 auto;padding:16px}
-.gauge{position:absolute;inset:0;width:100%;height:100%;color:var(--muted);pointer-events:none}
-.disc{position:relative;aspect-ratio:1;border-radius:50%;background:var(--disc);box-shadow:0 0 0 1px var(--line),0 34px 60px -34px rgba(20,30,40,.55)}
-.disc canvas,.disc img{display:block;width:100%;height:100%;border-radius:50%}
-#lensCv.drawing{touch-action:none;cursor:crosshair}
-#lensCv.moving{touch-action:none;cursor:move}
-.stagebar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:10px;font-size:13px;color:var(--muted)}
-.stagebar .l{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.price-chip{font-family:"Noto Serif TC",serif;color:var(--ink);font-size:15px}
-.mini-sel{padding:3px 6px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
-
-.card{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:18px}
-.tabs{display:flex;gap:18px;border-bottom:1px solid var(--line);margin:-4px 0 16px}
-.tabs button{background:none;border:0;border-bottom:2px solid transparent;margin-bottom:-1px;padding:6px 0 10px;color:var(--muted);cursor:pointer}
-.tabs button.on{color:var(--ink);border-bottom-color:var(--ink)}
-.preset-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:14px 10px}
-.preset{background:none;border:0;padding:4px;border-radius:6px;cursor:pointer;display:grid;gap:6px;justify-items:center;font-size:13px;color:var(--ink)}
-.preset canvas{width:100%;max-width:96px;aspect-ratio:1;border-radius:50%;box-shadow:0 0 0 1px var(--line)}
-.preset:hover canvas{box-shadow:0 0 0 2px var(--accent)}
-.add-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
-.layer-list{list-style:none;margin:0 0 16px;padding:0;border-top:1px solid var(--line)}
-.layer-list li{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px solid var(--line)}
-.layer-list li.sel{background:color-mix(in srgb,var(--accent) 11%,transparent)}
-.layer-list li.empty{color:var(--muted);font-size:14px;padding:14px 4px}
-.layer-list .lname{flex:1;text-align:left;background:none;border:0;cursor:pointer;padding:4px 2px;min-width:0}
-.layer-list .sw{width:18px;height:18px;border-radius:50%;box-shadow:0 0 0 1px var(--line);flex-shrink:0}
-.ib{width:28px;height:28px;border:0;background:none;color:var(--muted);cursor:pointer;border-radius:4px;font-size:11px;flex-shrink:0}
-.ib:hover{background:var(--bg);color:var(--ink)}
-.layer-list input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px}
-.ph{font-size:16px;margin:0 0 10px;font-weight:600}
-.f{display:grid;gap:4px;margin-bottom:12px;font-size:14px}
-.f>span{display:flex;justify-content:space-between;color:var(--muted)}
-.f>span b{font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
-.f.c{grid-template-columns:1fr auto;align-items:center}
-.f input[type=range]{width:100%;accent-color:var(--accent)}
-.f input[type=color]{width:44px;height:30px;border:1px solid var(--line);border-radius:4px;padding:2px;background:var(--surface);cursor:pointer}
-.f input:not([type]),.f input[type=email],.f input[type=number],.f input[type=text],.f select,.f textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:4px;background:var(--surface)}
-.hint{font-size:13px;color:var(--muted);margin:0 0 12px}
-.btn{border:1px solid var(--line);background:var(--surface);padding:9px 16px;border-radius:4px;cursor:pointer;font-size:14px;display:inline-flex;align-items:center;justify-content:center;gap:6px;text-decoration:none}
-.btn:hover{border-color:var(--muted)}
-.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.btn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
-.btn.ghost{background:none;border-color:transparent;color:var(--muted)}
-.btn.danger{color:var(--danger)}
-.btn.sm{padding:6px 11px;font-size:13px}
-.btn.wide{width:100%;padding:12px}
-.btn-row{display:flex;gap:8px;flex-wrap:wrap}
-.next{display:flex;gap:8px;justify-content:flex-end;margin:22px 0 40px}
-
-/* try-on */
-.try-grid{display:grid;gap:18px}
-@media (min-width:900px){.try-grid{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);align-items:start}}
-.tryframe{position:relative;background:var(--disc);border-radius:6px;overflow:hidden;min-height:280px;display:grid;place-items:center}
-#tryCv{display:block;max-width:100%;max-height:72vh;width:auto;height:auto;touch-action:none}
-.try-empty{color:#c9cfd3;text-align:center;padding:40px 24px;max-width:340px;font-size:14px}
-.try-empty .serif{font-size:19px;color:#eef1f2;margin-bottom:6px}
-#tryVid{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
-.status{font-size:13px;color:var(--muted);margin:10px 0 0;min-height:1.5em}
-.file-btn{position:relative;overflow:hidden}
-.file-btn input{position:absolute;inset:0;opacity:0;cursor:pointer}
-
-/* order */
-.order-grid{display:grid;gap:18px;margin-bottom:40px}
-@media (min-width:900px){.order-grid{grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);align-items:start}.order-grid .summary{position:sticky;top:calc(76px + env(safe-area-inset-top,0px))}}
-.h2{font-size:19px;font-weight:600;margin:0 0 14px}
-.h1{font-size:24px;font-weight:600;margin:0}
-.pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px}
-.pair figure{margin:0;text-align:center;font-size:13px;color:var(--muted)}
-.pair .disc{margin-bottom:6px}
-.plines{width:100%;border-collapse:collapse;font-size:14px}
-.plines td{padding:5px 0;border-bottom:1px solid var(--line)}
-.plines td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-.plines tr.total td{border-bottom:0;padding-top:10px;font-family:"Noto Serif TC",serif;font-size:18px}
-.fine{font-size:12.5px;color:var(--muted);margin:10px 0 0}
-.row2{display:grid;gap:0 12px}
-@media (min-width:520px){.row2{grid-template-columns:1fr 1fr}}
-fieldset.rx{border:1px solid var(--line);border-radius:6px;padding:12px 12px 4px;margin:4px 0 12px}
-fieldset.rx legend{padding:0 6px;font-size:14px;color:var(--muted)}
-.rxrow{display:grid;grid-template-columns:44px 1fr 1fr 1fr;gap:8px;align-items:center;margin-bottom:10px}
-.rxrow b{font-weight:500;font-size:14px}
-.rxrow select{width:100%;padding:8px 4px;border:1px solid var(--line);border-radius:4px;background:var(--surface);font-size:14px}
-.rxhead{display:grid;grid-template-columns:44px 1fr 1fr 1fr;gap:8px;font-size:12px;color:var(--muted);margin-bottom:4px}
-.notice{border-left:2px solid var(--gold);padding:8px 12px;background:color-mix(in srgb,var(--gold) 9%,transparent);font-size:13.5px;margin:0 0 14px}
-.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;margin:6px 0 14px;cursor:pointer}
-.check input{margin-top:4px;accent-color:var(--accent);width:17px;height:17px;flex-shrink:0}
-.err{color:var(--danger);font-size:14px;margin:0 0 12px}
-.done{max-width:560px;margin:40px auto 60px;text-align:center}
-.done .disc{width:180px;margin:0 auto 22px}
-.done ol{text-align:left;display:inline-block;margin:10px 0 24px;padding-left:22px}
-.done .btn-row{justify-content:center}
-
-/* admin */
-.admin-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:22px 0 16px;flex-wrap:wrap}
-.filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
-.chipbtn{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 12px;font-size:13px;cursor:pointer;color:var(--muted)}
-.chipbtn.on{border-color:var(--ink);color:var(--ink)}
-.olist{display:grid;gap:8px}
-.orow{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:10px 12px;cursor:pointer}
-.orow:hover{border-color:var(--muted)}
-.minis{display:flex;gap:4px}
-.minis span{width:42px;height:42px;border-radius:50%;background:var(--disc);display:block;overflow:hidden}
-.minis img{width:100%;height:100%;display:block}
-.oinfo{min-width:0;font-size:13px;color:var(--muted)}
-.oinfo b{display:block;color:var(--ink);font-size:15px;font-weight:500}
-.oright{display:grid;justify-items:end;gap:4px}
-.chip{display:inline-block;font-size:12px;padding:2px 9px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
-.chip.warn{color:var(--warn)}.chip.danger{color:var(--danger)}.chip.accent{color:var(--accent)}.chip.ok{color:var(--ok)}
-.risk{font-size:12px;color:var(--warn)}
-.admin-tools{display:flex;gap:8px;margin:18px 0}
-.empty-box{border:1px dashed var(--line);border-radius:6px;padding:30px 20px;text-align:center;color:var(--muted);font-size:14px}
-.proto{margin:24px 0 50px}
-.settings-grid{display:grid;gap:0 16px}
-@media (min-width:700px){.settings-grid{grid-template-columns:1fr 1fr 1fr}}
-.settings h3{font-size:15px;margin:18px 0 10px;font-weight:600}
-
-/* sheet */
-.sheet{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-.sheet-head{position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--line)}
-.sheet-head .wrap{display:flex;align-items:center;gap:8px;min-height:56px}
-.grow{flex:1}
-.spec{max-width:940px;margin:0 auto;padding:22px 16px 60px}
-.spec-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:18px}
-.spec-top h2{margin:0;font-size:22px}
-.spec-top p{margin:2px 0 0;color:var(--muted);font-size:13px}
-.kv{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px 18px;margin:0 0 20px;font-size:14px}
-.kv div span{display:block;font-size:12px;color:var(--muted)}
-.eyes{display:grid;gap:16px;margin-bottom:20px}
-@media (min-width:760px){.eyes{grid-template-columns:1fr 1fr}}
-.eye h3{margin:0 0 12px;font-size:16px}
-.eye .disc{width:min(100%,260px);margin:0 auto 14px}
-.eye h4{font-size:13px;color:var(--muted);font-weight:500;margin:14px 0 6px}
-.eye ol{margin:0;padding-left:20px;font-size:13.5px}
-.eye ol li{margin-bottom:3px}
-.swatches{display:flex;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
-.swatches span{display:flex;align-items:center;gap:5px}
-.swatches i{width:16px;height:16px;border-radius:50%;box-shadow:0 0 0 1px var(--line);display:inline-block}
-.checks{list-style:none;padding:0;margin:0;font-size:13.5px}
-.checks li{padding:6px 10px;border-left:2px solid;margin-bottom:5px}
-.checks li.warn{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 9%,transparent)}
-.checks li.info{border-color:var(--line);color:var(--muted)}
-.checks li.pass{border-color:var(--ok);color:var(--ok)}
-.rxline{font-size:14px;margin:0}
-.actions textarea{width:100%;padding:9px 10px;border:1px solid var(--line);border-radius:4px;background:var(--surface);margin-bottom:10px}
-.hist{list-style:none;padding:0;margin:0;font-size:13px;color:var(--muted)}
-.hist li{padding:5px 0;border-bottom:1px solid var(--line)}
-.hist b{color:var(--ink);font-weight:500}
-
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:6px;font-size:14px;z-index:80;max-width:min(92vw,460px);box-shadow:0 10px 30px rgba(0,0,0,.25)}
-
-@media print{
-  body{background:#fff;color:#000}
-  body>*:not(#sheet){display:none!important}
-  #sheet{position:static;overflow:visible;background:#fff}
-  .noprint{display:none!important}
-  .spec{padding:0}
-  .eye{break-inside:avoid}
+:root{
+  --bg:#F5F1F2; --panel:#FFFFFF; --ink:#2B1D24; --muted:#77666E; --line:#E6DCE0; --field:#FBF8F9;
+  --accent:#A8324E; --accent-ink:#FFFFFF; --accent-soft:#F6E4E9; --gold:#9C7A3C;
+  --err:#A4262C; --err-bg:#FCE7E7; --ok:#2F6B4F; --ok-bg:#E4F2EA; --warn:#8A4300; --warn-bg:#FFF1DC;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
 }
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1B1418; --panel:#261C22; --ink:#F3E9ED; --muted:#B3A2AA; --line:#3D2D36; --field:#2E222A;
+    --accent:#E8728E; --accent-ink:#2A0D17; --accent-soft:#40232E; --gold:#D9B777;
+    --err:#F29A9A; --err-bg:#3B1A1C; --ok:#8AD3AE; --ok-bg:#15332A; --warn:#F0B878; --warn-bg:#3A2A12;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1B1418; --panel:#261C22; --ink:#F3E9ED; --muted:#B3A2AA; --line:#3D2D36; --field:#2E222A;
+  --accent:#E8728E; --accent-ink:#2A0D17; --accent-soft:#40232E; --gold:#D9B777;
+  --err:#F29A9A; --err-bg:#3B1A1C; --ok:#8AD3AE; --ok-bg:#15332A; --warn:#F0B878; --warn-bg:#3A2A12;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none !important}
+body{margin:0; background:var(--bg); color:var(--ink); font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif; font-size:16px; line-height:1.6; font-variant-numeric:tabular-nums}
+.serif{font-family:"Noto Serif TC","Songti TC","PMingLiU",serif}
+.wrap{max-width:1040px; margin:0 auto; padding:14px 16px 0}
+header.top{display:flex; align-items:baseline; justify-content:space-between; gap:12px; padding:4px 2px 12px}
+.brand{font-size:1.375rem; font-weight:700; letter-spacing:.12em}
+.brand small{font-family:"Noto Sans TC",sans-serif; font-size:.75rem; font-weight:400; letter-spacing:.02em; color:var(--muted); margin-left:8px}
+.pay{font-size:.8125rem; color:var(--muted)}
+
+ol.steps{list-style:none; display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:0 0 14px; padding:0}
+ol.steps button{width:100%; border:0; background:none; font:inherit; color:var(--muted); padding:8px 2px 6px; border-top:3px solid var(--line); text-align:left; font-size:.8125rem; cursor:pointer; border-radius:0}
+ol.steps button b{display:block; font-size:.75rem; font-weight:500}
+ol.steps li.on button{color:var(--ink); border-top-color:var(--accent); font-weight:700}
+ol.steps li.done button{color:var(--ink); border-top-color:var(--ink)}
+ol.steps button:disabled{cursor:default}
+
+.layout{display:grid; gap:14px}
+@media (min-width:900px){ .layout{grid-template-columns:380px minmax(0,1fr); align-items:start} .look{position:sticky; top:14px} }
+.card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:16px}
+.look{padding:14px 16px 12px}
+.look h2{font-size:.875rem; font-weight:500; color:var(--muted); margin:0 0 4px}
+#eye{display:block; width:100%; height:auto; max-width:520px; margin:0 auto; border-radius:10px}
+.look .name{text-align:center; font-size:1.125rem; font-weight:700; margin:2px 0 0}
+.look .note{text-align:center; font-size:.75rem; color:var(--muted); margin:2px 0 8px}
+.tones{display:flex; justify-content:center; align-items:center; gap:10px; font-size:.8125rem; color:var(--muted)}
+.tones button{width:26px; height:26px; border-radius:50%; border:2px solid var(--panel); outline:1px solid var(--line); padding:0; cursor:pointer}
+.tones button[aria-pressed=true]{outline:2px solid var(--accent)}
+@media (max-width:899px){
+  body.step1 .look{position:sticky; top:env(safe-area-inset-top,0px); z-index:4; padding:8px 12px 10px; box-shadow:0 8px 16px -12px rgba(43,29,36,.55)}
+  body.step1 .look h2, body.step1 .look .note{display:none}
+  body.step1 .look .name{font-size:.875rem; line-height:1.3; margin:0 0 4px}
+}
+body.compact .look #eye{max-width:320px}
+@media (max-width:899px){ body.sfopen .look{display:none} }
+body.compact .look .lookrow{display:none}
+.lookrow{display:flex; align-items:center; justify-content:center; gap:8px 14px; flex-wrap:wrap}
+.sm{padding:6px 14px !important; min-height:34px !important; font-size:.8125rem}
+#liveVideo{position:fixed; left:0; top:0; width:2px; height:2px; opacity:0; pointer-events:none}
+#sfPhoto{display:block; width:auto; max-width:100%; max-height:440px; margin:0 auto; border-radius:10px; cursor:crosshair}
+#sfStrip{display:block; width:100%; height:auto; border-radius:10px; touch-action:none; cursor:grab; -webkit-user-select:none; user-select:none}
+.btns{display:flex; flex-wrap:wrap; gap:8px; margin-top:12px}
+
+h1{font-size:1.5rem; line-height:1.3; margin:0 0 4px; font-weight:700}
+.lede{color:var(--muted); margin:0 0 14px; font-size:.9375rem}
+h3{font-size:1rem; margin:18px 0 8px; font-weight:700}
+h3:first-child{margin-top:0}
+.seg{display:grid; grid-template-columns:1fr 1fr; background:var(--field); border:1px solid var(--line); border-radius:999px; padding:3px; margin-bottom:14px}
+.seg button{border:0; background:none; font:inherit; color:var(--muted); padding:8px 6px; border-radius:999px; cursor:pointer}
+.seg button[aria-selected=true]{background:var(--ink); color:var(--panel); font-weight:700}
+.chips{display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px}
+.chips button{border:1px solid var(--line); background:var(--panel); color:var(--ink); font:inherit; font-size:.875rem; padding:5px 13px; border-radius:999px; cursor:pointer}
+.chips button[aria-pressed=true]{background:var(--accent-soft); border-color:var(--accent); color:var(--accent); font-weight:700}
+.tpls{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px 10px}
+@media (min-width:560px){ .tpls{grid-template-columns:repeat(4,minmax(0,1fr))} }
+.tpl{border:0; background:none; padding:0; font:inherit; color:var(--ink); cursor:pointer; text-align:center}
+.tpl canvas{display:block; width:100%; height:auto; border-radius:50%; background:#fff; border:1px solid var(--line)}
+.tpl[aria-pressed=true] canvas{outline:3px solid var(--accent); outline-offset:2px}
+.tpl span{display:block; font-size:.875rem; margin-top:6px}
+.cws{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+.cws button{display:inline-flex; align-items:center; gap:7px; border:1px solid var(--line); background:var(--panel); color:var(--ink); font:inherit; font-size:.875rem; padding:5px 12px 5px 6px; border-radius:999px; cursor:pointer}
+.cws button i{width:20px; height:20px; border-radius:50%; display:inline-block; border:1px solid rgba(0,0,0,.12)}
+.cws button[aria-pressed=true]{border-color:var(--accent); background:var(--accent-soft); font-weight:700}
+
+label.f{display:block; font-size:.875rem; color:var(--muted); margin:10px 0 0}
+label.f > input, label.f > select, label.f > textarea{display:block; width:100%; margin-top:4px}
+input[type=text],input[type=tel],select,textarea{font:inherit; color:var(--ink); background:var(--field); border:1px solid var(--line); border-radius:10px; padding:10px 12px; width:100%; min-height:44px}
+textarea{min-height:72px; resize:vertical}
+input[type=range]{width:100%; accent-color:var(--accent); margin:2px 0}
+input[type=radio],input[type=checkbox]{accent-color:var(--accent); width:18px; height:18px; margin:0; flex:none}
+.g2{display:grid; grid-template-columns:1fr 1fr; gap:0 12px}
+.cycles{display:grid; gap:8px}
+@media (min-width:480px){ .cycles{grid-template-columns:1fr 1fr} }
+.cycle{display:flex; gap:10px; align-items:flex-start; border:1px solid var(--line); border-radius:12px; padding:12px; cursor:pointer}
+.cycle:has(input:checked){border-color:var(--accent); background:var(--accent-soft)}
+.cycle b{display:block}
+.cycle small{display:block; color:var(--muted); font-size:.8125rem}
+.cycle .p{margin-left:auto; font-weight:700; white-space:nowrap}
+.eyes{display:grid; gap:10px}
+.eyes .check.same{margin:0; padding:10px 12px; border:1px dashed var(--line); border-radius:12px; background:var(--field)}
+.eyebox{border:1px solid var(--line); border-radius:12px; padding:12px}
+.eyebox h4{margin:0; font-size:.9375rem}
+.qty{display:flex; align-items:center; gap:8px; margin-top:4px}
+.qty button{width:44px; height:44px; border-radius:10px; border:1px solid var(--line); background:var(--field); color:var(--ink); font:inherit; font-size:1.25rem; cursor:pointer}
+.qty output{min-width:2.2em; text-align:center; font-weight:700; font-size:1.0625rem}
+.check{display:flex; gap:10px; align-items:flex-start; margin-top:12px; font-size:.9375rem}
+.hint{color:var(--muted); font-size:.8125rem; margin:6px 0 0}
+.req{color:var(--err); font-weight:700; margin-left:3px}
+.reqnote{font-size:.8125rem; color:var(--muted); margin:-6px 0 12px}
+.addr{font-size:.875rem; margin:8px 0 0; padding:8px 12px; background:var(--field); border-radius:10px}
+.msg{border-radius:10px; padding:9px 12px; font-size:.9375rem; margin:12px 0 0}
+.msg.err{background:var(--err-bg); color:var(--err)} .msg.ok{background:var(--ok-bg); color:var(--ok)} .msg.warn{background:var(--warn-bg); color:var(--warn)}
+#msgs:empty{display:none}
+
+dl.sum{margin:0; display:grid; grid-template-columns:auto 1fr; gap:6px 16px; font-size:.9375rem}
+dl.sum dt{color:var(--muted)} dl.sum dd{margin:0; text-align:right}
+.sumsec{border-top:1px solid var(--line); padding:12px 0}
+.sumsec:first-of-type{border-top:0; padding-top:0}
+.sumhead{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px}
+.sumhead b{font-size:.9375rem}
+.link{border:0; background:none; color:var(--accent); font:inherit; font-size:.875rem; cursor:pointer; padding:4px; text-decoration:underline}
+.total{display:flex; justify-content:space-between; align-items:baseline; border-top:2px solid var(--ink); padding-top:12px; margin-top:4px}
+.total b{font-size:1.5rem}
+
+.bar{position:sticky; bottom:0; z-index:5; margin:14px -16px 0; padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px)); background:var(--panel); border-top:1px solid var(--line); display:flex; align-items:center; gap:10px}
+.bar .sub{margin-right:auto; line-height:1.25}
+.bar .sub small{display:block; color:var(--muted); font-size:.75rem}
+.bar .sub b{font-size:1.125rem; white-space:nowrap}
+.bar button{white-space:nowrap}
+.bar .back{padding-left:16px; padding-right:16px}
+.bar .go{min-width:7.5em}
+button.go, button.back, .filebtn, .plain{font:inherit; border-radius:999px; padding:11px 20px; cursor:pointer; border:1px solid var(--line); background:var(--panel); color:var(--ink); min-height:44px}
+button.go{background:var(--accent); border-color:var(--accent); color:var(--accent-ink); font-weight:700}
+button:disabled{opacity:.5; cursor:not-allowed}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.filebtn{display:inline-block}
+.filebtn input{position:absolute; width:1px; height:1px; opacity:0}
+.filebtn:focus-within{outline:2px solid var(--accent); outline-offset:2px}
+#ov{display:block; touch-action:none; cursor:grab; margin:12px auto 0; width:auto; max-width:100%; max-height:340px; background:#fff; border:1px solid var(--line); border-radius:8px; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none}
+.alpha-head{display:flex; justify-content:space-between; align-items:baseline; margin-top:10px; font-size:.9375rem}
+.alpha-head output{font-weight:700; color:var(--accent)}
+.done-no{font-size:1.75rem; font-weight:700; letter-spacing:.06em; margin:2px 0 10px}
+.dl{display:grid; gap:8px; margin-top:14px}
+@media (min-width:480px){ .dl{grid-template-columns:1fr 1fr} }
+footer{color:var(--muted); font-size:.75rem; padding:16px 2px 20px}
+
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap">
-  <div class="brand"><span class="mark" id="brandName">瞳作</span><span class="sub">客製彩色隱形眼鏡</span></div>
-  <div class="seg" id="modeSeg"><button data-mode="shop" class="on">顧客端</button><button data-mode="admin">店家後台</button></div>
-</div></header>
+<div class="wrap">
+  <header class="top">
+    <div class="brand serif">瞳畫<small>訂製花紋隱形眼鏡</small></div>
+    <div class="pay">寶島眼鏡門市取貨付款</div>
+  </header>
 
-<main id="shop"><div class="wrap">
-  <nav class="steps" id="steps">
-    <button data-step="design" class="on"><i>1</i>設計</button>
-    <button data-step="tryon"><i>2</i>試戴</button>
-    <button data-step="order"><i>3</i>下單</button>
-  </nav>
+  <ol class="steps" id="steps">
+    <li><button type="button" data-go="1"><b>步驟 1</b>選花紋</button></li>
+    <li><button type="button" data-go="2"><b>步驟 2</b>度數與數量</button></li>
+    <li><button type="button" data-go="3"><b>步驟 3</b>取貨與聯絡</button></li>
+    <li><button type="button" data-go="4"><b>步驟 4</b>確認訂單</button></li>
+  </ol>
 
-  <section id="s-design" class="screen">
-    <div class="studio">
-      <div class="stage">
-        <div class="eyebar">
-          <div class="seg" id="eyeSeg"><button data-eye="L">左眼</button><button data-eye="R">右眼</button></div>
-          <label class="check" style="margin:0"><input type="checkbox" id="syncBox" checked> 左右同步</label>
-        </div>
-        <div class="disc-wrap">
-          <svg class="gauge" id="gauge" viewBox="0 0 100 100" aria-hidden="true"></svg>
-          <div class="disc"><canvas id="lensCv" width="720" height="720" aria-label="鏡片設計預覽"></canvas></div>
-        </div>
-        <div class="stagebar">
-          <div class="l">
-            <span id="eyeNote">左右眼使用同一設計</span>
-            <label>底色 <select id="bgSel" class="mini-sel"><option value="iris">棕色眼睛</option><option value="dark">深色</option><option value="light">淺色</option></select></label>
-            <label><input type="checkbox" id="guideBox" checked> 參考線</label>
+  <div class="layout">
+    <aside class="card look" id="look">
+      <h2>試戴預覽</h2>
+      <canvas id="eye" width="1000" height="340" aria-label="花紋戴在雙眼上的示意圖"></canvas>
+      <p class="name serif" id="lookName">還沒選花紋</p>
+      <p class="note" id="lookNote">示意圖，實際顯色會隨原本的瞳色而不同。</p>
+      <div class="lookrow">
+        <div class="tones" id="tones"><span>原本瞳色</span></div>
+        <button type="button" class="go sm" id="liveOpen">開鏡頭試戴</button>
+        <button type="button" class="plain sm" id="sfOpen">用相片試戴</button>
+        <button type="button" class="plain sm" id="liveOff" hidden>關閉鏡頭</button>
+        <button type="button" class="plain sm" id="sfEdit" hidden>調整相片</button>
+        <button type="button" class="plain sm" id="sfOff" hidden>改回示意圖</button>
+      </div>
+      <p class="msg warn" id="liveMsg" hidden style="margin:8px 0 0; font-size:.875rem"></p>
+      <video id="liveVideo" playsinline muted autoplay></video>
+    </aside>
+
+    <main>
+      <!-- 自拍試戴 -->
+      <section class="card" id="sfCard" hidden style="margin-bottom:14px">
+        <div class="sumhead"><b class="serif" style="font-size:1.125rem">用相片試戴</b><button type="button" class="link" id="sfClose">關閉</button></div>
+        <div id="sfStage0">
+          <p class="lede">拍一張正面、眼睛睜開、光線充足的自拍，花紋會疊到你的眼睛上。相片只在你的裝置上處理，不會上傳。</p>
+          <div class="dl" style="margin-top:0">
+            <label class="filebtn" style="text-align:center">開鏡頭拍一張<input type="file" id="sfCam" accept="image/*" capture="user"></label>
+            <label class="filebtn" style="text-align:center">從相簿選一張<input type="file" id="sfPick" accept="image/*"></label>
           </div>
-          <span class="price-chip" id="priceChip"></span>
+          <p class="hint" id="sfErr"></p>
         </div>
-      </div>
-
-      <div class="card panel">
-        <div class="tabs" id="panelTabs"><button data-tab="presets" class="on">現成圖案</button><button data-tab="layers">圖層</button></div>
-        <div id="tab-presets">
-          <p class="hint">挑一款當起點，再到「圖層」改顏色、加花紋或自己畫。</p>
-          <button class="btn sm" id="uploadOwn" style="margin-bottom:16px">上傳自己的圖片</button>
-          <div class="preset-grid" id="presetGrid"></div>
+        <div id="sfStage1" hidden>
+          <p class="msg ok" id="sfHint" style="margin:0 0 10px"></p>
+          <canvas id="sfPhoto"></canvas>
+          <div class="btns"><button type="button" class="plain sm" id="sfRetake">換一張相片</button></div>
         </div>
-        <div id="tab-layers" hidden>
-          <div class="add-row">
-            <button class="btn sm" data-add="pattern">＋ 花紋</button>
-            <button class="btn sm" data-add="ring">＋ 外圈</button>
-            <button class="btn sm" data-add="gradient">＋ 漸層</button>
-            <button class="btn sm" data-add="image">＋ 圖片</button>
-            <button class="btn sm" data-add="draw">＋ 手繪</button>
+        <div id="sfStage2" hidden>
+          <canvas id="sfStrip" width="1000" height="340"></canvas>
+          <p class="hint">花紋沒對準的話，直接用手指拖它。</p>
+          <div class="alpha-head"><label for="sfSize">鏡片大小</label><output id="sfSizeOut">100%</output></div>
+          <input type="range" id="sfSize" min="70" max="150" step="1" value="100">
+          <div class="alpha-head"><label for="sfThr">花紋範圍</label><output id="sfThrOut">0</output></div>
+          <input type="range" id="sfThr" min="-60" max="60" step="1" value="0">
+          <p class="hint">花紋蓋到眼皮就往左調，沒蓋滿虹膜就往右調。</p>
+          <div class="btns">
+            <button type="button" class="plain sm" id="sfSwap" hidden>左右眼對調</button>
+            <button type="button" class="plain sm" id="sfRepick">重新點眼睛</button>
+            <button type="button" class="plain sm" id="sfRetake2">換一張相片</button>
           </div>
-          <ul class="layer-list" id="layerList"></ul>
-          <div id="props"></div>
+          <div class="btns"><button type="button" class="go" id="sfDone">完成，用這張試戴</button></div>
         </div>
-      </div>
-    </div>
-    <div class="next"><button class="btn primary" data-go="tryon">下一步：試戴</button></div>
-  </section>
+      </section>
 
-  <section id="s-tryon" class="screen" hidden>
-    <div class="try-grid">
-      <div>
-        <div class="tryframe" id="tryFrame">
-          <div class="try-empty" id="tryEmpty"><div class="serif">戴上看看</div>開啟鏡頭，或上傳一張正面、光線清楚的自拍。</div>
-          <canvas id="tryCv" hidden></canvas>
-          <video id="tryVid" playsinline muted></video>
+      <!-- 步驟 1 -->
+      <section class="card" id="s1">
+        <h1 class="serif">先選一款花紋</h1>
+        <p class="lede">從樣板裡挑，或用自己的相片做一款只有你有的。</p>
+        <label class="check" style="margin:0 0 12px"><input type="checkbox" id="sameDesign" checked><span>兩眼用同一款花紋</span></label>
+        <div class="seg" id="eyeSeg" role="tablist" hidden>
+          <button type="button" role="tab" aria-selected="true" data-eye="R">右眼的花紋</button>
+          <button type="button" role="tab" aria-selected="false" data-eye="L">左眼的花紋</button>
         </div>
-        <p class="status" id="tryStatus"></p>
-      </div>
-      <div class="card">
-        <div class="btn-row" style="margin-bottom:14px">
-          <button class="btn dark" id="camBtn">開啟鏡頭</button>
-          <label class="btn file-btn">上傳自拍照<input type="file" id="selfieFile" accept="image/*"></label>
-          <button class="btn" id="freezeBtn" hidden>定格畫面</button>
+        <div class="seg" id="srcSeg" role="tablist">
+          <button type="button" role="tab" aria-selected="true" data-src="tpl">精選樣板</button>
+          <button type="button" role="tab" aria-selected="false" data-src="photo">用我的相片</button>
         </div>
-        <label class="f"><span>對位方式</span></label>
-        <div class="seg" id="trackSeg" style="margin:-6px 0 14px"><button data-tm="track" class="on">自動追蹤</button><button data-tm="manual">手動對位</button></div>
-        <div id="manualCtl" hidden>
-          <label class="f"><span>對位圈大小<b id="irisV"></b></span><input type="range" id="irisSize" min="0.01" max="0.12" step="0.001" value="0.045"></label>
-          <label class="check" style="margin-top:0"><input type="checkbox" id="handleBox" checked> 顯示對位圈</label>
-        </div>
-        <label class="f"><span>顯色濃度<b id="opV">85%</b></span><input type="range" id="opRange" min="0.3" max="1" step="0.01" value="0.85"></label>
-        <label class="f"><span>鏡片大小微調<b id="scV">100%</b></span><input type="range" id="scRange" min="0.85" max="1.15" step="0.01" value="1"></label>
-        <p class="hint">預覽是模擬效果，實際顏色會因你的眼睛顏色和光線而不同。</p>
-      </div>
-    </div>
-    <div class="next"><button class="btn ghost" data-go="design">回到設計</button><button class="btn primary" data-go="order">下一步：下單</button></div>
-  </section>
 
-  <section id="s-order" class="screen" hidden>
-    <div class="order-grid">
-      <aside class="card summary">
-        <h2 class="serif h2">你的設計</h2>
-        <div class="pair" id="oThumbs"></div>
-        <div id="oPrice"></div>
-        <p class="fine">金額依設計複雜度試算，正式報價以店家審稿後為準。</p>
-      </aside>
-      <form id="orderForm" class="card" novalidate>
-        <h2 class="serif h2">訂購資料</h2>
-        <div class="row2">
-          <label class="f"><span>姓名</span><input name="name" autocomplete="name"></label>
-          <label class="f"><span>手機</span><input name="phone" inputmode="tel" autocomplete="tel"></label>
+        <div id="paneTpl">
+          <div class="chips" id="chips"></div>
+          <div class="tpls" id="tpls"></div>
+          <div id="cwBox" hidden>
+            <h3>顏色</h3>
+            <div class="cws" id="cws"></div>
+          </div>
         </div>
-        <label class="f"><span>Email（選填）</span><input name="email" type="email" autocomplete="email"></label>
-        <label class="f"><span>驗光門市</span><select name="store" id="storeSel"></select></label>
-        <fieldset class="rx"><legend>度數（自填參考）</legend>
-          <div class="rxhead"><span></span><span>近視／遠視</span><span>散光</span><span>軸度</span></div>
-          <div class="rxrow"><b>右眼</b><select name="sphR" class="sph"></select><select name="cylR" class="cyl"></select><select name="axR" class="ax" disabled></select></div>
-          <div class="rxrow"><b>左眼</b><select name="sphL" class="sph"></select><select name="cylL" class="cyl"></select><select name="axL" class="ax" disabled></select></div>
-        </fieldset>
-        <p class="notice">自填度數只是參考。為了配戴安全，每筆訂單都要到店驗光、確認度數後才會送廠製作。</p>
-        <div class="row2">
-          <label class="f"><span>數量（副）</span><select name="qty" id="qty"></select></label>
+
+        <div id="panePhoto" hidden>
+          <label class="filebtn">選擇相片<input type="file" id="file" accept="image/*"></label>
+          <p class="hint" id="fileName">風景、花、寵物的毛色、喜歡的布料都可以，顏色豐富的相片效果最好。</p>
+          <div id="imgSize" hidden>
+            <canvas id="ov" aria-label="相片與圓環的位置"></canvas>
+            <p class="hint">在相片上點一下或拖曳來移動圓環。亮的那一圈會變成花紋。</p>
+            <div class="alpha-head"><label for="ringScale">圓環大小</label><output id="ringOut">100%</output></div>
+            <input type="range" id="ringScale" min="20" max="200" step="1" value="100">
+            <div class="alpha-head"><label for="posX">左右位置</label><output id="posXOut">50%</output></div>
+            <input type="range" id="posX" min="0" max="100" step="0.5" value="50">
+            <div class="alpha-head"><label for="posY">上下位置</label><output id="posYOut">50%</output></div>
+            <input type="range" id="posY" min="0" max="100" step="0.5" value="50">
+            <div class="alpha-head"><label for="rep">繞一圈重複</label><output id="repOut">關閉</output></div>
+            <input type="range" id="rep" min="1" max="24" step="1" value="1">
+            <div id="repMore" hidden>
+              <div class="alpha-head"><label for="repAng">要重複的是哪一塊</label><output id="repAngOut">0°</output></div>
+              <input type="range" id="repAng" min="0" max="359" step="1" value="0">
+              <label class="check"><input type="checkbox" id="repMirror"><span>左右對稱排列，看不到接縫</span></label>
+            </div>
+            <p style="margin:12px 0 0"><button type="button" class="plain" id="ringReset">回到預設位置</button></p>
+            <p class="hint" id="quality"></p>
+          </div>
         </div>
-        <label class="f"><span>備註（選填）</span><textarea name="note" rows="2"></textarea></label>
-        <label class="check"><input type="checkbox" name="agree"> 我了解需要到店驗光確認度數，確認後才會開始製作。</label>
-        <p class="err" id="formErr" hidden></p>
-        <button class="btn primary wide" type="submit">送出訂單</button>
-      </form>
-    </div>
-  </section>
+      </section>
 
-  <section id="s-done" class="screen" hidden>
-    <div class="done" id="doneBox"></div>
-  </section>
-</div></main>
+      <!-- 步驟 2 -->
+      <section class="card" id="s2" hidden>
+        <h1 class="serif">度數與數量</h1>
+        <p class="lede">請依最近一次驗光的結果填寫，取貨時門市人員會再跟你確認。</p>
+        <p class="reqnote"><span class="req" aria-hidden="true" style="margin-left:0">*</span> 為必填</p>
+        <h3>配戴週期<span class="req" aria-hidden="true">*</span></h3>
+        <div class="cycles" id="cycles"></div>
+        <h3>度數與盒數</h3>
+        <div class="eyes">
+          <div class="eyebox">
+            <h4>右眼</h4>
+            <label class="f">度數<span class="req" aria-hidden="true">*</span><select id="pR" aria-required="true"></select></label>
+            <label class="f" for="qR">盒數</label>
+            <div class="qty"><button type="button" data-q="R" data-d="-1" aria-label="右眼減一盒">−</button><output id="qR">1</output><button type="button" data-q="R" data-d="1" aria-label="右眼加一盒">＋</button></div>
+          </div>
+          <label class="check same"><input type="checkbox" id="same" checked><span>左眼和右眼的度數相同</span></label>
+          <div class="eyebox">
+            <h4>左眼</h4>
+            <label class="f">度數<span class="req" aria-hidden="true">*</span><select id="pL" aria-required="true"></select></label>
+            <p class="hint" id="sameHint">已經套用右眼的度數。兩眼不同的話，請取消上面的勾選。</p>
+            <label class="f" for="qL">盒數</label>
+            <div class="qty"><button type="button" data-q="L" data-d="-1" aria-label="左眼減一盒">−</button><output id="qL">1</output><button type="button" data-q="L" data-d="1" aria-label="左眼加一盒">＋</button></div>
+          </div>
+        </div>
+      </section>
 
-<main id="admin" hidden><div class="wrap">
-  <div class="admin-head">
-    <h1 class="serif h1">店家後台</h1>
-    <div class="seg" id="adminTabs"><button data-at="orders" class="on">訂單</button><button data-at="settings">設定</button></div>
+      <!-- 步驟 3 -->
+      <section class="card" id="s3" hidden>
+        <h1 class="serif">取貨與聯絡</h1>
+        <p class="lede">選一間方便的寶島眼鏡門市，鏡片做好後到店取貨、付款。</p>
+        <p class="reqnote"><span class="req" aria-hidden="true" style="margin-left:0">*</span> 為必填</p>
+        <h3>取貨門市</h3>
+        <div class="g2">
+          <label class="f">縣市<span class="req" aria-hidden="true">*</span><select id="county" aria-required="true"></select></label>
+          <label class="f">區域<span class="req" aria-hidden="true">*</span><select id="dist" disabled aria-required="true"></select></label>
+        </div>
+        <label class="f">門市<span class="req" aria-hidden="true">*</span><select id="store" disabled aria-required="true"></select></label>
+        <p class="addr" id="addr" hidden></p>
+        <h3>取貨時間</h3>
+        <div class="g2">
+          <label class="f">日期<span class="req" aria-hidden="true">*</span><select id="date" aria-required="true"></select></label>
+          <label class="f">時段<span class="req" aria-hidden="true">*</span><select id="slot" aria-required="true"><option value="">請選擇</option><option>上午 11:00–14:00</option><option>下午 14:00–18:00</option><option>晚上 18:00–21:00</option></select></label>
+        </div>
+        <p class="hint" id="leadNote"></p>
+        <h3>聯絡資料</h3>
+        <div class="g2">
+          <label class="f">姓名<span class="req" aria-hidden="true">*</span><input type="text" id="name" autocomplete="name" maxlength="20" aria-required="true"></label>
+          <label class="f">手機<span class="req" aria-hidden="true">*</span><input type="tel" id="phone" autocomplete="tel" inputmode="numeric" maxlength="10" aria-required="true"></label>
+        </div>
+        <label class="f">備註（選填）<textarea id="note" maxlength="120"></textarea></label>
+      </section>
+
+      <!-- 步驟 4 -->
+      <section class="card" id="s4" hidden>
+        <h1 class="serif">確認訂單</h1>
+        <p class="lede">送出前再看一次，有要改的可以直接回到那一步。</p>
+        <div id="summary"></div>
+        <label class="check"><input type="checkbox" id="agree" aria-required="true"><span>我了解隱形眼鏡是醫療器材，取貨時由門市人員確認度數，並在門市付款。<span class="req" aria-hidden="true">*</span></span></label>
+      </section>
+
+      <!-- 完成 -->
+      <section class="card" id="s5" hidden>
+        <p class="lede" style="margin:0">訂單編號</p>
+        <p class="done-no serif" id="orderNo"></p>
+        <p class="msg warn" style="margin-top:0">目前是試營運流程，訂單不會自動送到門市。請下載下面的檔案，傳給服務人員後才算完成訂購。</p>
+        <div class="dl" id="dlBox"></div>
+        <p class="hint" id="dlNote"></p>
+        <div id="summary2" style="margin-top:16px"></div>
+        <p style="margin:16px 0 0"><button type="button" class="plain" id="again">再訂一款</button></p>
+      </section>
+
+      <div id="msgs" aria-live="polite"></div>
+    </main>
   </div>
-  <div id="at-orders">
-    <div class="filters" id="filters"></div>
-    <div class="olist" id="olist"></div>
-    <div class="admin-tools"><button class="btn sm" id="seedBtn">載入範例訂單</button><button class="btn sm ghost danger" id="clearBtn">清除全部訂單</button></div>
-  </div>
-  <form id="at-settings" class="card settings" hidden></form>
-  <p class="fine proto">原型說明：訂單只存在這個瀏覽器，換裝置或清除瀏覽資料就會消失，後台也沒有登入保護。正式上線需要接後端與帳號系統。</p>
-</div></main>
 
-<div id="sheet" class="sheet" hidden></div>
-<input type="file" id="imgFile" accept="image/*" hidden>
-<div class="toast" id="toast" role="status" hidden></div>
+  <div class="bar" id="bar">
+    <div class="sub"><small id="subLabel">小計</small><b id="subTotal">NT$ 0</b></div>
+    <button type="button" class="back" id="back" hidden>上一步</button>
+    <button type="button" class="go" id="next">下一步</button>
+  </div>
+  <footer>相片只在你的裝置上處理，不會上傳。價格與可取貨門市以門市公告為準。</footer>
+</div>
+
 <script>
-'use strict';
-const TAU=Math.PI*2;
-const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
-const K={orders:'lensatelier.orders.v1',cfg:'lensatelier.settings.v1',draft:'lensatelier.draft.v1'};
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function lsGet(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
-function lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){return false}}
-const uid=()=>Math.random().toString(36).slice(2,10);
-const clone=o=>JSON.parse(JSON.stringify(o));
-const money=n=>'NT$ '+Math.round(n).toLocaleString('zh-TW');
-let toastT;function toast(m){const t=$('#toast');t.textContent=m;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,3200)}
+"use strict";
+/* ============ 設定：價格、交期、度數範圍都在這裡改 ============ */
+const CONFIG = {
+  brand: "瞳畫",
+  cycles: [
+    { id: "daily",   name: "日拋", unit: "10 片／盒", price: 690 },
+    { id: "monthly", name: "月拋", unit: "2 片／盒",  price: 590 },
+  ],
+  leadWorkdays: 7,       // 製作需要幾個工作天；這幾天之內的日期不能選
+  holidays: [],          // 另外不算工作天的日子（國定假日等），格式 "2026-10-26"；週六、週日已自動排除
+  pickupWindowDays: 30,  // 從最快可取貨日起，往後開放幾天可選
+  maxBoxes: 12,
+  holeRatio: 0.37,       // 預覽用的瞳孔區比例（內徑 ÷ 外徑），僅供示意
+};
+const STORES = {"基隆市":{"安樂區":[["基隆長庚","基隆市安樂區安樂路二段147號1樓"]],"仁愛區":[["基隆愛三路","基隆市仁愛區愛三路75號1樓"]]},"台北市":{"中山區":[["大直北安路","台北市中山區北安路592號"],["龍江路","台北市中山區龍江路291號1樓"],["南京東路","台北市中山區南京東路一段36號"]],"松山區":[["南京東興","台北市松山區南京東路五段271號"]],"大安區":[["東門","台北市大安區金山南路二段4號1樓"],["延吉街","台北市大安區延吉街110之1號"],["和平東路","台北市大安區和平東路二段225號1樓"]],"信義區":[["莊敬路","台北市信義區莊敬路313～315號"]],"內湖區":[["西湖","台北市內湖區內湖路一段357號1樓"]],"士林區":[["德行東路(一)","台北市士林區德行東路181號"],["劍潭","台北市士林區承德路四段124號1樓"],["社子","台北市士林區延平北路五段296號1樓"]],"北投區":[["石牌","台北市北投區石牌路2段55號1樓"]],"文山區":[["萬隆","台北市文山區羅斯福路五段220號1樓"],["景美","台北市文山區景文街62號1樓"]]},"新北市":{"淡水區":[["淡水新市","新北市淡水區中山北路二段203號"],["淡水中山路","新北市淡水區中山路44號1樓"],["竹圍","新北市淡水區民族路9號1樓"]],"永和區":[["永和智光","新北市永和區中正路142號"],["永和竹林路","新北市永和區竹林路214號1樓"]],"中和區":[["中和中和路","新北市中和區中和路111號1樓"]],"新店區":[["新店安康路","新北市新店區安康路二段202號"]],"板橋區":[["板橋埔墘","新北市板橋區中山路二段247號"],["板橋南門街","新北市板橋區南門街20號1樓"]],"土城區":[["土城學府路","新北市土城區學府路1段101號1樓"]],"新莊區":[["新莊民安路","新北市新莊區民安路222號"],["新莊中港路","新北市新莊區中港路278號"]],"泰山區":[["泰山明志路","新北市泰山區明志路二段398號"]],"蘆洲區":[["蘆洲集賢路","新北市蘆洲區集賢路225號1樓"],["蘆洲長安街","新北市蘆洲區長安街113號1樓"]],"三重區":[["三重重新路","新北市三重區重新路三段136號1樓"],["三重忠孝路","新北市三重區忠孝路三段9號"]],"五股區":[["五股成泰路","新北市五股區成泰路2段160號1樓"]],"樹林區":[["樹林中山路","新北市樹林區中山路一段28號1樓"]],"林口區":[["林口中正路","新北市林口區中正路281號1樓"]],"鶯歌區":[["鶯歌建國路","新北市鶯歌區建國路179號1樓"]],"三峽區":[["三峽民生街","新北市三峽區民生街119號1樓"]],"汐止區":[["汐止樟樹灣","新北市汐止區樟樹一路124號1樓"]]},"桃園市":{"桃園區":[["桃園寶山街","桃園市桃園區寶山街204號"],["桃園中平路","桃園市桃園區中平路10號"]],"八德區":[["八德大湳","桃園市八德區介壽路一段1033號1樓"]],"中壢區":[["內壢文化路","桃園市中壢區文化路357號1樓"],["中壢中原","桃園市中壢區中山東路二段18號1樓"]],"龜山區":[["龜山中興路","桃園市龜山區中興路431號1樓"]],"觀音區":[["觀音大觀路","桃園市觀音區大觀路二段102號1樓"]],"大溪區":[["大溪慈湖路","桃園市大溪區慈湖路93號1樓"]],"蘆竹區":[["蘆竹奉化路","桃園市蘆竹區奉化路146號1樓"]],"龍潭區":[["龍潭中正路","桃園市龍潭區中正路125之1號1樓"]],"楊梅區":[["楊梅大成路","桃園市楊梅區大成路162號"]]},"新竹縣":{"竹北市":[["竹北中正東路","新竹縣竹北市中正東路297號"]],"新埔鎮":[["新竹新埔","新竹縣新埔鎮四座里中正路221號"]]},"苗栗縣":{"苗栗市":[["苗栗光復路","苗栗縣苗栗市光復路3號1樓"]],"頭份市":[["頭份建國路","苗栗縣頭份市建國路58號"]],"竹南鎮":[["竹南","苗栗縣竹南鎮博愛街21號"]]},"台中市":{"北區":[["台中健行路","台中市北區健行路869號1樓"]],"西區":[["台中公益路","台中市西區公益路132號"],["台中美村路","台中市西區美村路一段256號1樓"]],"南區":[["台中高工","台中市南區美村南路104號"],["台中工學路","台中市南區復興路二段12號"]],"東區":[["台中十甲路","台中市東區十甲路379號1樓"],["台中復興路","台中市東區復興路四段12號"]],"北屯區":[["台中東山路","台中市北屯區東山路一段251號"]],"南屯區":[["台中向心南路","台中市南屯區向心南路927號1樓"]],"太平區":[["太平樹孝路","台中市太平區樹孝路500號1樓"]],"大里區":[["大里中興路","台中市大里區中興路二段450號"],["大里成功路","台中市大里區成功路539號"],["大里益民路","台中市大里區中興路二段384號1樓"]],"大雅區":[["大雅民生路","台中市大雅區民生路一段102號1樓"]],"豐原區":[["豐原向陽路","台中市豐原區向陽路280號1樓"]],"潭子區":[["潭子","台中市潭子區中山路二段365號1樓"]],"霧峰區":[["霧峰","台中市霧峰區中正路853號"]],"后里區":[["后里","台中市后里區甲后路一段443號1樓"]]},"彰化縣":{"彰化市":[["彰化三民路","彰化縣彰化市三民路241號1樓"]],"員林市":[["員林林森路","彰化縣員林市林森路259號"]],"和美鎮":[["和美","彰化縣和美鎮彰美路六段60號1樓"]],"二林鎮":[["二林","彰化縣二林鎮斗苑路五段163號、163-1號"]]},"南投縣":{"南投市":[["南投","南投縣南投市復興路211號"]],"埔里鎮":[["埔里南昌街","南投縣埔里鎮南昌街269號"],["埔里中正路","南投縣埔里鎮中正路398號"]],"草屯鎮":[["草屯虎山路","南投縣草屯鎮虎山路778號"],["草屯中正路","南投縣草屯鎮中正路667號、669號1樓"]],"竹山鎮":[["竹山","南投縣竹山鎮下橫街59號1樓"]]},"雲林縣":{"斗六市":[["斗六民生南路","雲林縣斗六市民生南路203號1.2樓"]],"虎尾鎮":[["虎尾中正路","雲林縣虎尾鎮中正路32號"]]},"嘉義市":{"東區":[["嘉義圓環","嘉義市東區文化路186號"],["嘉義民族路","嘉義市東區民族路202號1樓"],["嘉義吳鳳南路","嘉義市東區吳鳳南路453號"]],"西區":[["嘉義中興路","嘉義市西區中興路321號1樓"],["嘉義興業路","嘉義市西區仁愛路131號1樓"]]},"嘉義縣":{"朴子市":[["嘉義朴子","嘉義縣朴子市山通路35之1號1~2樓"]]},"台南市":{"中西區":[["台南民族路","台南市中西區民族路二段76-9號"],["台南西門路","台南市中西區西門路一段406號1樓"]],"東區":[["台南崇明路","台南市東區崇明路221號1樓"],["台南東寧路","台南市東區東寧路203號"]],"安南區":[["台南海佃路","台南市安南區海佃路一段153號1樓"]],"永康區":[["台南永康","台南市永康區中山南路41號1樓"]],"歸仁區":[["台南歸仁","台南市歸仁區中山路二段111號"]],"新營區":[["台南新營","台南市新營區三民路117號1樓"]],"佳里區":[["台南佳里","台南市佳里區光復路321號1樓"]],"麻豆區":[["台南麻豆","台南市麻豆區興中路103號1樓"]]},"高雄市":{"岡山區":[["岡山岡山路","高雄市岡山區岡山路380號1樓"]],"楠梓區":[["楠梓建楠路","高雄市楠梓區建楠路147號"]],"左營區":[["高雄自由路","高雄市左營區自由二路142之2號"]],"苓雅區":[["高雄三多路","高雄市苓雅區三多三路212號1樓"]],"前鎮":[["高雄瑞隆路","高雄市前鎮區瑞隆路453號1樓"]],"三民區":[["高雄博愛一路","高雄市三民區博愛一路101號"]],"鹽埕區":[["高雄大勇路","高雄市鹽埕區大勇路67號1樓"]],"林園區":[["高雄林園","高雄市林園區東林西路79號"]],"鼓山區":[["高雄裕誠路","高雄市鼓山區裕誠路1198號"]],"橋頭區":[["高雄橋頭","高雄市橋頭區隆豐路224、226號1樓"]],"大寮區":[["高雄中庄","高雄市大寮區鳳屏一路434號"]],"小港區":[["高雄小港","高雄市小港區漢民路254號1樓"]],"旗山區":[["高雄旗山","高雄市旗山區延平一路619號1樓"]]},"屏東縣":{"屏東市":[["屏東民生路","屏東縣屏東市民生路274號1樓"],["屏東廣東路","屏東縣屏東市廣東路102號1樓"]],"萬丹鄉":[["屏東萬丹","屏東縣萬丹鄉萬全村萬丹路一段269號"]],"恆春鎮":[["屏東恆春","屏東縣恆春鎮中正路107號1樓"]]},"宜蘭縣":{"宜蘭市":[["宜蘭中山路","宜蘭縣宜蘭市中山路三段27號1樓"]],"礁溪鄉":[["礁溪礁溪路","宜蘭縣礁溪鄉礁溪路五段58、60號"]]},"台東縣":{"台東市":[["台東正氣路","台東縣台東市正氣路205號"]]}};
+const TAU = Math.PI * 2;
+const $ = id => document.getElementById(id);
+const money = n => "NT$ " + n.toLocaleString("en-US");
 
-const DEF={shopName:'瞳作',stores:'總店',lensD:14.2,printD:13.6,clearD:5.0,maxColors:3,minLine:0.08,base:1800,perLayer:150,image:400,draw:300,split:400,perColor:250,freeColors:2};
-let CFG=Object.assign({},DEF,lsGet(K.cfg,{}));
-let ORDERS=lsGet(K.orders,[]);
-const G=()=>({print:CFG.printD/CFG.lensD,clear:CFG.clearD/CFG.lensD,iris:11.7/CFG.lensD});
-const dia=r=>(r*CFG.lensD).toFixed(1)+' mm';
-const FMT={count:v=>Math.round(v),thick:v=>(+v).toFixed(2)+' mm',r0:dia,r1:dia,r:dia,rot:v=>Math.round(v)+'°',
-  width:v=>(v*CFG.lensD/2).toFixed(2)+' mm',soft:v=>Math.round(v*100)+'%',opacity:v=>Math.round(v*100)+'%',
-  scale:v=>(+v).toFixed(2)+'×',brushS:v=>(+v).toFixed(2)+' mm'};
+const newDesign = () => ({ src: "tpl", tpl: null, cw: 0, img: null, photoName: "", rep: 1, repAng: 0, repMirror: false });
+const st = {
+  step: 1, cat: "全部",
+  des: { R: newDesign(), L: newDesign() }, sameDesign: true, eye: "R",   // 兩眼各一份設計；sameDesign 時只用 R
+  selfie: null,                                                           // 自拍試戴：{cv, pts, size, thr, swap, ready}
+  tone: 0, cycle: "daily", R: { p: "", q: 1 }, L: { p: "", q: 1 }, same: true,
+  county: "", dist: "", store: -1, orderNo: "",
+};
+const cur = () => st.des[st.sameDesign ? "R" : st.eye];      // 目前正在編輯的那一眼
+const desOf = e => st.des[st.sameDesign ? "R" : e];
+Object.defineProperty(st, "img", { get() { return cur().img; }, set(v) { cur().img = v; } });   // 圈選功能沿用 st.img
 
-function rng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-function rgba(hex,a){const n=parseInt(String(hex).slice(1),16);return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`}
+/* ============ 樣板花紋：都畫在以圓心為原點、半徑 R 的座標上 ============ */
+function rng(seed) { let a = seed >>> 0; return () => { a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+const P = (r, a) => [r * Math.cos(a), r * Math.sin(a)];
+function line(c, r1, a1, r2, a2) { c.beginPath(); c.moveTo(...P(r1, a1)); c.lineTo(...P(r2, a2)); c.stroke(); }
+function dot(c, r, a, rad) { const [x, y] = P(r, a); c.beginPath(); c.arc(x, y, rad, 0, TAU); c.fill(); }
+function limbal(c, R, col, rnd, w = 0.09) {
+  c.strokeStyle = col; c.globalAlpha = .9; c.lineWidth = R * w; c.beginPath(); c.arc(0, 0, R * (1 - w / 2), 0, TAU); c.stroke();
+  c.lineWidth = R * .012; c.globalAlpha = .75;
+  for (let i = 0; i < 260; i++) { const a = rnd() * TAU; line(c, R * .93, a, R * (.74 + rnd() * .14), a + (rnd() - .5) * .05); }
+  c.globalAlpha = 1;
+}
+function petalPath(c, a0, r0, r1, W) {
+  c.beginPath();
+  for (let k = 0; k <= 24; k++) { const t = k / 24, r = r0 + (r1 - r0) * t, w = W * Math.pow(Math.sin(Math.PI * t), .8); const [x, y] = P(r, a0 - w); k ? c.lineTo(x, y) : c.moveTo(x, y); }
+  for (let k = 24; k >= 0; k--) { const t = k / 24, r = r0 + (r1 - r0) * t, w = W * Math.pow(Math.sin(Math.PI * t), .8); c.lineTo(...P(r, a0 + w)); }
+  c.closePath();
+}
+const mix = (a, b, t) => { const h = s => [1, 3, 5].map(i => parseInt(s.slice(i, i + 2), 16)), x = h(a), y = h(b); return `rgb(${x.map((v, i) => Math.round(v + (y[i] - v) * t)).join(",")})`; };
 
-/* image cache */
-const IMC=new Map();
-function getImg(src){if(!src)return null;let i=IMC.get(src);if(!i){i=new Image();i.onload=()=>refreshVisible();i.src=src;IMC.set(src,i)}return i.complete&&i.naturalWidth?i:null}
+const TEMPLATES = [
+  { id: "iris", name: "天生瞳", cat: "自然",
+    cws: [ { n: "榛果棕", sw: "#8A5A2B", fib: ["#8A5A2B", "#B98646", "#5E3B1C", "#D2A458"], inner: "#E0B45A", rim: "#2E1D12" },
+           { n: "霧灰", sw: "#8C939B", fib: ["#8C939B", "#B7BEC6", "#5C636B", "#D5DAE0"], inner: "#C9BDA0", rim: "#23272C" },
+           { n: "橄欖綠", sw: "#7C8A4A", fib: ["#7C8A4A", "#A5B06A", "#4F5C2C", "#C8C078"], inner: "#D9B85C", rim: "#232A16" },
+           { n: "湖水藍", sw: "#5F8FB0", fib: ["#5F8FB0", "#8FB8D2", "#3B6688", "#B9D6E6"], inner: "#D8C58A", rim: "#16283A" } ],
+    draw(c, R, p) { const r = rng(7); c.lineCap = "round";
+      for (let i = 0; i < 460; i++) { const a = r() * TAU, r1 = R * (.36 + r() * .1), r2 = R * (.6 + r() * .33), w = (r() - .5) * .1; c.strokeStyle = p.fib[Math.floor(r() * 4)]; c.globalAlpha = .45 + r() * .45; c.lineWidth = R * (.006 + r() * .012);
+        c.beginPath(); c.moveTo(...P(r1, a)); c.quadraticCurveTo(...P((r1 + r2) / 2, a + w), ...P(r2, a + w * .4)); c.stroke(); }
+      c.strokeStyle = p.inner; c.lineWidth = R * .012;
+      for (let i = 0; i < 150; i++) { const a = r() * TAU; c.globalAlpha = .5 + r() * .4; line(c, R * .36, a, R * (.44 + r() * .12), a + (r() - .5) * .06); }
+      limbal(c, R, p.rim, r); } },
 
-/* layers */
-const TYPE_NAME={pattern:'花紋',ring:'外圈',gradient:'漸層',image:'圖片',draw:'手繪'};
-const PAT_NAME={fiber:'虹膜紋',spokes:'放射線',dots:'點點',petals:'花瓣',star:'星芒',lace:'波紋'};
-const layerName=L=>L.type==='pattern'?`花紋（${PAT_NAME[L.pattern]}）`:TYPE_NAME[L.type];
-function mk(type,o={}){const g=G();const r3=v=>+v.toFixed(3);
-  const d={
-    pattern:{pattern:'fiber',color:'#d9c7a3',r0:r3(g.clear+.02),r1:r3(g.print*.93),count:120,thick:.12,rot:0,seed:7},
-    ring:{color:'#2a2622',r:r3(g.print),width:.07,soft:.5},
-    gradient:{c0:'#b08a5a',c1:'#5a3d22',r0:r3(g.clear),r1:r3(g.print),opacity:.9},
-    image:{src:'',ow:0,oh:0,scale:1.3,rot:0,ox:0,oy:0,fill:true,r0:r3(g.clear),r1:r3(g.print)},
-    draw:{strokes:[],sym:6,brushC:'#f2e6d0',brushS:.25}
-  }[type];
-  return Object.assign({id:uid(),type,visible:true,opacity:1},d,o)}
+  { id: "halo", name: "光暈", cat: "自然",
+    cws: [ { n: "蜜糖", sw: "#C98A3C", a: "#E8B86A", b: "#8A4E1C" }, { n: "玫瑰", sw: "#C2607C", a: "#EFA9B8", b: "#8E2F4E" },
+           { n: "冰藍", sw: "#6FA3C8", a: "#B5D6EA", b: "#2F5F86" }, { n: "紫藤", sw: "#8E78C2", a: "#C9BCE8", b: "#4B3A86" } ],
+    draw(c, R, p) { const r = rng(3), g = c.createRadialGradient(0, 0, R * .36, 0, 0, R);
+      g.addColorStop(0, p.a + "00"); g.addColorStop(.35, p.a + "AA"); g.addColorStop(.8, p.b + "DD"); g.addColorStop(1, p.b);
+      c.fillStyle = g; c.beginPath(); c.arc(0, 0, R, 0, TAU); c.arc(0, 0, R * .36, 0, TAU, true); c.fill();
+      c.fillStyle = p.b;
+      for (let ring = 0; ring < 5; ring++) { const rr = R * (.4 + ring * .045), n = 56 + ring * 6; c.globalAlpha = .25 + ring * .1; for (let k = 0; k < n; k++) dot(c, rr, TAU * k / n + ring * .05, R * (.006 + ring * .002)); }
+      c.globalAlpha = .9; c.fillStyle = "#fff";
+      for (let i = 0; i < 70; i++) { c.globalAlpha = .15 + r() * .35; dot(c, R * (.55 + r() * .4), r() * TAU, R * (.004 + r() * .008)); }
+      c.globalAlpha = 1; } },
 
-function ann(c,a,b){c.beginPath();c.arc(0,0,b,0,TAU);if(a>0){c.moveTo(a,0);c.arc(0,0,a,0,TAU,true)}}
-function drawLayer(c,L,R,mm){
-  const lo=Math.min(L.r0??0,L.r1??0)*R, hi=Math.max(L.r0??0,L.r1??0)*R;
-  switch(L.type){
-  case 'pattern':{
-    const r=rng(L.seed),a0=L.rot*Math.PI/180,n=Math.max(3,Math.round(L.count)),lw=Math.max(.5,L.thick*mm);
-    c.strokeStyle=c.fillStyle=L.color;c.lineWidth=lw;c.lineCap='round';c.lineJoin='round';
-    if(L.pattern==='fiber'){for(let i=0;i<n;i++){const a=a0+i/n*TAU+(r()-.5)*TAU/n,len=lo+(hi-lo)*(.55+.45*r()),b=(r()-.5)*.25,rm=(lo+len)/2;
-      c.beginPath();c.moveTo(Math.cos(a)*lo,Math.sin(a)*lo);c.quadraticCurveTo(Math.cos(a+b*1.5)*rm,Math.sin(a+b*1.5)*rm,Math.cos(a+b)*len,Math.sin(a+b)*len);c.stroke()}}
-    else if(L.pattern==='spokes'){for(let i=0;i<n;i++){const a=a0+i/n*TAU,len=i%2?hi:lo+(hi-lo)*.72;c.beginPath();c.moveTo(Math.cos(a)*lo,Math.sin(a)*lo);c.lineTo(Math.cos(a)*len,Math.sin(a)*len);c.stroke()}}
-    else if(L.pattern==='dots'){const dr=lw*1.5;for(let k=0;k<4;k++){const rr=lo+(k+.5)/4*(hi-lo),m=Math.max(3,Math.round(n*rr/Math.max(hi,1)/2));for(let j=0;j<m;j++){const a=a0+j/m*TAU+(k%2)*Math.PI/m;c.beginPath();c.arc(Math.cos(a)*rr,Math.sin(a)*rr,dr,0,TAU);c.fill()}}}
-    else if(L.pattern==='petals'){const rm=(lo+hi)/2,rx=(hi-lo)/2,ry=Math.min(rx,Math.PI*rm/n*.9);for(let i=0;i<n;i++){c.save();c.rotate(a0+i/n*TAU);c.beginPath();c.ellipse(rm,0,Math.max(.5,rx),Math.max(.5,ry),0,0,TAU);c.fill();c.restore()}}
-    else if(L.pattern==='star'){const h=Math.PI/n*.7;for(let i=0;i<n;i++){const a=a0+i/n*TAU;c.beginPath();c.moveTo(Math.cos(a-h)*hi,Math.sin(a-h)*hi);c.lineTo(Math.cos(a+h)*hi,Math.sin(a+h)*hi);c.lineTo(Math.cos(a)*lo,Math.sin(a)*lo);c.closePath();c.fill()}}
-    else if(L.pattern==='lace'){const amp=(hi-lo)/10;for(let k=0;k<3;k++){const rr=lo+(k+.5)/3*(hi-lo),f=Math.max(3,Math.round(n/8))+k*2;c.beginPath();for(let s=0;s<=360;s++){const t=s/360*TAU,q=rr+amp*Math.sin(f*t+a0);s?c.lineTo(Math.cos(t)*q,Math.sin(t)*q):c.moveTo(Math.cos(t)*q,Math.sin(t)*q)}c.stroke()}}
-    break}
-  case 'ring':{
-    const ro=L.r*R,ri=Math.max(0,L.r-L.width)*R,f=L.soft*(ro-ri),a=Math.max(0,ri-f),b=Math.min(ro,ri+f),span=Math.max(1e-3,ro-a);
-    const g=c.createRadialGradient(0,0,a,0,0,ro);g.addColorStop(0,rgba(L.color,0));g.addColorStop(Math.min(1,Math.max(.001,(b-a)/span)),L.color);g.addColorStop(1,L.color);
-    c.fillStyle=g;ann(c,a,ro);c.fill();break}
-  case 'gradient':{
-    if(hi<=lo)break;const g=c.createRadialGradient(0,0,lo,0,0,hi);g.addColorStop(0,L.c0);g.addColorStop(1,L.c1);c.fillStyle=g;ann(c,lo,hi);c.fill();break}
-  case 'image':{
-    const im=getImg(L.src);if(!im||hi<=lo)break;ann(c,lo,hi);c.clip();c.translate((L.ox||0)*R,(L.oy||0)*R);c.rotate(L.rot*Math.PI/180);
-    const w=im.naturalWidth,h=im.naturalHeight,s=2*hi*L.scale/Math.min(w,h);c.drawImage(im,-w*s/2,-h*s/2,w*s,h*s);break}
-  case 'draw':{
-    c.lineCap='round';c.lineJoin='round';const sym=Math.max(1,L.sym|0);
-    for(const st of L.strokes){const lw=Math.max(.5,st.s*mm);c.strokeStyle=c.fillStyle=st.c;c.lineWidth=lw;
-      for(let k=0;k<sym;k++){c.save();c.rotate(k/sym*TAU);c.beginPath();
-        if(st.pts.length===1){c.arc(st.pts[0][0]*R,st.pts[0][1]*R,lw/2,0,TAU);c.fill()}
-        else{st.pts.forEach((p,i)=>i?c.lineTo(p[0]*R,p[1]*R):c.moveTo(p[0]*R,p[1]*R));c.stroke()}
-        c.restore()}}
-    break}
+  { id: "petal", name: "花見", cat: "花漾",
+    cws: [ { n: "櫻花粉", sw: "#E58AA6", a: "#F3A9BE", b: "#C55C82", c: "#8C2F55" }, { n: "鳶尾紫", sw: "#8C6CC8", a: "#B9A2E6", b: "#6E4FB0", c: "#3D2A78" },
+           { n: "向日黃", sw: "#E3B13A", a: "#F1CF6A", b: "#D08A2A", c: "#7A4A12" } ],
+    draw(c, R, p) { const N = 10; c.lineJoin = "round";
+      c.fillStyle = p.a; c.strokeStyle = p.c; c.lineWidth = R * .008; c.globalAlpha = .9;
+      for (let k = 0; k < N; k++) { petalPath(c, k * TAU / N, R * .38, R * .93, .27); c.fill(); c.stroke(); }
+      c.strokeStyle = p.c; c.lineWidth = R * .004; c.globalAlpha = .6;
+      for (let k = 0; k < N; k++) for (let v = -2; v <= 2; v++) { const a0 = k * TAU / N; c.beginPath(); c.moveTo(...P(R * .42, a0 + v * .02)); c.quadraticCurveTo(...P(R * .62, a0 + v * .06), ...P(R * (.82 - Math.abs(v) * .04), a0 + v * .075)); c.stroke(); }
+      c.fillStyle = p.b; c.globalAlpha = .9; c.lineWidth = R * .006;
+      for (let k = 0; k < N; k++) { petalPath(c, (k + .5) * TAU / N, R * .38, R * .72, .2); c.fill(); c.stroke(); }
+      c.fillStyle = p.c; c.globalAlpha = .85;
+      for (let k = 0; k < 60; k++) dot(c, R * .965, TAU * k / 60, R * .014);
+      c.globalAlpha = 1; } },
+
+  { id: "lace", name: "蕾絲", cat: "花漾",
+    cws: [ { n: "墨黑", sw: "#2A2428", a: "#2A2428" }, { n: "可可", sw: "#6B4630", a: "#6B4630" }, { n: "酒紅", sw: "#7E2740", a: "#7E2740" } ],
+    draw(c, R, p) { c.strokeStyle = c.fillStyle = p.a; c.lineWidth = R * .011; c.lineCap = "round"; const N = 28;
+      c.beginPath(); c.arc(0, 0, R * .975, 0, TAU); c.stroke();
+      for (let k = 0; k < N; k++) { const a = TAU * k / N, [x, y] = P(R * .9, a); c.beginPath(); c.arc(x, y, R * .075, a - Math.PI / 2, a + Math.PI / 2, true); c.stroke(); dot(c, R * .9, a, R * .016); }
+      for (let k = 0; k < N; k++) { const a = TAU * (k + .5) / N, [x, y] = P(R * .76, a); c.beginPath(); c.arc(x, y, R * .048, 0, TAU); c.stroke(); }
+      c.lineWidth = R * .007; c.beginPath(); c.arc(0, 0, R * .68, 0, TAU); c.stroke();
+      for (let k = 0; k < N * 2; k++) dot(c, R * .64, TAU * k / (N * 2), R * .009);
+      c.globalAlpha = .85;
+      for (let k = 0; k < N; k++) { petalPath(c, TAU * k / N, R * .4, R * .6, .075); c.fill(); }
+      c.globalAlpha = 1; for (let k = 0; k < 64; k++) dot(c, R * .385, TAU * k / 64, R * .006); } },
+
+  { id: "star", name: "星芒", cat: "閃耀",
+    cws: [ { n: "琥珀金", sw: "#C99A3E", a: "#D9AE55", b: "#8E6420", c: "#F3E1A8" }, { n: "銀河灰", sw: "#8E949C", a: "#B4BAC2", b: "#555B64", c: "#E8ECF0" },
+           { n: "午夜藍", sw: "#3D5A9A", a: "#6F8FD0", b: "#22386E", c: "#C9D8F5" } ],
+    draw(c, R, p) { const r = rng(11), N = 54;
+      for (let k = 0; k < N; k++) { const a = TAU * k / N + (r() - .5) * .03, tip = R * (.62 + r() * .34), w = TAU / N * .42; c.fillStyle = k % 2 ? p.a : p.b; c.globalAlpha = .65 + r() * .3;
+        c.beginPath(); c.moveTo(...P(R * .37, a - w)); c.lineTo(...P(tip, a)); c.lineTo(...P(R * .37, a + w)); c.closePath(); c.fill(); }
+      c.fillStyle = p.c; c.globalAlpha = .95;
+      for (let i = 0; i < 26; i++) { const [x, y] = P(R * (.6 + r() * .33), r() * TAU), s = R * (.012 + r() * .022); c.beginPath(); c.moveTo(x, y - s * 2); c.quadraticCurveTo(x, y, x + s * 2, y); c.quadraticCurveTo(x, y, x, y + s * 2); c.quadraticCurveTo(x, y, x - s * 2, y); c.quadraticCurveTo(x, y, x, y - s * 2); c.fill(); }
+      c.globalAlpha = .9; c.strokeStyle = p.b; c.lineWidth = R * .03; c.beginPath(); c.arc(0, 0, R * .985, 0, TAU); c.stroke(); c.globalAlpha = 1; } },
+
+  { id: "dots", name: "點點", cat: "幾何",
+    cws: [ { n: "巧克力", sw: "#6B4630", a: "#6B4630", b: "#B98646" }, { n: "灰藍", sw: "#5E7890", a: "#5E7890", b: "#A9BDD0" }, { n: "莓果", sw: "#A8324E", a: "#A8324E", b: "#E8A0B4" } ],
+    draw(c, R, p) { const pitch = R * .052, rows = Math.ceil(R / (pitch * .866));
+      for (let j = -rows; j <= rows; j++) for (let i = -rows; i <= rows; i++) {
+        const y = j * pitch * .866, x = i * pitch + (j & 1) * pitch / 2, rr = Math.hypot(x, y); if (rr < R * .39 || rr > R * .9) continue;
+        c.fillStyle = Math.sin(5 * Math.atan2(y, x) + rr / R * 9) > .4 ? p.b : p.a; c.globalAlpha = .9;
+        c.beginPath(); c.arc(x, y, pitch * (.14 + .3 * (rr / R - .39) / .51), 0, TAU); c.fill(); }
+      c.fillStyle = p.a; const n = 84; for (let k = 0; k < n; k++) dot(c, R * .955, TAU * k / n, R * .028); c.globalAlpha = 1; } },
+
+  { id: "prism", name: "稜鏡", cat: "幾何",
+    cws: [ { n: "極光", sw: "#3FA7A0", a: "#3FA7A0", b: "#7A5CC8" }, { n: "夕陽", sw: "#E8824A", a: "#F0A03C", b: "#D4477A" }, { n: "石墨", sw: "#5A5F66", a: "#8C929A", b: "#33373C" } ],
+    draw(c, R, p) { const N = 24, bands = [[.38, .56], [.57, .76], [.77, .97]];
+      bands.forEach(([r0, r1], bi) => { for (let k = 0; k < N; k++) for (const up of [0, 1]) {
+        const a0 = TAU * (k + (bi % 2) * .5) / N, a1 = a0 + TAU / N, am = (a0 + a1) / 2, g = .012;
+        const t = (Math.sin(am * 2 + bi) + 1) / 2; c.fillStyle = mix(p.a, p.b, t); c.globalAlpha = up ? .9 : .55;
+        c.beginPath();
+        if (up) { c.moveTo(...P(R * r0, a0 + g)); c.lineTo(...P(R * r0, a1 - g)); c.lineTo(...P(R * r1, am)); }
+        else { c.moveTo(...P(R * r1, am + g)); c.lineTo(...P(R * r1, am + TAU / N - g)); c.lineTo(...P(R * r0, a1)); }
+        c.closePath(); c.fill(); } });
+      c.globalAlpha = 1; } },
+
+  { id: "ripple", name: "漣漪", cat: "閃耀",
+    cws: [ { n: "海洋", sw: "#2F7FA8", a: "#7FC4DE", b: "#1F4F7A" }, { n: "薄荷", sw: "#5FB59A", a: "#A8E0CC", b: "#2F7A64" }, { n: "煙燻", sw: "#77707A", a: "#B9B2BC", b: "#3F3942" } ],
+    draw(c, R, p) { const n = 10; c.lineCap = "round";
+      for (let i = 0; i < n; i++) { const t = i / (n - 1), r0 = R * (.4 + t * .53), amp = R * .012 * (1 + t), f = 9 + i * 2; c.strokeStyle = mix(p.a, p.b, t); c.lineWidth = R * (.012 + t * .03); c.globalAlpha = .9;
+        c.beginPath(); for (let k = 0; k <= 240; k++) { const a = TAU * k / 240, [x, y] = P(r0 + amp * Math.sin(a * f + i), a); k ? c.lineTo(x, y) : c.moveTo(x, y); } c.closePath(); c.stroke(); }
+      c.globalAlpha = 1; } },
+];
+const CATS = ["全部", "自然", "花漾", "閃耀", "幾何"];
+
+/* 樣板畫成邊長 S 的圓；base = true 時先鋪白底圓（交給製作端的設計圖用） */
+function drawTemplate(tpl, cwi, S, base) {
+  const cv = document.createElement("canvas"); cv.width = cv.height = S;
+  const c = cv.getContext("2d"), R = S / 2;
+  c.translate(R, R); c.beginPath(); c.arc(0, 0, R, 0, TAU); c.clip();
+  if (base) { c.fillStyle = "#fff"; c.fillRect(-R, -R, S, S); }
+  tpl.draw(c, R, tpl.cws[cwi]);
+  return cv;
+}
+
+/* ============ 相片來源（沿用設計頁的圈選功能） ============ */
+function circle2(a, b) { return { x: (a.x + b.x) / 2, y: (a.y + b.y) / 2, r: Math.hypot(a.x - b.x, a.y - b.y) / 2 }; }
+function circle3(a, b, c) {
+  const d = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y));
+  if (Math.abs(d) < 1e-9) return null;
+  const a2 = a.x * a.x + a.y * a.y, b2 = b.x * b.x + b.y * b.y, c2 = c.x * c.x + c.y * c.y;
+  const x = (a2 * (b.y - c.y) + b2 * (c.y - a.y) + c2 * (a.y - b.y)) / d;
+  const y = (a2 * (c.x - b.x) + b2 * (a.x - c.x) + c2 * (b.x - a.x)) / d;
+  return { x, y, r: Math.hypot(a.x - x, a.y - y) };
+}
+const inside = (c, p) => Math.hypot(p.x - c.x, p.y - c.y) <= c.r + 1e-6;
+function minEnclosingCircle(pts) {
+  const p = pts.slice();
+  for (let i = p.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [p[i], p[j]] = [p[j], p[i]]; }
+  let c = null;
+  for (let i = 0; i < p.length; i++) {
+    if (c && inside(c, p[i])) continue;
+    c = { x: p[i].x, y: p[i].y, r: 0 };
+    for (let j = 0; j < i; j++) {
+      if (inside(c, p[j])) continue;
+      c = circle2(p[i], p[j]);
+      for (let k = 0; k < j; k++) {
+        if (inside(c, p[k])) continue;
+        c = circle3(p[i], p[j], p[k]) || c;
+      }
+    }
+  }
+  return c;
+}
+
+/* 掃描有墨像素：回傳每列最左、最右的點，以及影像邊框上有墨的比例 */
+function scanInk(d, w, h, thr) {
+  const pts = []; let edge = 0;
+  const ink = o => 0.299 * d[o] + 0.587 * d[o + 1] + 0.114 * d[o + 2] < thr;
+  for (let y = 0; y < h; y++) {
+    let lo = -1, hi = -1;
+    for (let x = 0, o = y * w * 4; x < w; x++, o += 4) if (ink(o)) { if (lo < 0) lo = x; hi = x; }
+    if (lo >= 0) { pts.push({ x: lo + 0.5, y: y + 0.5 }); if (hi !== lo) pts.push({ x: hi + 0.5, y: y + 0.5 }); }
+    if (ink(y * w * 4)) edge++; if (ink((y * w + w - 1) * 4)) edge++;
+  }
+  for (let x = 0; x < w; x++) { if (ink(x * 4)) edge++; if (ink(((h - 1) * w + x) * 4)) edge++; }
+  return { pts, edgeInk: edge / (2 * (w + h)) };
+}
+
+/* 解碼相片並鋪上白底；過大的相片縮到 1600 萬像素以內（手機畫布上限） */
+async function decodeImage(file) {
+  let src = null;
+  if (window.createImageBitmap) {
+    try { src = await createImageBitmap(file, { imageOrientation: "from-image" }); }
+    catch (e) { try { src = await createImageBitmap(file); } catch (e2) { src = null; } }
+  }
+  if (!src) src = await new Promise((res, rej) => {
+    const fr = new FileReader();
+    fr.onerror = () => rej(new Error("讀取檔案失敗"));
+    fr.onload = () => { const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error("瀏覽器無法解碼這個格式，請改用 JPG 或 PNG")); im.src = fr.result; };
+    fr.readAsDataURL(file);
+  });
+  const w0 = src.naturalWidth || src.width, h0 = src.naturalHeight || src.height;
+  if (!w0 || !h0) throw new Error("圖片沒有內容");
+  const k = Math.min(1, Math.sqrt(16e6 / (w0 * h0)));
+  const w = Math.max(1, Math.round(w0 * k)), h = Math.max(1, Math.round(h0 * k));
+  const cv = document.createElement("canvas"); cv.width = w; cv.height = h;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h);
+  ctx.imageSmoothingQuality = "high"; ctx.drawImage(src, 0, 0, w, h);
+  if (src.close) src.close();
+
+  // 圖案邊界：白底圖才偵測得到（邊框幾乎沒有墨）
+  const ds = Math.min(1, 1200 / Math.max(w, h)), dw = Math.max(1, Math.round(w * ds)), dh = Math.max(1, Math.round(h * ds));
+  const small = document.createElement("canvas"); small.width = dw; small.height = dh;
+  const sctx = small.getContext("2d", { willReadFrequently: true });
+  sctx.imageSmoothingQuality = "high"; sctx.drawImage(cv, 0, 0, dw, dh);
+  const { pts, edgeInk } = scanInk(sctx.getImageData(0, 0, dw, dh).data, dw, dh, 228);   // 門檻放寬，避開 JPEG 壓縮雜訊
+  let det = null;
+  if (pts.length >= 6 && edgeInk < 0.02) { const c = minEnclosingCircle(pts); det = { cx: c.x / ds, cy: c.y / ds, r: (c.r + 0.5) / ds }; }
+  // 圓環預設位置：白底圖對齊圖案外接圓；一般相片放正中間、直徑等於短邊
+  const home = det ? { cx: det.cx, cy: det.cy } : { cx: w / 2, cy: h / 2 };
+  return { cv, w, h, det, shrunk: k < 1, thumb: small, baseR: det ? det.r : Math.min(w, h) / 2, home, place: { s: 1, ...home } };
+}
+
+/* 取樣扇形的張角：鏡射時一份 = 扇形 + 它的鏡像，所以扇形只有一半 */
+const wedgeAngle = p => (p.repMirror ? Math.PI : TAU) / p.rep;
+
+/* 把起始角度 ang0 起算的扇形繞圓心複製一圈（角度以逆時針為正，0° 在右邊） */
+function radialRepeat(src, W, H, cx, cy, p) {
+  const out = new Uint8ClampedArray(src.length), w = wedgeAngle(p), period = p.repMirror ? 2 * w : w, a0 = p.repAng;
+  for (let y = 0, o = 0; y < H; y++) {
+    const dy = y + 0.5 - cy;
+    for (let x = 0; x < W; x++, o += 4) {
+      const dx = x + 0.5 - cx, r = Math.hypot(dx, dy);
+      let t = (Math.atan2(-dy, dx) - a0) % period; if (t < 0) t += period;
+      if (p.repMirror && t > w) t = period - t;
+      const a = a0 + t;
+      let sx = cx + r * Math.cos(a) - 0.5, sy = cy - r * Math.sin(a) - 0.5;
+      sx = Math.min(Math.max(sx, 0), W - 1); sy = Math.min(Math.max(sy, 0), H - 1);
+      const x0 = Math.floor(sx), y0 = Math.floor(sy), x1 = Math.min(x0 + 1, W - 1), y1 = Math.min(y0 + 1, H - 1);
+      const fx = sx - x0, fy = sy - y0, i00 = (y0 * W + x0) * 4, i10 = (y0 * W + x1) * 4, i01 = (y1 * W + x0) * 4, i11 = (y1 * W + x1) * 4;
+      for (let c = 0; c < 3; c++)
+        out[o + c] = (src[i00 + c] * (1 - fx) + src[i10 + c] * fx) * (1 - fy) + (src[i01 + c] * (1 - fx) + src[i11 + c] * fx) * fy + 0.5;
+      out[o + 3] = 255;
+    }
+  }
+  return out;
+}
+
+/* 相片上的圓環位置圖：亮的一圈是會印出來的範圍 */
+function drawOverview(p) {
+  const img = st.img; if (!img) return;
+  const ov = $("ov"), pad = 0.12 * Math.max(img.w, img.h), k = 640 / (img.w + 2 * pad);
+  const W = 640, H = Math.round((img.h + 2 * pad) * k);
+  if (ov.width !== W || ov.height !== H) { ov.width = W; ov.height = H; }
+  img.ovGeo = { pad, k };
+  const ctx = ov.getContext("2d");
+  ctx.fillStyle = "#dfe5e4"; ctx.fillRect(0, 0, W, H);
+  ctx.drawImage(img.thumb, pad * k, pad * k, img.w * k, img.h * k);
+  const x = (img.place.cx + pad) * k, y = (img.place.cy + pad) * k;
+  const ro = img.baseR * img.place.s * k, ri = ro * Math.min(Math.max(p.innerD / p.outerD, 0), 1);
+  ctx.fillStyle = "rgba(255,255,255,.74)";
+  ctx.beginPath(); ctx.rect(0, 0, W, H); ctx.arc(x, y, ro, 0, TAU); ctx.fill("evenodd");
+  if (ri > 0) { ctx.beginPath(); ctx.arc(x, y, ri, 0, TAU); ctx.fill(); }
+  if (p.rep > 1) {   // 只留取樣扇形是亮的（畫布角度是順時針，所以取負號）
+    const a0 = -p.repAng, a1 = -(p.repAng + wedgeAngle(p));
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.arc(x, y, ro, a0, a1, false); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle = "#A8324E"; ctx.lineWidth = 2;
+    for (const a of [a0, a1]) { ctx.beginPath(); ctx.moveTo(x + ri * Math.cos(a), y + ri * Math.sin(a)); ctx.lineTo(x + ro * Math.cos(a), y + ro * Math.sin(a)); ctx.stroke(); }
+  }
+  ctx.strokeStyle = "#A8324E"; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.arc(x, y, ro, 0, TAU); ctx.stroke();
+  if (ri > 0) { ctx.beginPath(); ctx.arc(x, y, ri, 0, TAU); ctx.stroke(); }
+  $("ringOut").textContent = Math.round(img.place.s * 100) + "%";
+  const px = img.place.cx / img.w * 100, py = img.place.cy / img.h * 100;
+  $("posX").value = px; $("posY").value = py;
+  $("posXOut").textContent = Math.round(px) + "%"; $("posYOut").textContent = Math.round(py) + "%";
+  $("repMore").hidden = p.rep < 2;
+  $("repOut").textContent = p.rep < 2 ? "關閉" : `${p.rep} 次`;
+  $("repAngOut").textContent = Math.round(p.repAng * 180 / Math.PI) + "°";
+}
+
+const paramsOf = d => ({ innerD: CONFIG.holeRatio, outerD: 1, rep: d.rep, repAng: d.repAng * Math.PI / 180, repMirror: d.repMirror });
+/* 圈選畫面上的滑桿 → 存回目前這一眼的設計 */
+function readParams() {
+  const d = cur(); d.rep = Math.round(+$("rep").value) || 1; d.repAng = +$("repAng").value; d.repMirror = $("repMirror").checked;
+  return paramsOf(d);
+}
+function renderPhotoDesign(d, S) {
+  const img = d.img, pl = img.place, p = paramsOf(d), k = S / (2 * img.baseR * pl.s);
+  const cv = document.createElement("canvas"); cv.width = cv.height = S;
+  const ctx = cv.getContext("2d", { willReadFrequently: true });
+  ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, S, S);
+  ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = "high";
+  ctx.drawImage(img.cv, S / 2 - pl.cx * k, S / 2 - pl.cy * k, img.w * k, img.h * k);
+  const id = ctx.getImageData(0, 0, S, S), data = p.rep > 1 ? radialRepeat(id.data, S, S, S / 2, S / 2, p) : id.data;
+  for (let y = 0, o = 0; y < S; y++) for (let x = 0; x < S; x++, o += 4) {
+    const a = Math.min(Math.max(S / 2 - Math.hypot(x + .5 - S / 2, y + .5 - S / 2) + .5, 0), 1);
+    id.data[o] = data[o]; id.data[o + 1] = data[o + 1]; id.data[o + 2] = data[o + 2]; id.data[o + 3] = a * 255;
+  }
+  ctx.putImageData(id, 0, 0);
+  return cv;
+}
+/* 把「印在白底上的顏色」換成「墨色 + 透明度」，白色的地方變透明，疊到眼睛上才像印上去的 */
+function inkify(cv) {
+  const ctx = cv.getContext("2d", { willReadFrequently: true }), id = ctx.getImageData(0, 0, cv.width, cv.height), d = id.data;
+  for (let o = 0; o < d.length; o += 4) {
+    const a = 1 - Math.min(d[o], d[o + 1], d[o + 2]) / 255;
+    if (a < .01) { d[o + 3] = 0; continue; }
+    d[o] = (d[o] - 255 * (1 - a)) / a; d[o + 1] = (d[o + 1] - 255 * (1 - a)) / a; d[o + 2] = (d[o + 2] - 255 * (1 - a)) / a;
+    d[o + 3] = d[o + 3] * Math.sqrt(a);          // 淡色也留一點遮蓋力，深色瞳孔上才看得出來
+  }
+  ctx.putImageData(id, 0, 0); return cv;
+}
+
+/* ============ 設計：每一眼一份 ============ */
+const has = d => d.src === "tpl" ? !!d.tpl : !!d.img;
+const hasDesign = () => has(desOf("R")) && has(desOf("L"));
+const nameOf = d => !has(d) ? "還沒選" : d.src === "tpl" ? `${d.tpl.name}・${d.tpl.cws[d.cw].n}` : "我的相片花紋";
+const designName = () => st.sameDesign ? (has(st.des.R) ? nameOf(st.des.R) : "還沒選花紋") : `右眼 ${nameOf(st.des.R)}　左眼 ${nameOf(st.des.L)}`;
+const designForPrint = (d, S) => d.src === "tpl" ? drawTemplate(d.tpl, d.cw, S, true) : renderPhotoDesign(d, S);
+const designForEye = (d, S) => d.src === "tpl" ? drawTemplate(d.tpl, d.cw, S, false) : inkify(renderPhotoDesign(d, S));
+const designSize = d => d.src === "tpl" ? 2048 : Math.min(Math.max(Math.round(2 * d.img.baseR * d.img.place.s), 800), 2048);
+const cssVar = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+/* ============ 試戴預覽（示意圖）：畫兩隻眼睛，把各自的花紋疊在虹膜上 ============ */
+const TONES = [ { n: "深棕", c: "#3A2216", e: "#1E120C" }, { n: "棕", c: "#6A4226", e: "#3A2414" }, { n: "淺棕", c: "#93683A", e: "#5A3C20" } ];
+function eyePath(c) { c.beginPath(); c.moveTo(52, 222); c.bezierCurveTo(160, 66, 452, 50, 590, 206); c.bezierCurveTo(476, 348, 196, 356, 52, 222); c.closePath(); }
+/* 原始座標裡內眼角在左邊（＝畫面右側的那隻眼）；mirror 時左右翻轉給另一眼用 */
+function drawOneEye(c, d, ox, oy, k, mirror) {
+  const cx = 322, cy = 204, ri = 122, tone = TONES[st.tone], ink = cssVar("--ink") || "#2B1D24";
+  const unflip = () => { if (mirror) { c.translate(2 * cx, 0); c.scale(-1, 1); } };   // 花紋和反光不跟著翻
+  c.save(); c.translate(ox, oy); c.scale(k, k); if (mirror) { c.translate(642, 0); c.scale(-1, 1); }
+  c.save(); eyePath(c); c.clip();
+  let g = c.createRadialGradient(cx, cy, 40, cx, cy, 300); g.addColorStop(0, "#FFFFFF"); g.addColorStop(1, "#EDE4E6"); c.fillStyle = g; c.fillRect(0, 0, 642, 420);
+  c.fillStyle = "#E9B9B4"; c.globalAlpha = .55; c.beginPath(); c.ellipse(74, 224, 34, 20, -.2, 0, TAU); c.fill(); c.globalAlpha = 1;
+  g = c.createRadialGradient(cx, cy, ri * .2, cx, cy, ri); g.addColorStop(0, tone.c); g.addColorStop(.85, tone.c); g.addColorStop(1, tone.e);
+  c.fillStyle = g; c.beginPath(); c.arc(cx, cy, ri, 0, TAU); c.fill();
+  const r = rng(5); c.strokeStyle = "#000"; c.lineWidth = 1.2;
+  for (let i = 0; i < 90; i++) { const a = r() * TAU; c.globalAlpha = .06 + r() * .1; c.beginPath(); c.moveTo(cx + ri * .3 * Math.cos(a), cy + ri * .3 * Math.sin(a)); c.lineTo(cx + ri * .95 * Math.cos(a), cy + ri * .95 * Math.sin(a)); c.stroke(); }
+  c.globalAlpha = 1;
+  if (has(d)) {
+    const S = 2 * Math.round(ri * 1.06), pat = designForEye(d, S), hole = S / 2 * CONFIG.holeRatio;
+    const dc = pat.getContext("2d"); dc.globalCompositeOperation = "destination-out"; dc.beginPath(); dc.arc(S / 2, S / 2, hole, 0, TAU); dc.fill();
+    c.save(); unflip(); c.globalAlpha = .94; c.drawImage(pat, cx - S / 2, cy - S / 2); c.restore();
+  }
+  c.fillStyle = "#0B0709"; c.beginPath(); c.arc(cx, cy, ri * .3, 0, TAU); c.fill();
+  c.save(); unflip(); c.fillStyle = "#fff"; c.globalAlpha = .92; c.beginPath(); c.ellipse(cx - 34, cy - 40, 17, 12, -.5, 0, TAU); c.fill();
+  c.globalAlpha = .5; c.beginPath(); c.arc(cx + 38, cy + 40, 6, 0, TAU); c.fill(); c.restore();
+  g = c.createLinearGradient(0, 60, 0, 190); g.addColorStop(0, "rgba(40,20,28,.38)"); g.addColorStop(1, "rgba(40,20,28,0)"); c.fillStyle = g; c.fillRect(0, 0, 642, 200);
+  c.restore();
+  c.strokeStyle = ink; c.lineCap = "round"; c.lineWidth = 7; c.beginPath(); c.moveTo(52, 222); c.bezierCurveTo(160, 66, 452, 50, 590, 206); c.stroke();
+  c.lineWidth = 2; c.globalAlpha = .45; c.beginPath(); c.moveTo(590, 206); c.bezierCurveTo(476, 348, 196, 356, 52, 222); c.stroke(); c.globalAlpha = 1;
+  c.lineWidth = 3.2;
+  for (let i = 0; i < 17; i++) { const t = .1 + i * .052, u = 1 - t;
+    const x = u*u*u*52 + 3*u*u*t*160 + 3*u*t*t*452 + t*t*t*590, y = u*u*u*222 + 3*u*u*t*66 + 3*u*t*t*50 + t*t*t*206, lean = (t - .45) * 1.5, len = 26 + 16 * Math.sin(Math.PI * t);
+    c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + lean * 10, y - len * .6, x + lean * len, y - len); c.stroke(); }
+  c.restore();
+}
+function eyeLabels(c, W, y) {
+  c.font = '500 26px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif'; c.textAlign = "center"; c.textBaseline = "alphabetic";
+  for (const [e, x, t] of [["R", W * .265, "右眼"], ["L", W * .735, "左眼"]]) {
+    const on = !st.sameDesign && st.eye === e; c.fillStyle = on ? (cssVar("--accent") || "#A8324E") : (cssVar("--muted") || "#77666E");
+    c.fillText(on ? t + "（正在選）" : t, x, y);
   }
 }
-function renderLens(c,d,N){const R=N/2,mm=N/CFG.lensD;c.save();c.clearRect(0,0,N,N);c.translate(R,R);c.beginPath();c.arc(0,0,R,0,TAU);c.clip();
-  for(const L of d.layers){if(!L.visible)continue;c.save();c.globalAlpha=L.opacity;drawLayer(c,L,R,mm);c.restore()}c.restore()}
-function lensCanvas(d,N){const cv=document.createElement('canvas');cv.width=cv.height=N;renderLens(cv.getContext('2d'),d,N);return cv}
-
-function drawBackdrop(c,N,kind){const R=N/2;c.save();c.translate(R,R);
-  if(kind==='dark'){c.fillStyle='#1d2126';c.fillRect(-R,-R,N,N)}
-  else if(kind==='light'){c.fillStyle='#f3f3f1';c.fillRect(-R,-R,N,N)}
-  else{const sc=c.createRadialGradient(0,0,R*.6,0,0,R);sc.addColorStop(0,'#efe9e3');sc.addColorStop(1,'#d6ccc3');c.fillStyle=sc;c.fillRect(-R,-R,N,N);
-    const ir=G().iris*R,pr=1.9/(CFG.lensD/2)*R;
-    const g=c.createRadialGradient(0,0,pr,0,0,ir);g.addColorStop(0,'#3b2616');g.addColorStop(.55,'#5b3c22');g.addColorStop(.9,'#3a2514');g.addColorStop(1,'#1a0f08');
-    c.fillStyle=g;c.beginPath();c.arc(0,0,ir,0,TAU);c.fill();
-    const r=rng(11);c.lineWidth=Math.max(.6,N/500);
-    for(let i=0;i<160;i++){const a=r()*TAU,l=pr+(ir-pr)*(.5+.5*r());c.strokeStyle=`rgba(${150+r()*60|0},${110+r()*40|0},${60+r()*30|0},${(.18+r()*.25).toFixed(2)})`;
-      c.beginPath();c.moveTo(Math.cos(a)*pr*1.05,Math.sin(a)*pr*1.05);const b=a+(r()-.5)*.08;c.lineTo(Math.cos(b)*l,Math.sin(b)*l);c.stroke()}
-    c.fillStyle='#0a0706';c.beginPath();c.arc(0,0,pr,0,TAU);c.fill()}
-  c.restore()}
-function drawCatch(c,N){const R=N/2,pr=1.9/(CFG.lensD/2)*R;c.save();c.translate(R,R);c.fillStyle='rgba(255,255,255,.55)';c.beginPath();c.ellipse(-pr*.95,-pr*1.15,pr*.32,pr*.22,-.5,0,TAU);c.fill();c.restore()}
-function composite(c,d,N,kind){c.save();c.clearRect(0,0,N,N);c.beginPath();c.arc(N/2,N/2,N/2,0,TAU);c.clip();drawBackdrop(c,N,kind);c.drawImage(lensCanvas(d,N),0,0);if(kind==='iris')drawCatch(c,N);c.restore()}
-function drawGuides(c,N){const g=G(),R=N/2;c.save();c.translate(R,R);c.setLineDash([N/110,N/110]);
-  for(const r of [g.print,g.clear]){c.strokeStyle='rgba(0,0,0,.35)';c.lineWidth=N/260;c.beginPath();c.arc(0,0,r*R,0,TAU);c.stroke();c.strokeStyle='rgba(255,255,255,.75)';c.lineWidth=N/520;c.beginPath();c.arc(0,0,r*R,0,TAU);c.stroke()}
-  c.restore()}
-function snap(d,N,kind,guides){const cv=document.createElement('canvas');cv.width=cv.height=N;const c=cv.getContext('2d');composite(c,d,N,kind);if(guides)drawGuides(c,N);return cv.toDataURL('image/png')}
-
-/* analysis: estimated colours + zone intrusion */
-function analyze(d){
-  const N=128,px=lensCanvas(d,N).getContext('2d').getImageData(0,0,N,N).data,g=G(),R=N/2;
-  const hist=new Map();let tot=0,cH=0,cT=0,oH=0,oT=0;
-  for(let y=0;y<N;y++)for(let x=0;x<N;x++){const rr=Math.hypot(x+.5-R,y+.5-R)/R;if(rr>1)continue;const i=(y*N+x)*4,a=px[i+3];
-    const tol=1.5/R;if(rr<g.clear-tol){cT++;if(a>30)cH++}else if(rr>g.print+tol){oT++;if(a>30)oH++}
-    if(a>60){tot++;const k=(px[i]>>4)<<8|(px[i+1]>>4)<<4|(px[i+2]>>4);hist.set(k,(hist.get(k)||0)+1)}}
-  const cl=[];
-  [...hist.entries()].sort((a,b)=>b[1]-a[1]).forEach(([k,n])=>{const share=n/tot;if(share<.004)return;
-    const rgb=[(k>>8&15)*16+8,(k>>4&15)*16+8,(k&15)*16+8];let best=null,bd=1e9;
-    for(const q of cl){const dd=Math.hypot(q.r-rgb[0],q.g-rgb[1],q.b-rgb[2]);if(dd<bd){bd=dd;best=q}}
-    if(best&&bd<60){const w=best.n+n;best.r=(best.r*best.n+rgb[0]*n)/w;best.g=(best.g*best.n+rgb[1]*n)/w;best.b=(best.b*best.n+rgb[2]*n)/w;best.n=w}
-    else if(share>=.03)cl.push({r:rgb[0],g:rgb[1],b:rgb[2],n})});
-  const hx=v=>Math.round(v).toString(16).padStart(2,'0');
-  return{colors:cl.sort((a,b)=>b.n-a.n).map(q=>({hex:'#'+hx(q.r)+hx(q.g)+hx(q.b),share:q.n/tot})),clearPct:cT?cH/cT*100:0,outPct:oT?oH/oT*100:0}}
-
-const sameDesign=(a,b)=>JSON.stringify(a.layers.map(({id,...r})=>r))===JSON.stringify(b.layers.map(({id,...r})=>r));
-function priceOf(dL,dR,aL,aR,qty){
-  const lines=[['基本製作',CFG.base]];let u=CFG.base;const vis=d=>d.layers.filter(l=>l.visible);
-  const nl=Math.max(vis(dL).length,vis(dR).length);if(nl>2){const v=(nl-2)*CFG.perLayer;lines.push([`圖層 ${nl} 層（超過 2 層）`,v]);u+=v}
-  const all=[...vis(dL),...vis(dR)],has=t=>all.some(l=>l.type===t);
-  if(has('image')){lines.push(['含上傳圖片',CFG.image]);u+=CFG.image}
-  if(has('draw')){lines.push(['含手繪',CFG.draw]);u+=CFG.draw}
-  if(!sameDesign(dL,dR)){lines.push(['左右眼不同設計',CFG.split]);u+=CFG.split}
-  const nc=Math.max(aL.colors.length,aR.colors.length);if(nc>CFG.freeColors){const v=(nc-CFG.freeColors)*CFG.perColor;lines.push([`估算 ${nc} 色（超過 ${CFG.freeColors} 色）`,v]);u+=v}
-  return{unit:u,qty,total:u*qty,lines}}
-
-/* presets */
-const PRESETS=[
-  {name:'蜂蜜棕',make:()=>[mk('gradient',{c0:'#c8914c',c1:'#7a4a22'}),mk('pattern',{pattern:'fiber',color:'#ecc585',count:150,thick:.1}),mk('ring',{color:'#3b2515',width:.08,soft:.6})]},
-  {name:'霧灰琉璃',make:()=>[mk('gradient',{c0:'#a3aab1',c1:'#5d646b'}),mk('pattern',{pattern:'fiber',color:'#dfe3e6',count:140,thick:.1}),mk('ring',{color:'#2a2e33',width:.07,soft:.6})]},
-  {name:'冰川藍',make:()=>[mk('gradient',{c0:'#8cbadb',c1:'#2f5f86'}),mk('pattern',{pattern:'spokes',color:'#e3f1f9',count:72,thick:.1}),mk('ring',{color:'#1a2f45',width:.06,soft:.4})]},
-  {name:'橄欖綠',make:()=>[mk('gradient',{c0:'#98a863',c1:'#4d5a2e'}),mk('pattern',{pattern:'dots',color:'#dfe6b0',count:90,thick:.1}),mk('ring',{color:'#283018',width:.07,soft:.5})]},
-  {name:'紫晶花',make:()=>[mk('gradient',{c0:'#ab93cc',c1:'#5e4a86'}),mk('pattern',{pattern:'petals',color:'#e3d4f3',count:14,opacity:.75}),mk('ring',{color:'#2f2346',width:.06,soft:.4})]},
-  {name:'星芒黑',make:()=>{const g=G();return[mk('pattern',{pattern:'star',color:'#17181a',count:36,r0:+(g.clear+.08).toFixed(3),r1:+g.print.toFixed(3)}),mk('ring',{color:'#050505',width:.1,soft:.3})]}},
-  {name:'只有外圈',make:()=>[mk('ring',{color:'#1b1714',width:.09,soft:.7})]},
-  {name:'空白',make:()=>[]}
-];
-
-/* state */
-const ST={mode:'shop',step:'design',eye:'L',sync:true,design:{L:{layers:[]},R:{layers:[]}},sel:null,bg:'iris',guides:true,tab:'presets'};
-(function(){const dr=lsGet(K.draft,null);if(dr&&dr.design&&dr.design.L){ST.design=dr.design;if(!ST.design.R)ST.design.R=clone(ST.design.L);ST.sync=dr.sync!==false}else{ST.design.L.layers=PRESETS[0].make();ST.design.R=clone(ST.design.L)}})();
-const designFor=e=>ST.sync?ST.design.L:ST.design[e];
-const cur=()=>designFor(ST.eye);
-const selLayer=()=>cur().layers.find(l=>l.id===ST.sel)||null;
-const hasDesign=()=>designFor('L').layers.some(l=>l.visible)||designFor('R').layers.some(l=>l.visible);
-
-let rq=0;function redraw(){if(rq)return;rq=requestAnimationFrame(()=>{rq=0;renderEditor()})}
-let dT,eT;function changed(){redraw();clearTimeout(dT);dT=setTimeout(()=>lsSet(K.draft,{design:ST.design,sync:ST.sync}),600);clearTimeout(eT);eT=setTimeout(updateEstimate,250)}
-function renderEditor(){const cv=$('#lensCv'),c=cv.getContext('2d'),N=cv.width;composite(c,cur(),N,ST.bg);if(ST.guides)drawGuides(c,N)}
-function currentPrice(qty){const dL=designFor('L'),dR=designFor('R'),aL=analyze(dL),aR=ST.sync?aL:analyze(dR);return priceOf(dL,dR,aL,aR,qty)}
-function updateEstimate(){$('#priceChip').textContent='預估 '+money(currentPrice(1).unit)+' ／ 副';if(ST.step==='order')renderPrice()}
-
-function renderGauge(){let s='';for(let i=0;i<180;i++){const a=i/180*TAU-Math.PI/2,long=i%15===0,r1=49.6,r0=long?47.4:48.6;
-  s+=`<line x1="${(50+Math.cos(a)*r0).toFixed(2)}" y1="${(50+Math.sin(a)*r0).toFixed(2)}" x2="${(50+Math.cos(a)*r1).toFixed(2)}" y2="${(50+Math.sin(a)*r1).toFixed(2)}" stroke="currentColor" stroke-width="${long?.28:.16}" opacity="${long?.8:.5}"/>`}
-  $('#gauge').innerHTML=s}
-
-function renderEyebar(){$$('#eyeSeg button').forEach(b=>{b.classList.toggle('on',!ST.sync&&b.dataset.eye===ST.eye);b.disabled=ST.sync});$('#syncBox').checked=ST.sync;
-  $('#eyeNote').textContent=ST.sync?'左右眼使用同一設計':(ST.eye==='L'?'正在設計左眼':'正在設計右眼')}
-function renderPresets(){$('#presetGrid').innerHTML=PRESETS.map((p,i)=>`<button class="preset" data-i="${i}"><canvas width="160" height="160"></canvas><span>${p.name}</span></button>`).join('');
-  $$('#presetGrid canvas').forEach((cv,i)=>composite(cv.getContext('2d'),{layers:PRESETS[i].make()},160,'iris'))}
-function swatch(L){if(L.type==='gradient')return`linear-gradient(135deg,${L.c0},${L.c1})`;if(L.type==='image')return L.src?`url(${L.src}) center/cover`:'var(--line)';if(L.type==='draw')return(L.strokes[0]||{}).c||L.brushC;return L.color}
-function renderList(){const d=cur(),ul=$('#layerList');
-  if(!d.layers.length){ul.innerHTML='<li class="empty">還沒有圖層。從上面新增，或到「現成圖案」挑一款當起點。</li>';return}
-  if(!selLayer())ST.sel=d.layers[d.layers.length-1].id;
-  ul.innerHTML=[...d.layers].reverse().map(L=>`<li class="${L.id===ST.sel?'sel':''}" data-id="${L.id}"><input type="checkbox" class="vis" ${L.visible?'checked':''} aria-label="顯示這個圖層"><button class="lname" data-act="sel">${esc(layerName(L))}</button><span class="sw" style="background:${swatch(L)}"></span><button class="ib" data-act="up" aria-label="上移">▲</button><button class="ib" data-act="down" aria-label="下移">▼</button><button class="ib" data-act="del" aria-label="刪除">✕</button></li>`).join('')}
-function renderLayers(){renderList();renderProps();syncDrawMode()}
-function renderProps(){const L=selLayer(),p=$('#props');if(!L){p.innerHTML='';return}
-  const col=(k,t)=>`<label class="f c"><span>${t}</span><input type="color" data-k="${k}" value="${L[k]}"></label>`;
-  const rg=(k,t,min,max,step)=>`<label class="f"><span>${t}<b data-v="${k}">${FMT[k]?FMT[k](L[k]):L[k]}</b></span><input type="range" data-k="${k}" min="${min}" max="${max}" step="${step}" value="${L[k]}"></label>`;
-  let h=`<h3 class="ph serif">${esc(layerName(L))}</h3>`;
-  if(L.type==='pattern')h+=`<label class="f"><span>樣式</span><select data-k="pattern">${Object.entries(PAT_NAME).map(([k,v])=>`<option value="${k}" ${k===L.pattern?'selected':''}>${v}</option>`).join('')}</select></label>`+col('color','顏色')+rg('count','密度',3,240,1)+rg('thick','線寬／點大小',.03,.6,.01)+rg('r0','內徑',0,1,.005)+rg('r1','外徑',0,1,.005)+rg('rot','旋轉',0,360,1)+`<p><button class="btn sm" data-do="seed" type="button">重新隨機排列</button></p>`;
-  else if(L.type==='ring')h+=col('color','顏色')+rg('r','外徑',.2,1,.005)+rg('width','寬度',.01,.4,.005)+rg('soft','內側柔邊',0,1,.01);
-  else if(L.type==='gradient')h+=col('c0','內側顏色')+col('c1','外側顏色')+rg('r0','內徑',0,1,.005)+rg('r1','外徑',0,1,.005);
-  else if(L.type==='image')h+=(L.src?`<p class="hint">原始尺寸 ${L.ow}×${L.oh}px</p>`:'<p class="hint">還沒有圖片。</p>')+(L.src?`<p class="hint">在鏡片上拖曳可以移動圖片位置。</p><label class="check" style="margin-top:0"><input type="checkbox" data-k="fill" ${L.fill!==false?'checked':''}> 保持鋪滿（拖曳時不露出空白）</label>`:'')+`<div class="btn-row" style="margin-bottom:12px"><button class="btn sm" data-do="img" type="button">${L.src?'更換圖片':'選擇圖片'}</button>${L.src?'<button class="btn sm" data-do="center" type="button">回到正中央</button>':''}</div>`+rg('scale','縮放',.3,3,.01)+rg('rot','旋轉',0,360,1)+rg('r0','內徑',0,1,.005)+rg('r1','外徑',0,1,.005);
-  else if(L.type==='draw')h+=`<p class="hint">${ST.tab==='layers'?'直接在鏡片上畫。':''}對稱數會把每一筆複製成放射狀排列。</p>`+col('brushC','筆刷顏色')+rg('brushS','筆刷粗細',.03,.8,.01)+`<label class="f"><span>對稱</span><select data-k="sym">${[1,2,3,4,6,8,12,16].map(n=>`<option value="${n}" ${n==L.sym?'selected':''}>${n===1?'不對稱':n+' 重對稱'}</option>`).join('')}</select></label><div class="btn-row" style="margin-bottom:12px"><button class="btn sm" data-do="undo" type="button">復原一筆</button><button class="btn sm ghost danger" data-do="clear" type="button">清除全部筆畫</button><span class="hint" style="margin:0;align-self:center">${L.strokes.length} 筆</span></div>`;
-  h+=rg('opacity','不透明度',.1,1,.01);
-  p.innerHTML=h}
-
-function clampImg(L){if(L.type!=='image'||L.fill===false||!L.ow)return;const outer=Math.max(L.r0,L.r1),m=Math.min(L.ow,L.oh);
-  let hw=outer*L.scale*L.ow/m,hh=outer*L.scale*L.oh/m;const q=((L.rot%180)+180)%180;if(q===90)[hw,hh]=[hh,hw];
-  if(q===0||q===90){const ax=Math.max(0,hw-outer),ay=Math.max(0,hh-outer);L.ox=Math.max(-ax,Math.min(ax,L.ox||0));L.oy=Math.max(-ay,Math.min(ay,L.oy||0))}
-  else{const lim=Math.max(0,Math.min(hw,hh)-outer),d=Math.hypot(L.ox||0,L.oy||0);if(d>lim){const k=lim/d;L.ox*=k;L.oy*=k}}}
-function syncDrawMode(){const L=selLayer();const ok=ST.mode==='shop'&&ST.step==='design'&&ST.tab==='layers'&&L;
-  const m=ok&&L.type==='draw'?'draw':ok&&L.type==='image'&&L.src?'image':null;
-  $('#lensCv').classList.toggle('drawing',m==='draw');$('#lensCv').classList.toggle('moving',m==='image');return m}
-
-let imgTarget=null;
-const IMG_ERR={heic:'這是 iPhone 的 HEIC 格式，這個瀏覽器讀不了。請改用 JPG（iPhone 設定 > 相機 > 格式 > 選「最相容」），或先截圖再上傳。',decode:'這個檔案無法解碼成圖片，請換一張 JPG 或 PNG。'};
-function fileToDataURL(f){return new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(f)})}
-function loadImg(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src})}
-async function decodeFile(f){
-  if(window.createImageBitmap){try{const b=await createImageBitmap(f);return{el:b,w:b.width,h:b.height}}catch(e){}}
-  try{const im=await loadImg(await fileToDataURL(f));return{el:im,w:im.naturalWidth,h:im.naturalHeight}}catch(e){}
-  const u=URL.createObjectURL(f);try{const im=await loadImg(u);return{el:im,w:im.naturalWidth,h:im.naturalHeight}}catch(e){return null}finally{URL.revokeObjectURL(u)}}
-async function readImage(f,max){const d=await decodeFile(f);
-  if(!d||!d.w)return{error:/hei[cf]/i.test(f.type)||/\.hei[cf]$/i.test(f.name||'')?'heic':'decode'};
-  const s=Math.min(1,max/Math.max(d.w,d.h)),cv=document.createElement('canvas');cv.width=Math.round(d.w*s);cv.height=Math.round(d.h*s);
-  cv.getContext('2d').drawImage(d.el,0,0,cv.width,cv.height);if(d.el.close)d.el.close();
-  const alpha=/png|webp|gif/.test(f.type);return{src:cv.toDataURL(alpha?'image/png':'image/jpeg',.88),w:d.w,h:d.h}}
-
-function initEditor(){
-  renderGauge();renderPresets();renderEyebar();renderLayers();redraw();updateEstimate();
-  $('#bgSel').addEventListener('change',e=>{ST.bg=e.target.value;redraw()});
-  $('#guideBox').addEventListener('change',e=>{ST.guides=e.target.checked;redraw()});
-  $('#panelTabs').addEventListener('click',e=>{const b=e.target.closest('button[data-tab]');if(!b)return;ST.tab=b.dataset.tab;$$('#panelTabs button').forEach(x=>x.classList.toggle('on',x===b));$('#tab-presets').hidden=ST.tab!=='presets';$('#tab-layers').hidden=ST.tab!=='layers';renderLayers()});
-  $('#uploadOwn').addEventListener('click',()=>{imgTarget='new';$('#panelTabs [data-tab=layers]').click();$('#imgFile').click()});
-  $('#presetGrid').addEventListener('click',e=>{const b=e.target.closest('.preset');if(!b)return;const p=PRESETS[+b.dataset.i],layers=p.make();cur().layers=layers;ST.sel=layers.length?layers[layers.length-1].id:null;renderLayers();changed();
-    toast(`已套用「${p.name}」${ST.sync?'':'到'+(ST.eye==='L'?'左眼':'右眼')}。到「圖層」可以改顏色和細節。`)});
-  $('#eyeSeg').addEventListener('click',e=>{const b=e.target.closest('button[data-eye]');if(!b||ST.sync)return;ST.eye=b.dataset.eye;ST.sel=null;renderEyebar();renderLayers();changed()});
-  $('#syncBox').addEventListener('change',e=>{
-    if(e.target.checked){const from=ST.eye==='L'?'左':'右';if(!sameDesign(ST.design.L,ST.design.R)&&!confirm(`左右眼會統一使用${from}眼目前的設計，另一眼的設計將被取代。`)){e.target.checked=false;return}
-      ST.design.L=clone(ST.design[ST.eye]);ST.design.R=clone(ST.design.L);ST.sync=true;ST.eye='L'}
-    else{ST.design.R=clone(ST.design.L);ST.sync=false;ST.eye='L';toast('現在可以分別設計左右眼了。')}
-    ST.sel=null;renderEyebar();renderLayers();changed()});
-  $('.add-row').addEventListener('click',e=>{const b=e.target.closest('button[data-add]');if(!b)return;const t=b.dataset.add;
-    if(t==='image'){imgTarget='new';$('#imgFile').click();return}
-    const L=mk(t);cur().layers.push(L);ST.sel=L.id;renderLayers();changed();if(t==='draw')toast('直接在鏡片上畫，每一筆都會依對稱數複製。')});
-  $('#layerList').addEventListener('click',e=>{const li=e.target.closest('li[data-id]');if(!li)return;const d=cur(),i=d.layers.findIndex(l=>l.id===li.dataset.id);if(i<0)return;const L=d.layers[i];
-    if(e.target.classList.contains('vis')){L.visible=e.target.checked;changed();return}
-    const act=(e.target.closest('[data-act]')||{}).dataset?.act;
-    if(act==='up'){if(i<d.layers.length-1)[d.layers[i],d.layers[i+1]]=[d.layers[i+1],d.layers[i]]}
-    else if(act==='down'){if(i>0)[d.layers[i],d.layers[i-1]]=[d.layers[i-1],d.layers[i]]}
-    else if(act==='del'){d.layers.splice(i,1);if(ST.sel===L.id)ST.sel=null}
-    else ST.sel=L.id;
-    renderLayers();changed()});
-  $('#props').addEventListener('input',e=>{const t=e.target,k=t.dataset.k,L=selLayer();if(!k||!L)return;
-    let v=t.value;if(t.type==='range'||k==='sym')v=parseFloat(v);if(t.type==='checkbox')v=t.checked;L[k]=v;clampImg(L);const b=$(`[data-v="${k}"]`,$('#props'));if(b)b.textContent=FMT[k]?FMT[k](v):v;
-    if(t.type==='color'||k==='pattern')renderList();if(k==='pattern')$('#props .ph').textContent=layerName(L);changed()});
-  $('#props').addEventListener('click',e=>{const b=e.target.closest('[data-do]'),L=selLayer();if(!b||!L)return;const a=b.dataset.do;
-    if(a==='seed')L.seed=Math.random()*1e9|0;
-    else if(a==='img'){imgTarget=L.id;$('#imgFile').click();return}
-    else if(a==='center'){L.ox=0;L.oy=0}
-    else if(a==='undo')L.strokes.pop();
-    else if(a==='clear'){if(!L.strokes.length||!confirm('清除這個手繪圖層的所有筆畫？'))return;L.strokes=[]}
-    renderProps();changed()});
-  $('#imgFile').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;const r=await readImage(f,900);
-    if(r.error){toast(IMG_ERR[r.error]);return}
-    let L;if(imgTarget==='new'){L=mk('image',{src:r.src,ow:r.w,oh:r.h,r0:0});cur().layers.push(L)}else{L=cur().layers.find(l=>l.id===imgTarget);if(!L)return;Object.assign(L,{src:r.src,ow:r.w,oh:r.h})}
-    ST.sel=L.id;renderLayers();changed()});
-  const cv=$('#lensCv');let stroke=null;
-  const pt=e=>{const r=cv.getBoundingClientRect();return[+(((e.clientX-r.left)/r.width-.5)*2).toFixed(4),+(((e.clientY-r.top)/r.height-.5)*2).toFixed(4)]};
-  let mv=null;
-  cv.addEventListener('pointerdown',e=>{const m=syncDrawMode();if(!m)return;const L=selLayer();e.preventDefault();cv.setPointerCapture(e.pointerId);
-    if(m==='image'){const p=pt(e);mv={L,x:p[0],y:p[1],ox:L.ox||0,oy:L.oy||0};return}
-    stroke={c:L.brushC,s:L.brushS,pts:[pt(e)]};L.strokes.push(stroke);redraw()});
-  cv.addEventListener('pointermove',e=>{if(mv){const p=pt(e),cl=v=>Math.max(-1,Math.min(1,v));mv.L.ox=+cl(mv.ox+p[0]-mv.x).toFixed(4);mv.L.oy=+cl(mv.oy+p[1]-mv.y).toFixed(4);clampImg(mv.L);redraw();return}
-    if(!stroke)return;const p=pt(e),q=stroke.pts[stroke.pts.length-1];if(Math.hypot(p[0]-q[0],p[1]-q[1])>.006){stroke.pts.push(p);redraw()}});
-  const end=()=>{if(mv){mv=null;changed();return}if(!stroke)return;stroke=null;renderList();renderProps();changed()};
-  cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+function drawEyes() {
+  const cv = $("eye"), c = cv.getContext("2d"); c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
+  drawOneEye(c, desOf("R"), 28, 6, .74, true);      // 畫面左邊是右眼（面對面看到的樣子）
+  drawOneEye(c, desOf("L"), 497, 6, .74, false);
+  eyeLabels(c, cv.width, 322);
 }
 
-/* ---------- try-on ---------- */
-const FM_BASE='https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/';
-const EYE={L:{c:473,ring:[474,475,476,477],poly:[263,249,390,373,374,380,381,382,362,398,384,385,386,387,388,466]},
-           R:{c:468,ring:[469,470,471,472],poly:[33,7,163,144,145,153,154,155,133,173,157,158,159,160,161,246]}};
-const T={src:null,video:null,photo:null,frame:null,stream:null,fm:null,fmState:'idle',fmP:null,lm:null,sm:{},mode:'track',
-  manual:{L:{x:.6,y:.42,r:.045},R:{x:.4,y:.42,r:.045}},handles:true,opacity:.85,size:1,frozen:false,busy:false,detectLeft:0,lens:{},raf:0,drag:null,msg:''};
-
-function tryStatus(){let s='';
-  if(T.msg)s=T.msg;
-  else if(T.mode==='manual')s=T.fmState==='failed'?'自動追蹤載入失敗（可能被網路或安全設定擋住），已改為手動對位：拖曳圓圈對準黑眼球，再用滑桿調整大小。':'手動對位：拖曳圓圈對準黑眼球，再用滑桿調整大小。';
-  else if(T.fmState==='loading')s='正在載入臉部追蹤…';
-  else if(T.fmState==='ready')s=T.src&&!T.lm?'偵測不到臉部。請正對鏡頭，光線充足一點。':'臉部追蹤已啟用。';
-  $('#tryStatus').textContent=s}
-function setMode(m){if(m==='track'&&T.fmState==='failed'){toast('自動追蹤無法在這個環境載入，請使用手動對位。');m='manual'}
-  T.mode=m;T.msg='';$$('#trackSeg button').forEach(b=>b.classList.toggle('on',b.dataset.tm===m));$('#manualCtl').hidden=m!=='manual';
-  if(m==='track'){loadFM();if(T.src==='photo')T.detectLeft=3}tryStatus()}
-function loadFM(){if(T.fmState!=='idle')return T.fmP;T.fmState='loading';tryStatus();
-  T.fmP=new Promise(res=>{const fail=()=>{T.fmState='failed';if(T.mode==='track')setMode('manual');else tryStatus();res()};
-    const s=document.createElement('script');s.src=FM_BASE+'face_mesh.js';s.crossOrigin='anonymous';
-    s.onload=async()=>{try{const fm=new window.FaceMesh({locateFile:f=>FM_BASE+f});
-      fm.setOptions({maxNumFaces:1,refineLandmarks:true,minDetectionConfidence:.5,minTrackingConfidence:.5});
-      fm.onResults(r=>{T.lm=(r.multiFaceLandmarks&&r.multiFaceLandmarks[0])||null;if(!T.lm)T.sm={};
-        if(T.lm)T.msg='';tryStatus()});
-      await Promise.race([fm.initialize(),new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),25000))]);
-      T.fm=fm;T.fmState='ready';tryStatus();res()}catch(e){console.warn(e);fail()}};
-    s.onerror=fail;document.head.appendChild(s)});
-  return T.fmP}
-function refreshTryLens(){T.lens.L=lensCanvas(designFor('L'),360);T.lens.R=lensCanvas(designFor('R'),360)}
-function enterTry(){refreshTryLens();if(T.mode==='track')loadFM();if(!T.raf)T.raf=requestAnimationFrame(tick);tryStatus()}
-function leaveTry(){stopCam();if(T.raf){cancelAnimationFrame(T.raf);T.raf=0}}
-function stopCam(){if(T.stream){T.stream.getTracks().forEach(t=>t.stop());T.stream=null}if(T.src==='cam'){T.src=null;T.frozen=false}showTryCanvas()}
-function showTryCanvas(){$('#tryCv').hidden=!T.src;$('#tryEmpty').hidden=!!T.src;$('#freezeBtn').hidden=T.src!=='cam';$('#freezeBtn').textContent=T.frozen?'繼續即時預覽':'定格畫面'}
-async function startCam(){if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){toast('這個瀏覽器不支援開啟鏡頭，請改用「上傳自拍照」。');return}
-  try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1280},height:{ideal:720}},audio:false});
-    stopCam();T.stream=s;T.video.srcObject=s;await T.video.play();T.src='cam';T.frozen=false;T.lm=null;T.sm={};T.msg='';showTryCanvas();tryStatus()}
-  catch(e){T.msg=e&&e.name==='NotAllowedError'?'相機權限被拒絕。請在瀏覽器設定允許使用相機，或改用「上傳自拍照」。':'無法開啟鏡頭（這個環境可能不允許使用相機），請改用「上傳自拍照」。';tryStatus()}}
-function activeSrc(){return T.frozen?T.frame:T.src==='cam'?T.video:T.src==='photo'?T.photo:null}
-async function tick(){T.raf=requestAnimationFrame(tick);const src=activeSrc();if(!src)return;
-  if(T.mode==='track'&&T.fmState==='ready'&&!T.busy&&!T.frozen){const live=T.src==='cam'&&T.video.readyState>=2;
-    if(live||(T.src==='photo'&&T.detectLeft>0)){T.busy=true;try{await T.fm.send({image:live?T.video:T.photo})}catch(e){console.warn(e)}T.busy=false;if(!live){T.detectLeft--;if(T.detectLeft===0&&!T.lm){setMode('manual');T.msg='照片裡偵測不到臉部，已改成手動對位：拖曳圓圈對準黑眼球，再用滑桿調整大小。';tryStatus()}}}}
-  drawTry(src)}
-function eyePositions(W,H){const out={};
-  if(T.mode==='track'){const lm=T.lm;if(!lm)return out;
-    for(const e of ['L','R']){const d=EYE[e],c=lm[d.c];if(!c)continue;const x=c.x*W,y=c.y*H;let r=0;
-      for(const i of d.ring){const q=lm[i];if(q)r=Math.max(r,Math.hypot(q.x*W-x,q.y*H-y))}if(!r)continue;
-      const s=T.sm[e],k=T.src==='cam'&&!T.frozen?.45:1,n=s?{x:s.x+(x-s.x)*k,y:s.y+(y-s.y)*k,r:s.r+(r-s.r)*k}:{x,y,r};T.sm[e]=n;
-      out[e]=Object.assign({},n,{poly:d.poly.map(i=>[lm[i].x*W,lm[i].y*H])})}}
-  else for(const e of ['L','R']){const m=T.manual[e];out[e]={x:m.x*W,y:m.y*H,r:m.r*W}}
-  return out}
-function drawTry(src){const cv=$('#tryCv'),c=cv.getContext('2d');const W=src.videoWidth||src.naturalWidth||src.width,H=src.videoHeight||src.naturalHeight||src.height;if(!W||!H)return;
-  if(cv.width!==W||cv.height!==H){cv.width=W;cv.height=H}
-  const mir=T.src==='cam';c.setTransform(mir?-1:1,0,0,1,mir?W:0,0);c.drawImage(src,0,0,W,H);
-  const eyes=eyePositions(W,H);
-  for(const e of ['L','R']){const p=eyes[e];if(!p||!T.lens[e])continue;const pxmm=2*p.r/11.7*T.size,sz=CFG.lensD*pxmm;c.save();
-    if(p.poly){c.beginPath();p.poly.forEach(([x,y],i)=>i?c.lineTo(x,y):c.moveTo(x,y));c.closePath();c.clip()}
-    c.globalAlpha=T.opacity;c.drawImage(T.lens[e],p.x-sz/2,p.y-sz/2,sz,sz);c.restore()}
-  if(T.mode==='manual'&&T.handles){for(const e of ['L','R']){const p=eyes[e];c.save();c.setLineDash([6,5]);c.lineWidth=Math.max(1.5,W/500);c.strokeStyle='rgba(255,255,255,.9)';c.beginPath();c.arc(p.x,p.y,p.r,0,TAU);c.stroke();c.restore()}
-    c.setTransform(1,0,0,1,0,0);c.font=`${Math.max(12,Math.round(W/42))}px "Noto Sans TC",sans-serif`;c.textAlign='center';c.fillStyle='#fff';c.shadowColor='rgba(0,0,0,.6)';c.shadowBlur=4;
-    for(const e of ['L','R']){const p=eyes[e],sx=mir?W-p.x:p.x;c.fillText(e==='L'?'左眼':'右眼',sx,p.y-p.r-W/90)}c.shadowBlur=0}
-  c.setTransform(1,0,0,1,0,0)}
-function initTry(){
-  T.video=$('#tryVid');
-  $('#camBtn').addEventListener('click',startCam);
-  $('#selfieFile').addEventListener('change',async e=>{const f=e.target.files[0];e.target.value='';if(!f)return;T.msg='正在讀取照片…';tryStatus();const r=await readImage(f,1280);if(r.error){T.msg=IMG_ERR[r.error];tryStatus();toast(IMG_ERR[r.error]);return}
-    const im=new Image();im.onload=()=>{stopCam();T.photo=im;T.src='photo';T.frozen=false;T.lm=null;T.sm={};T.msg='';T.detectLeft=3;showTryCanvas();if(T.mode==='track')loadFM();tryStatus()};im.src=r.src});
-  $('#freezeBtn').addEventListener('click',()=>{if(T.src!=='cam')return;if(!T.frozen){const f=document.createElement('canvas');f.width=T.video.videoWidth;f.height=T.video.videoHeight;f.getContext('2d').drawImage(T.video,0,0);T.frame=f;T.frozen=true}else T.frozen=false;showTryCanvas()});
-  $('#trackSeg').addEventListener('click',e=>{const b=e.target.closest('button[data-tm]');if(b)setMode(b.dataset.tm)});
-  const iv=$('#irisSize');const upd=()=>{$('#irisV').textContent=Math.round(iv.value*1000)/10+'%'};upd();
-  iv.addEventListener('input',()=>{T.manual.L.r=T.manual.R.r=+iv.value;upd()});
-  $('#handleBox').addEventListener('change',e=>T.handles=e.target.checked);
-  $('#opRange').addEventListener('input',e=>{T.opacity=+e.target.value;$('#opV').textContent=Math.round(T.opacity*100)+'%'});
-  $('#scRange').addEventListener('input',e=>{T.size=+e.target.value;$('#scV').textContent=Math.round(T.size*100)+'%'});
-  const cv=$('#tryCv');
-  const pt=e=>{const r=cv.getBoundingClientRect();let x=(e.clientX-r.left)/r.width;const y=(e.clientY-r.top)/r.height;if(T.src==='cam')x=1-x;return{x,y}};
-  cv.addEventListener('pointerdown',e=>{if(T.mode!=='manual')return;const p=pt(e),W=cv.width,H=cv.height;let best=null,bd=1e9;
-    for(const k of ['L','R']){const m=T.manual[k],d=Math.hypot((p.x-m.x)*W,(p.y-m.y)*H);if(d<bd){bd=d;best=k}}
-    if(best&&bd<T.manual[best].r*W*2.2+30){T.drag={k:best,dx:p.x-T.manual[best].x,dy:p.y-T.manual[best].y};cv.setPointerCapture(e.pointerId);e.preventDefault()}});
-  cv.addEventListener('pointermove',e=>{if(!T.drag)return;const p=pt(e),m=T.manual[T.drag.k];m.x=Math.min(1,Math.max(0,p.x-T.drag.dx));m.y=Math.min(1,Math.max(0,p.y-T.drag.dy))});
-  const end=()=>T.drag=null;cv.addEventListener('pointerup',end);cv.addEventListener('pointercancel',end);
+/* ============ 自拍試戴：把花紋疊到自拍相片的眼睛上 ============ */
+/* 虹膜半徑約為兩眼瞳孔距離的 0.094 倍，花紋再略大一點；之後可用滑桿微調 */
+const IRIS_PER_IPD = 0.094 * 1.08;
+async function loadSelfie(file) {
+  let src = null;
+  if (window.createImageBitmap) { try { src = await createImageBitmap(file, { imageOrientation: "from-image" }); } catch (e) { try { src = await createImageBitmap(file); } catch (e2) { src = null; } } }
+  if (!src) src = await new Promise((res, rej) => { const fr = new FileReader(); fr.onerror = () => rej(new Error("read")); fr.onload = () => { const im = new Image(); im.onload = () => res(im); im.onerror = () => rej(new Error("decode")); im.src = fr.result; }; fr.readAsDataURL(file); });
+  const w0 = src.naturalWidth || src.width, h0 = src.naturalHeight || src.height, k = Math.min(1, 2400 / Math.max(w0, h0));
+  const cv = document.createElement("canvas"); cv.width = Math.max(1, Math.round(w0 * k)); cv.height = Math.max(1, Math.round(h0 * k));
+  cv.getContext("2d").drawImage(src, 0, 0, cv.width, cv.height); if (src.close) src.close();
+  st.selfie = { cv, pts: [], size: 1, thr: 0, swap: false, ready: false };
+}
+function sfStage(n) { for (let i = 0; i < 3; i++) $("sfStage" + i).hidden = i !== n; }
+function drawSfPhoto() {
+  const sf = st.selfie, cv = $("sfPhoto"), k = Math.min(1, 1100 / sf.cv.width);
+  cv.width = Math.round(sf.cv.width * k); cv.height = Math.round(sf.cv.height * k);
+  const c = cv.getContext("2d"); c.drawImage(sf.cv, 0, 0, cv.width, cv.height);
+  c.strokeStyle = "#fff"; c.lineWidth = 6; for (const p of sf.pts) { c.beginPath(); c.arc(p.x * k, p.y * k, 16, 0, TAU); c.stroke(); }
+  c.strokeStyle = "#A8324E"; c.lineWidth = 3; for (const p of sf.pts) { c.beginPath(); c.arc(p.x * k, p.y * k, 16, 0, TAU); c.stroke(); }
+  $("sfHint").textContent = sf.pts.length ? "再點一下畫面「右邊」那隻眼睛的瞳孔正中央。" : "請點一下畫面「左邊」那隻眼睛的瞳孔正中央。";
+}
+/* 一隻眼：只把花紋疊在比較暗的地方（虹膜），亮的地方（眼白、眼皮、反光）不疊，眼皮就會自然蓋在花紋上 */
+function blendLens(c, cx, cy, r, d, thr) {
+  const R = Math.ceil(r), S = 2 * R, x0 = Math.round(cx) - R, y0 = Math.round(cy) - R;
+  const photo = c.getImageData(x0, y0, S, S), pd = photo.data, pat = designForEye(d, S).getContext("2d").getImageData(0, 0, S, S).data;
+  const lum = new Float32Array(S * S), dist = new Float32Array(S * S), hist = new Float64Array(256); let n = 0;
+  for (let y = 0, i = 0; y < S; y++) for (let x = 0; x < S; x++, i++) {
+    const o = i * 4; lum[i] = .299 * pd[o] + .587 * pd[o + 1] + .114 * pd[o + 2]; dist[i] = Math.hypot(x + .5 - R, y + .5 - R);
+    if (dist[i] <= R) { hist[lum[i] | 0]++; n++; }
+  }
+  // Otsu：找出暗（虹膜）與亮（眼白、皮膚）的分界；兩群差異太小就不做遮罩
+  let sum = 0; for (let t = 0; t < 256; t++) sum += t * hist[t];
+  let wB = 0, sB = 0, best = 0, T = 255, m0 = 0, m1 = 0;
+  for (let t = 0; t < 256; t++) { wB += hist[t]; if (!wB) continue; const wF = n - wB; if (!wF) break; sB += t * hist[t];
+    const a = sB / wB, b = (sum - sB) / wF, v = wB * wF * (a - b) * (a - b); if (v > best) { best = v; T = t; m0 = a; m1 = b; } }
+  if (m1 - m0 < 28) T = 255;
+  T = Math.min(Math.max(T + thr, 4), 255);
+  const m = new Float32Array(S * S), tmp = new Float32Array(S * S), br = Math.max(1, Math.round(R * .07));
+  for (let i = 0; i < S * S; i++) m[i] = dist[i] <= R && lum[i] < T ? 1 : 0;
+  for (const [src, dst, step, lim] of [[m, tmp, 1, S], [tmp, m, S, S]])          // 兩次方框模糊，讓邊緣柔和
+    for (let y = 0; y < S; y++) for (let x = 0; x < S; x++) {
+      let a = 0, cnt = 0; const pos = step === 1 ? x : y;
+      for (let j = -br; j <= br; j++) { const q = pos + j; if (q < 0 || q >= lim) continue; a += src[step === 1 ? y * S + q : q * S + x]; cnt++; }
+      dst[y * S + x] = a / cnt;
+    }
+  for (let i = 0; i < S * S; i++) {
+    const o = i * 4, edge = Math.min(Math.max((R - dist[i]) / (R * .08), 0), 1), pupil = Math.min(Math.max((dist[i] - R * .31) / (R * .07), 0), 1);
+    const a = pat[o + 3] / 255 * m[i] * edge * pupil * .9; if (a <= 0) continue;
+    pd[o] += (pat[o] - pd[o]) * a; pd[o + 1] += (pat[o + 1] - pd[o + 1]) * a; pd[o + 2] += (pat[o + 2] - pd[o + 2]) * a;
+  }
+  c.putImageData(photo, x0, y0);
+}
+/* 把自拍裁成只剩雙眼的橫條（轉正、放大），再疊上兩眼的花紋 */
+function renderStrip(cv) {
+  const sf = st.selfie, [a, b] = sf.pts, W = cv.width, H = cv.height, c = cv.getContext("2d", { willReadFrequently: true });
+  const ipd = Math.hypot(b.x - a.x, b.y - a.y), ang = Math.atan2(b.y - a.y, b.x - a.x), k = W / (2.3 * ipd);
+  c.setTransform(1, 0, 0, 1, 0, 0); c.fillStyle = "#000"; c.fillRect(0, 0, W, H);
+  c.translate(W / 2, H / 2); c.rotate(-ang); c.scale(k, k); c.translate(-(a.x + b.x) / 2, -(a.y + b.y) / 2);
+  c.imageSmoothingQuality = "high"; c.drawImage(sf.cv, 0, 0); c.setTransform(1, 0, 0, 1, 0, 0);
+  const r = IRIS_PER_IPD * ipd * k * sf.size, ex = [W / 2 - ipd * k / 2, W / 2 + ipd * k / 2];
+  const des = sf.swap ? [desOf("L"), desOf("R")] : [desOf("R"), desOf("L")];       // 畫面左邊預設是右眼
+  for (let i = 0; i < 2; i++) {
+    if (has(des[i])) blendLens(c, ex[i], H / 2, r, des[i], sf.thr);
+    else { c.strokeStyle = "rgba(255,255,255,.9)"; c.lineWidth = 3; c.setLineDash([8, 8]); c.beginPath(); c.arc(ex[i], H / 2, r, 0, TAU); c.stroke(); c.setLineDash([]); }
+  }
+  sf.geo = { k, ang, ex };
+}
+/* ============ 開鏡頭即時試戴：辨識臉上的虹膜位置，每一格畫面都把花紋疊上去 ============ */
+const MP_BASE = "https://cdn.jsdelivr.net/npm/@mediapipe/face_mesh@0.4.1633559619/";
+const IRIS = { R: { c: 468, ring: [469, 470, 471, 472], lid: [33, 7, 163, 144, 145, 153, 154, 155, 133, 173, 157, 158, 159, 160, 161, 246] },
+               L: { c: 473, ring: [474, 475, 476, 477], lid: [362, 382, 381, 380, 374, 373, 390, 249, 263, 466, 388, 387, 386, 385, 384, 398] } };
+const live = { on: false, starting: false, stream: null, mesh: null, lm: null, seen: 0, raf: 0, pat: {}, sm: null };
+const loadScript = src => new Promise((res, rej) => { const el = document.createElement("script"); el.src = src; el.crossOrigin = "anonymous"; el.onload = res; el.onerror = () => rej(new Error("script")); document.head.appendChild(el); });
+const withTimeout = (p, ms) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), ms))]);
+function liveMsg(t, kind) { const m = $("liveMsg"); m.hidden = !t; m.textContent = t || ""; m.className = "msg " + (kind || "warn"); }
+function liveBtn(busy) { const b = $("liveOpen"); b.disabled = busy; b.textContent = busy ? "開啟中…" : "開鏡頭試戴"; }
+/* 先檢查這個頁面所在的環境能不能開鏡頭，不能的話馬上講，不要讓使用者空等 */
+function cameraBlock() {
+  try { const fp = document.featurePolicy || document.permissionsPolicy; if (fp && fp.allowsFeature && !fp.allowsFeature("camera")) return "policy"; } catch (e) { /* 查不到就照常嘗試 */ }
+  if (window.isSecureContext === false) return "insecure";
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return "unsupported";
+  return "";
+}
+const CAM_HELP = "要即時試戴，需要把這個網頁放到自己的網站上。現在可以先用「用相片試戴」。";
+function stopLive(keepMsg) {
+  live.on = false; live.starting = false; cancelAnimationFrame(live.raf); live.lm = null; live.sm = null; liveBtn(false);
+  if (live.stream) { for (const t of live.stream.getTracks()) t.stop(); live.stream = null; }
+  $("liveVideo").srcObject = null; if (!keepMsg) liveMsg(""); drawLook();
+}
+async function startLive() {
+  if (live.on || live.starting) return;
+  live.starting = true; liveBtn(true); liveMsg("正在開啟鏡頭…如果跳出詢問，請按「允許」。", "ok");
+  const fail = (t, code) => { stopLive(true); liveMsg(`${t}（代碼：${code}）`); };
+  const block = cameraBlock();
+  if (block) return fail("這個頁面所在的環境不開放鏡頭，所以打不開。" + CAM_HELP, block);
+  try {
+    const req = navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
+    req.then(got => setTimeout(() => { if (live.stream !== got) for (const t of got.getTracks()) t.stop(); }, 100), () => {});   // 逾時之後才拿到的鏡頭要關掉
+    live.stream = await withTimeout(req, 15000);
+  } catch (e) {
+    const name = (e && e.name) || "Error";
+    if (e && e.message === "timeout") return fail("等了 15 秒，鏡頭沒有回應，也沒有跳出詢問視窗，這個頁面所在的環境應該不開放鏡頭。" + CAM_HELP, "timeout");
+    if (name === "NotAllowedError" || name === "SecurityError") return fail("鏡頭被拒絕了。如果你沒有看到詢問視窗，就是這個頁面所在的環境不開放鏡頭。" + CAM_HELP, name);
+    if (name === "NotFoundError" || name === "OverconstrainedError") return fail("找不到可以使用的鏡頭。請改用「用相片試戴」。", name);
+    return fail("鏡頭打不開。請改用「用相片試戴」。", name);
+  }
+  if (!live.starting) { for (const t of live.stream.getTracks()) t.stop(); live.stream = null; return; }
+  const v = $("liveVideo"); v.srcObject = live.stream; try { await v.play(); } catch (e) { /* 有些瀏覽器會自動播放 */ }
+  liveMsg("鏡頭已開啟，正在載入眼睛辨識，第一次需要幾秒鐘…", "ok");
+  try {
+    if (typeof FaceMesh === "undefined") await withTimeout(loadScript(MP_BASE + "face_mesh.js"), 20000);
+    if (!live.mesh) {
+      const m = new FaceMesh({ locateFile: f => MP_BASE + f });
+      m.setOptions({ maxNumFaces: 1, refineLandmarks: true, minDetectionConfidence: .5, minTrackingConfidence: .5 });
+      m.onResults(r => { live.lm = (r.multiFaceLandmarks && r.multiFaceLandmarks[0]) || null; if (live.lm) live.seen = performance.now(); });
+      await withTimeout(m.initialize(), 30000); live.mesh = m;
+    }
+  } catch (e) { return fail("鏡頭可以開，但眼睛辨識元件載入失敗，這個頁面所在的環境擋住了需要的檔案。請先改用「用相片試戴」。", e && e.message === "timeout" ? "model-timeout" : "model-load"); }
+  if (!live.starting) return;                       // 載入途中被關掉
+  live.starting = false; live.on = true; liveBtn(false); liveMsg(""); drawLook(); liveLoop();
+}
+async function liveLoop() {
+  if (!live.on) return;
+  const v = $("liveVideo");
+  if (v.readyState >= 2) { try { await live.mesh.send({ image: v }); } catch (e) { /* 單格失敗就跳過 */ } }
+  if (!live.on) return;
+  renderLive($("eye")); live.raf = requestAnimationFrame(liveLoop);
+}
+/* 兩眼的花紋先各畫成一張小圖（挖掉瞳孔區），設計沒變就重複使用 */
+function livePattern(e) {
+  const d = desOf(e); if (!has(d)) return null;
+  const key = d.src === "tpl" ? d.tpl.id + "|" + d.cw : JSON.stringify([d.img.place, d.rep, d.repAng, d.repMirror, d.photoName]);
+  const hit = live.pat[e]; if (hit && hit.key === key && hit.d === d) return hit.cv;
+  const S = 260, cv = designForEye(d, S), c = cv.getContext("2d");
+  c.globalCompositeOperation = "destination-out"; c.beginPath(); c.arc(S / 2, S / 2, S / 2 * CONFIG.holeRatio, 0, TAU); c.fill();
+  live.pat[e] = { key, d, cv }; return cv;
+}
+function renderLive(cv) {
+  const v = $("liveVideo"), vw = v.videoWidth, vh = v.videoHeight, W = cv.width, H = cv.height, c = cv.getContext("2d");
+  if (!vw) return;
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  const lm = live.lm, fresh = lm && performance.now() - live.seen < 700;
+  if (!fresh) {                                        // 還沒找到臉：顯示鏡頭畫面（像照鏡子一樣左右相反）和提示
+    const sc = Math.max(W / vw, H / vh); live.sm = null;
+    c.translate(W, 0); c.scale(-1, 1); c.drawImage(v, (W - vw * sc) / 2, (H - vh * sc) / 2, vw * sc, vh * sc); c.setTransform(1, 0, 0, 1, 0, 0);
+    c.fillStyle = "rgba(20,10,14,.55)"; c.fillRect(0, H - 70, W, 70);
+    c.fillStyle = "#fff"; c.font = '500 30px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif'; c.textAlign = "center"; c.textBaseline = "middle";
+    c.fillText("把臉正對鏡頭，靠近一點，眼睛睜開", W / 2, H - 35);
+    return;
+  }
+  const P = i => ({ x: lm[i].x * vw, y: lm[i].y * vh });
+  const now = {};
+  for (const e of ["R", "L"]) { const p = P(IRIS[e].c); let r = 0; for (const i of IRIS[e].ring) { const q = P(i); r += Math.hypot(q.x - p.x, q.y - p.y) / 4; } now[e] = { x: p.x, y: p.y, r }; }
+  if (!live.sm) live.sm = now; else for (const e of ["R", "L"]) for (const k of ["x", "y", "r"]) live.sm[e][k] += (now[e][k] - live.sm[e][k]) * .55;   // 稍微平滑，減少抖動
+  const a = live.sm.R, b = live.sm.L, ipd = Math.hypot(b.x - a.x, b.y - a.y), ang = Math.atan2(b.y - a.y, b.x - a.x), k = W / (2.3 * ipd);
+  c.translate(W, 0); c.scale(-1, 1);                   // 鏡像
+  c.translate(W / 2, H / 2); c.rotate(-ang); c.scale(k, k); c.translate(-(a.x + b.x) / 2, -(a.y + b.y) / 2);
+  c.drawImage(v, 0, 0);
+  for (const e of ["R", "L"]) {
+    const pat = livePattern(e); if (!pat) continue;
+    const s = live.sm[e], off = { x: s.x - now[e].x, y: s.y - now[e].y }, r = s.r * 1.12;
+    c.save(); c.beginPath();
+    IRIS[e].lid.forEach((i, n) => { const q = P(i); n ? c.lineTo(q.x + off.x, q.y + off.y) : c.moveTo(q.x + off.x, q.y + off.y); });
+    c.closePath(); c.clip();                           // 只畫在睜開的眼睛範圍內，眼皮會自然蓋住花紋
+    c.globalAlpha = .82; c.drawImage(pat, s.x - r, s.y - r, 2 * r, 2 * r); c.restore();
+  }
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  if (!st.sameDesign) {                                // 鏡像畫面：畫面左邊是左眼
+    c.font = '500 24px "Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif'; c.textBaseline = "alphabetic";
+    for (const [e, x, al, t] of [["L", 16, "left", "左眼"], ["R", W - 16, "right", "右眼"]]) {
+      c.textAlign = al; const on = st.eye === e, label = on ? t + "（正在選）" : t;
+      c.fillStyle = "rgba(20,10,14,.55)"; const w = c.measureText(label).width + 20; c.fillRect(al === "left" ? 6 : W - 6 - w, H - 44, w, 36);
+      c.fillStyle = on ? "#FFD0DC" : "#fff"; c.fillText(label, x, H - 18);
+    }
+  }
+}
+function drawLook() {
+  const liveOn = live.on, on = !liveOn && !!(st.selfie && st.selfie.ready);
+  if (liveOn) { /* 畫面由 liveLoop 持續更新 */ } else if (on) renderStrip($("eye")); else drawEyes();
+  $("lookName").textContent = designName();
+  $("lookNote").textContent = (liveOn || on) ? "模擬效果，僅供參考；實際顯色以成品為準。" : "示意圖，實際顯色會隨原本的瞳色而不同。";
+  $("tones").hidden = liveOn || on; $("liveOpen").hidden = liveOn; $("liveOff").hidden = !liveOn;
+  $("sfOpen").hidden = liveOn || on; $("sfEdit").hidden = !on; $("sfOff").hidden = !on;
+  if (!$("sfStage2").hidden && !$("sfCard").hidden && st.selfie && st.selfie.pts.length === 2) renderStrip($("sfStrip"));
+}
+let pvTimer = 0;
+function schedule() { clearTimeout(pvTimer); pvTimer = setTimeout(() => { drawLook(); updateQuality(); }, 100); }
+function updateQuality() {
+  if (!st.img) return;
+  const px = 2 * st.img.baseR * st.img.place.s;
+  $("quality").textContent = px >= 1200 ? "相片清晰度足夠。" : px >= 700 ? "相片清晰度普通，細節可能不夠清楚。" : "相片清晰度偏低，建議把圓環放大，或換一張更大的相片。";
 }
 
-/* ---------- order ---------- */
-const fmtD=v=>(v>0?'+':'')+v.toFixed(2);
-function sphOptions(){let o='<option value="">選擇</option><option value="unknown">不確定</option><option value="0">0.00</option>';
-  const v=[];for(let i=2;i<=24;i++)v.push(-i*.25);for(let i=13;i<=20;i++)v.push(-i*.5);for(let i=2;i<=16;i++)v.push(i*.25);
-  return o+v.map(x=>`<option value="${x}">${fmtD(x)}</option>`).join('')}
-function rxText(r){if(!r)return'—';const s=r.sph==='unknown'?'不確定':r.sph===''?'—':fmtD(+r.sph);return r.cyl&&+r.cyl!==0?`${s}　散光 ${(+r.cyl).toFixed(2)} × ${r.ax}°`:s}
-function renderOrder(){const L=designFor('L'),R=designFor('R');
-  $('#oThumbs').innerHTML=[['R','右眼',R],['L','左眼',L]].map(([k,t,d])=>`<figure><div class="disc"><img alt="${t}設計" src="${snap(d,240,'iris')}"></div>${t}</figure>`).join('');
-  renderPrice()}
-function renderPrice(){const q=+$('#qty').value||1,p=currentPrice(q);
-  $('#oPrice').innerHTML=`<table class="plines">${p.lines.map(([t,v])=>`<tr><td>${esc(t)}</td><td>${money(v)}</td></tr>`).join('')}<tr><td>每副小計</td><td>${money(p.unit)}</td></tr><tr><td>數量</td><td>${q} 副</td></tr><tr class="total"><td>預估總額</td><td>${money(p.total)}</td></tr></table>`}
-function newId(){const d=new Date(),p=n=>String(n).padStart(2,'0');return`TZ${String(d.getFullYear()).slice(2)}${p(d.getMonth()+1)}${p(d.getDate())}-${Math.random().toString(36).slice(2,5).toUpperCase()}`}
-function buildOrder(f){const dL=clone(f.dL),dR=clone(f.dR),aL=analyze(dL),aR=analyze(dR);
-  return{id:newId(),at:f.at||Date.now(),status:'review',name:f.name,phone:f.phone,email:f.email||'',store:f.store,note:f.note||'',qty:f.qty,rx:f.rx,sync:sameDesign(dL,dR),
-    design:{L:dL,R:dR},thumbs:{L:lensCanvas(dL,200).toDataURL('image/png'),R:lensCanvas(dR,200).toDataURL('image/png')},price:priceOf(dL,dR,aL,aR,f.qty),
-    spec:{lensD:CFG.lensD,printD:CFG.printD,clearD:CFG.clearD},history:[{at:f.at||Date.now(),s:'review',note:'顧客送出訂單'}],rxConfirmed:null}}
-function saveOrders(){return lsSet(K.orders,ORDERS)}
-function initOrder(){
-  $$('.sph').forEach(s=>s.innerHTML=sphOptions());
-  $$('.cyl').forEach(s=>s.innerHTML='<option value="0">無</option>'+[-.75,-1.25,-1.75,-2.25].map(v=>`<option value="${v}">${v.toFixed(2)}</option>`).join(''));
-  $$('.ax').forEach(s=>s.innerHTML=Array.from({length:18},(_,i)=>`<option value="${(i+1)*10}">${(i+1)*10}°</option>`).join(''));
-  $('#qty').innerHTML=Array.from({length:10},(_,i)=>`<option value="${i+1}">${i+1}</option>`).join('');
-  $('#qty').addEventListener('change',renderPrice);
-  $$('.cyl').forEach(s=>s.addEventListener('change',()=>{s.parentElement.querySelector('.ax').disabled=+s.value===0}));
-  $('#orderForm').addEventListener('submit',e=>{e.preventDefault();const F=e.target,v=n=>(F.elements[n].value||'').trim(),err=$('#formErr');const miss=[];
-    if(!v('name'))miss.push('姓名');if(!v('phone'))miss.push('手機');if(!v('sphR')||!v('sphL'))miss.push('左右眼度數（不確定可選「不確定」）');
-    if(miss.length){err.textContent='請填寫：'+miss.join('、');err.hidden=false;return}
-    if(!F.elements.agree.checked){err.textContent='請勾選同意到店驗光確認度數。';err.hidden=false;return}
-    err.hidden=true;const rx=k=>({sph:v('sph'+k),cyl:v('cyl'+k),ax:+v('cyl'+k)?v('ax'+k):''});
-    const o=buildOrder({dL:designFor('L'),dR:designFor('R'),name:v('name'),phone:v('phone'),email:v('email'),store:v('store'),note:v('note'),qty:+v('qty')||1,rx:{L:rx('L'),R:rx('R')}});
-    ORDERS.unshift(o);if(!saveOrders()){ORDERS.shift();err.textContent='瀏覽器儲存空間不足，通常是上傳的圖片太大。請移除或換小一點的圖片再送出。';err.hidden=false;return}
-    showDone(o)})}
-function fillStores(){$('#storeSel').innerHTML=CFG.stores.split('\n').map(s=>s.trim()).filter(Boolean).map(s=>`<option>${esc(s)}</option>`).join('')}
-function showDone(o){$('#doneBox').innerHTML=`<div class="disc"><img alt="" src="${snap(o.design.L,240,'iris')}"></div>
-  <h2 class="serif h1">訂單已送出</h2><p style="color:var(--muted);margin:6px 0 0">訂單編號 ${o.id}</p>
-  <ol><li>店家審稿你的設計，確認可以生產</li><li>通知你到${esc(o.store)}驗光</li><li>度數確認後送廠製作</li></ol>
-  <div class="btn-row"><button class="btn" id="againBtn">再設計一副</button><button class="btn primary" id="toAdminBtn">到店家後台看這筆訂單</button></div>`;
-  $('#orderForm').reset();$$('.ax').forEach(s=>s.disabled=true);go('done');
-  $('#againBtn').onclick=()=>go('design');$('#toAdminBtn').onclick=()=>{setAppMode('admin');openOrder(o.id)}}
+/* ============ 步驟 1：樣板與相片 ============ */
+function buildTemplates() {
+  const d = cur();
+  const chips = $("chips"); chips.textContent = "";
+  for (const cat of CATS) { const b = document.createElement("button"); b.type = "button"; b.textContent = cat; b.setAttribute("aria-pressed", cat === st.cat); b.addEventListener("click", () => { st.cat = cat; buildTemplates(); }); chips.appendChild(b); }
+  const box = $("tpls"); box.textContent = "";
+  for (const t of TEMPLATES) {
+    if (st.cat !== "全部" && t.cat !== st.cat) continue;
+    const b = document.createElement("button"); b.type = "button"; b.className = "tpl"; b.setAttribute("aria-pressed", d.tpl === t);
+    const s = document.createElement("span"); s.textContent = t.name;
+    b.append(drawTemplate(t, d.tpl === t ? d.cw : 0, 220, false), s);
+    b.addEventListener("click", () => { if (d.tpl !== t) { d.tpl = t; d.cw = 0; } buildTemplates(); drawLook(); refreshBar(); });
+    box.appendChild(b);
+  }
+  const cws = $("cws"); cws.textContent = ""; $("cwBox").hidden = !d.tpl;
+  if (d.tpl) d.tpl.cws.forEach((cw, i) => {
+    const b = document.createElement("button"); b.type = "button"; b.setAttribute("aria-pressed", i === d.cw);
+    const sw = document.createElement("i"); sw.style.background = cw.sw; b.append(sw, cw.n);
+    b.addEventListener("click", () => { d.cw = i; buildTemplates(); drawLook(); });
+    cws.appendChild(b);
+  });
+}
+const PHOTO_HINT = "風景、花、寵物的毛色、喜歡的布料都可以，顏色豐富的相片效果最好。";
+/* 讓步驟 1 的畫面顯示「目前正在編輯的那一眼」的設定 */
+function syncEditor() {
+  const d = cur();
+  $("sameDesign").checked = st.sameDesign; $("eyeSeg").hidden = st.sameDesign; $("sfSwap").hidden = st.sameDesign;
+  for (const b of document.querySelectorAll("#eyeSeg button")) b.setAttribute("aria-selected", b.dataset.eye === st.eye);
+  for (const b of document.querySelectorAll("#srcSeg button")) b.setAttribute("aria-selected", b.dataset.src === d.src);
+  $("paneTpl").hidden = d.src !== "tpl"; $("panePhoto").hidden = d.src !== "photo";
+  buildTemplates();
+  $("imgSize").hidden = !d.img; $("fileName").textContent = d.img ? "已選：" + d.photoName : PHOTO_HINT;
+  if (d.img) {
+    $("ringScale").value = Math.round(d.img.place.s * 100); $("rep").value = d.rep; $("repAng").value = d.repAng; $("repMirror").checked = d.repMirror;
+    if (d.src === "photo") drawOverview(paramsOf(d));
+    updateQuality();
+  }
+}
+function setSource(src) { cur().src = src; syncEditor(); drawLook(); refreshBar(); }
+function setEye(e) { if (st.sameDesign || st.eye === e) return; st.eye = e; syncEditor(); drawLook(); }
 
-/* ---------- admin ---------- */
-const STATUS={review:['待審稿','warn'],revise:['需修改','danger'],fitting:['待驗光','accent'],sent:['已送廠','ok']};
-let AF='all',OPEN=null,ATAB='orders';
-const dt=t=>{const d=new Date(t),p=n=>String(n).padStart(2,'0');return`${d.getFullYear()}/${p(d.getMonth()+1)}/${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`};
-function checks(d,a){const out=[],n=a.colors.length;
-  if(n>CFG.maxColors)out.push(['warn',`估算 ${n} 色，超過上限 ${CFG.maxColors} 色`]);
-  if(a.clearPct>1)out.push(['warn',`圖案進入中央透明區，約占該區 ${Math.round(a.clearPct)}%`]);
-  if(a.outPct>1)out.push(['warn',`圖案超出著色外徑，約占外緣 ${Math.round(a.outPct)}%`]);
-  for(const L of d.layers.filter(l=>l.visible)){
-    if(L.type==='pattern'&&['fiber','spokes','lace'].includes(L.pattern)&&L.thick<CFG.minLine)out.push(['warn',`${layerName(L)}線寬 ${(+L.thick).toFixed(2)} mm，低於最小線寬 ${CFG.minLine} mm`]);
-    if(L.type==='pattern'&&L.pattern==='dots'&&L.thick*3<CFG.minLine)out.push(['warn',`點點直徑低於最小線寬 ${CFG.minLine} mm`]);
-    if(L.type==='draw'){const thin=L.strokes.filter(s=>s.s<CFG.minLine).length;if(thin)out.push(['warn',`手繪有 ${thin} 筆線寬低於 ${CFG.minLine} mm`]);if(!L.strokes.length)out.push(['info','手繪圖層沒有筆畫'])}
-    if(L.type==='image'){out.push(['info','含上傳圖片：細節與實際色數需人工確認']);if(L.src&&Math.min(L.ow,L.oh)<500)out.push(['warn',`圖片解析度偏低（${L.ow}×${L.oh}px），印出來可能模糊`])}
-    if(L.type==='gradient')out.push(['info','含漸層：需用網點呈現，請確認廠商可印製'])
-    if(L.opacity<.95)out.push(['info',`${layerName(L)}半透明（${Math.round(L.opacity*100)}%），印刷濃度需與廠商確認`])}
-  return out}
-function orderChecks(o){const aL=analyze(o.design.L),aR=analyze(o.design.R);return{aL,aR,cL:checks(o.design.L,aL),cR:checks(o.design.R,aR)}}
-function renderFilters(){const cnt=s=>ORDERS.filter(o=>s==='all'||o.status===s).length;
-  $('#filters').innerHTML=[['all','全部'],...Object.entries(STATUS).map(([k,v])=>[k,v[0]])].map(([k,t])=>`<button class="chipbtn ${AF===k?'on':''}" data-f="${k}">${t} ${cnt(k)}</button>`).join('')}
-function renderOrderList(){renderFilters();const list=ORDERS.filter(o=>AF==='all'||o.status===AF);
-  if(!ORDERS.length){$('#olist').innerHTML='<div class="empty-box">還沒有訂單。到顧客端送出一筆，或按下方「載入範例訂單」看看審稿流程。</div>';return}
-  if(!list.length){$('#olist').innerHTML='<div class="empty-box">這個狀態沒有訂單。</div>';return}
-  $('#olist').innerHTML=list.map(o=>{const c=orderChecks(o),w=[...c.cL,...c.cR].filter(x=>x[0]==='warn').length,s=STATUS[o.status];
-    return`<button class="orow" data-id="${o.id}"><span class="minis"><span><img alt="右眼" src="${o.thumbs.R}"></span><span><img alt="左眼" src="${o.thumbs.L}"></span></span>
-    <span class="oinfo"><b>${esc(o.name)}</b>${o.id}<br>${dt(o.at)}</span>
-    <span class="oright"><span class="chip ${s[1]}">${s[0]}</span>${w&&o.status==='review'?`<span class="risk">${w} 項需注意</span>`:''}</span></button>`}).join('')}
-function layerDesc(L){const op=L.opacity<.99?`，不透明度 ${Math.round(L.opacity*100)}%`:'';
-  switch(L.type){case'pattern':return`${layerName(L)}：${L.color}，密度 ${Math.round(L.count)}，線寬 ${(+L.thick).toFixed(2)} mm，範圍 Ø${dia(Math.min(L.r0,L.r1))}–${dia(Math.max(L.r0,L.r1))}${op}`;
-    case'ring':return`外圈：${L.color}，外徑 Ø${dia(L.r)}，寬 ${FMT.width(L.width)}，柔邊 ${FMT.soft(L.soft)}${op}`;
-    case'gradient':return`漸層：${L.c0} → ${L.c1}，範圍 Ø${dia(Math.min(L.r0,L.r1))}–${dia(Math.max(L.r0,L.r1))}${op}`;
-    case'image':return`圖片：原始 ${L.ow}×${L.oh}px，縮放 ${FMT.scale(L.scale)}，旋轉 ${Math.round(L.rot)}°，${L.ox||L.oy?`偏移 ${((L.ox||0)*CFG.lensD/2).toFixed(1)}, ${((L.oy||0)*CFG.lensD/2).toFixed(1)} mm`:'置中'}，範圍 Ø${dia(Math.min(L.r0,L.r1))}–${dia(Math.max(L.r0,L.r1))}${op}`;
-    case'draw':return`手繪：${L.strokes.length} 筆，${L.sym>1?L.sym+' 重對稱':'不對稱'}${op}`}}
-function eyeBlock(o,k,a,cs){const d=o.design[k],t=k==='L'?'左眼':'右眼',vis=[...d.layers].filter(l=>l.visible).reverse();
-  return`<div class="card eye"><h3 class="serif">${t}</h3><div class="disc"><img alt="${t}設計" src="${snap(d,360,'dark',true)}"></div>
-  <h4>度數（顧客自填）</h4><p class="rxline">${rxText(o.rx[k])}</p>
-  ${o.rxConfirmed?`<h4>驗光確認度數</h4><p class="rxline">${esc(o.rxConfirmed[k])||'—'}</p>`:''}
-  <h4>估算色數：${a.colors.length} 色</h4><div class="swatches">${a.colors.map(c=>`<span><i style="background:${c.hex}"></i>${c.hex} ${Math.round(c.share*100)}%</span>`).join('')||'無'}</div>
-  <h4>圖層（上到下）</h4>${vis.length?`<ol>${vis.map(L=>`<li>${esc(layerDesc(L))}</li>`).join('')}</ol>`:'<p class="rxline">無</p>'}
-  <h4>可生產性檢查</h4><ul class="checks">${cs.length?cs.map(([lv,m])=>`<li class="${lv}">${esc(m)}</li>`).join(''):'<li class="pass">沒有發現問題</li>'}</ul></div>`}
-function renderSheet(){const o=ORDERS.find(x=>x.id===OPEN);if(!o){closeSheet();return}const c=orderChecks(o),s=STATUS[o.status];
-  let act='';
-  if(o.status==='review')act=`<h3 class="ph serif">審稿</h3><textarea id="revNote" rows="2" placeholder="審稿備註；退回時請寫明要修改的地方"></textarea><div class="btn-row"><button class="btn primary" data-a="approve">通過審稿，通知驗光</button><button class="btn danger" data-a="revise">退回修改</button></div>`;
-  else if(o.status==='revise')act=`<h3 class="ph serif">已退回修改</h3><p class="hint">正式上線時，這裡要通知顧客修改設計。</p><button class="btn" data-a="reopen">改回待審稿</button>`;
-  else if(o.status==='fitting')act=`<h3 class="ph serif">驗光確認</h3><div class="row2"><label class="f"><span>右眼度數</span><input type="text" id="rxcR" value="${esc(rxText(o.rx.R))}"></label><label class="f"><span>左眼度數</span><input type="text" id="rxcL" value="${esc(rxText(o.rx.L))}"></label></div><button class="btn primary" data-a="send">驗光完成，送廠製作</button>`;
-  else act=`<h3 class="ph serif">已送廠</h3><p class="hint">這筆訂單已經送廠製作。</p>`;
-  $('#sheet').innerHTML=`<div class="sheet-head noprint"><div class="wrap"><button class="btn ghost" data-a="close">← 回訂單列表</button><div class="grow"></div><button class="btn" data-a="print">列印規格單</button></div></div>
-  <article class="spec">
-    <div class="spec-top"><div><h2 class="serif">規格單 ${o.id}</h2><p>${dt(o.at)}　${esc(CFG.shopName)}</p></div><span class="chip ${s[1]}">${s[0]}</span></div>
-    <div class="kv">
-      <div><span>顧客</span>${esc(o.name)}</div><div><span>手機</span>${esc(o.phone)}</div><div><span>Email</span>${esc(o.email)||'—'}</div><div><span>驗光門市</span>${esc(o.store)}</div>
-      <div><span>數量</span>${o.qty} 副</div><div><span>預估金額</span>${money(o.price.total)}（每副 ${money(o.price.unit)}）</div>
-      <div><span>鏡片規格</span>Ø${o.spec.lensD} mm，著色外徑 Ø${o.spec.printD} mm，透明區 Ø${o.spec.clearD} mm</div><div><span>左右設計</span>${o.sync?'相同':'不同'}</div>
-      ${o.note?`<div style="grid-column:1/-1"><span>顧客備註</span>${esc(o.note)}</div>`:''}
-    </div>
-    <p class="fine" style="margin:-8px 0 16px">虛線為著色外徑與中央透明區。檢查依目前設定：色數上限 ${CFG.maxColors} 色、最小線寬 ${CFG.minLine} mm；色數為估算值，以廠商判定為準。</p>
-    <div class="eyes">${eyeBlock(o,'R',c.aR,c.cR)}${eyeBlock(o,'L',c.aL,c.cL)}</div>
-    <div class="card actions noprint" style="margin-bottom:16px">${act}</div>
-    <h3 class="ph serif">處理紀錄</h3><ul class="hist">${o.history.map(h=>`<li>${dt(h.at)}　<b>${STATUS[h.s][0]}</b>　${esc(h.note)}</li>`).join('')}</ul>
-    <p class="noprint" style="margin-top:22px"><button class="btn sm ghost danger" data-a="delete">刪除這筆訂單</button></p>
-  </article>`}
-function setStatus(o,s,note){o.status=s;o.history.push({at:Date.now(),s,note});saveOrders();renderSheet();renderOrderList();$('#sheet').scrollTop=0}
-function openOrder(id){OPEN=id;renderSheet();$('#sheet').hidden=false;$('#sheet').scrollTop=0;document.body.classList.add('noscroll')}
-function closeSheet(){OPEN=null;$('#sheet').hidden=true;document.body.classList.remove('noscroll')}
-function renderSettings(){const n=(k,t,step,u='')=>`<label class="f"><span>${t}${u?`（${u}）`:''}</span><input type="number" name="${k}" step="${step}" value="${CFG[k]}"></label>`;
-  $('#at-settings').innerHTML=`<h3 class="serif">店家</h3><div class="settings-grid"><label class="f"><span>店名</span><input type="text" name="shopName" value="${esc(CFG.shopName)}"></label><label class="f" style="grid-column:span 2"><span>驗光門市（一行一間）</span><textarea name="stores" rows="2">${esc(CFG.stores)}</textarea></label></div>
-  <h3 class="serif">印刷限制（先用常見假設值，請向廠商確認）</h3><div class="settings-grid">${n('lensD','鏡片直徑',.1,'mm')}${n('printD','著色外徑',.1,'mm')}${n('clearD','中央透明區直徑',.1,'mm')}${n('maxColors','色數上限',1,'色')}${n('minLine','最小線寬',.01,'mm')}</div>
-  <h3 class="serif">試算價格</h3><div class="settings-grid">${n('base','基本製作',50,'元／副')}${n('perLayer','超過 2 層每層',10,'元')}${n('image','含上傳圖片',10,'元')}${n('draw','含手繪',10,'元')}${n('split','左右不同設計',10,'元')}${n('perColor','每多一色',10,'元')}${n('freeColors','不加價色數',1,'色')}</div>
-  <div class="btn-row" style="margin-top:8px"><button class="btn primary" type="submit">儲存設定</button><button class="btn ghost" type="button" id="resetCfg">還原預設值</button></div>`;
-  $('#resetCfg').onclick=()=>{if(!confirm('還原成預設值？'))return;CFG=Object.assign({},DEF);lsSet(K.cfg,CFG);afterCfg();renderSettings();toast('已還原預設值。')}}
-function afterCfg(){$('#brandName').textContent=CFG.shopName;document.title=CFG.shopName+'｜客製彩色隱形眼鏡';fillStores();renderPresets();redraw();updateEstimate();renderOrderList()}
-function seedOrders(){const g=G(),P=i=>({layers:PRESETS[i].make()}),now=Date.now(),H=3600e3;
-  const d2L=P(4),d2R=P(5);d2R.layers.splice(0,0,mk('gradient',{c0:'#c7a36a',c1:'#6b2e2e'}));
-  const dr=mk('draw',{sym:8,strokes:[{c:'#f6e7c8',s:.05,pts:[[.2,-.02],[.3,-.06],[.42,-.04],[.5,0]]},{c:'#f6e7c8',s:.2,pts:[[.36,.08],[.44,.12]]}]});d2L.layers.push(dr);
-  const d3=P(2);d3.layers.push(mk('pattern',{pattern:'dots',color:'#ffffff',count:60,thick:.05,r0:+(g.clear-.08).toFixed(3),r1:+(g.clear+.1).toFixed(3)}));
-  const mkO=(f,st,hist)=>{const o=buildOrder(f);o.status=st;o.history.push(...hist);return o};
-  const list=[
-    mkO({dL:P(2),dR:P(2),name:'陳小姐',phone:'0912-345-678',store:CFG.stores.split('\n')[0],qty:2,at:now-2*H,rx:{L:{sph:'-3',cyl:'0',ax:''},R:{sph:'-3.25',cyl:'0',ax:''}}},'review',[]),
-    mkO({dL:d2L,dR:d2R,name:'林先生',phone:'0987-111-222',store:CFG.stores.split('\n')[0],qty:1,at:now-5*H,note:'左右想要不同，右眼偏暖色',rx:{L:{sph:'unknown',cyl:'0',ax:''},R:{sph:'unknown',cyl:'0',ax:''}}},'review',[]),
-    mkO({dL:d3,dR:d3,name:'王小姐',phone:'0955-888-000',store:CFG.stores.split('\n')[0],qty:1,at:now-30*H,rx:{L:{sph:'-5.5',cyl:'-0.75',ax:'180'},R:{sph:'-5',cyl:'0',ax:''}}},'fitting',[{at:now-26*H,s:'fitting',note:'通過審稿'}])];
-  ORDERS=[...list,...ORDERS];if(!saveOrders())toast('儲存空間不足，範例訂單沒有存起來。');renderOrderList();toast('已載入 3 筆範例訂單。')}
-function initAdmin(){
-  $('#filters').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;AF=b.dataset.f;renderOrderList()});
-  $('#olist').addEventListener('click',e=>{const b=e.target.closest('.orow');if(b)openOrder(b.dataset.id)});
-  $('#adminTabs').addEventListener('click',e=>{const b=e.target.closest('[data-at]');if(!b)return;ATAB=b.dataset.at;$$('#adminTabs button').forEach(x=>x.classList.toggle('on',x===b));$('#at-orders').hidden=ATAB!=='orders';$('#at-settings').hidden=ATAB!=='settings';if(ATAB==='settings')renderSettings()});
-  $('#seedBtn').addEventListener('click',seedOrders);
-  $('#clearBtn').addEventListener('click',()=>{if(!ORDERS.length||!confirm('刪除這個瀏覽器裡的全部訂單？'))return;ORDERS=[];saveOrders();renderOrderList()});
-  $('#at-settings').addEventListener('submit',e=>{e.preventDefault();const F=e.target,nv=k=>parseFloat(F.elements[k].value),next=Object.assign({},CFG);
-    for(const k of Object.keys(DEF)){if(k==='shopName'||k==='stores')next[k]=F.elements[k].value.trim()||DEF[k];else{const v=nv(k);if(!isFinite(v)||v<0){toast('「'+k+'」需要是正數。');return}next[k]=v}}
-    if(!(next.clearD<next.printD&&next.printD<=next.lensD)){toast('尺寸需符合：透明區直徑 < 著色外徑 ≤ 鏡片直徑。');return}
-    CFG=next;lsSet(K.cfg,CFG);afterCfg();toast('設定已儲存。')});
-  $('#sheet').addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,o=ORDERS.find(x=>x.id===OPEN);
-    if(a==='close')return closeSheet();if(a==='print')return window.print();if(!o)return;
-    const note=($('#revNote')||{}).value?.trim()||'';
-    if(a==='approve')setStatus(o,'fitting',note||'通過審稿');
-    else if(a==='revise'){if(!note){toast('請先寫下要顧客修改的地方。');$('#revNote').focus();return}setStatus(o,'revise',note)}
-    else if(a==='reopen')setStatus(o,'review','重新審稿');
-    else if(a==='send'){o.rxConfirmed={R:$('#rxcR').value.trim(),L:$('#rxcL').value.trim()};setStatus(o,'sent',`驗光確認：右 ${o.rxConfirmed.R}／左 ${o.rxConfirmed.L}`)}
-    else if(a==='delete'){if(!confirm('刪除這筆訂單？'))return;ORDERS=ORDERS.filter(x=>x!==o);saveOrders();closeSheet();renderOrderList()}});
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&OPEN)closeSheet()})}
+/* ============ 步驟 2：度數與數量 ============ */
+function buildSpec() {
+  const box = $("cycles"); box.textContent = "";
+  for (const cy of CONFIG.cycles) {
+    const l = document.createElement("label"); l.className = "cycle";
+    const i = document.createElement("input"); i.type = "radio"; i.name = "cycle"; i.value = cy.id; i.checked = st.cycle === cy.id;
+    i.addEventListener("change", () => { st.cycle = cy.id; refreshBar(); });
+    const t = document.createElement("span"); const b = document.createElement("b"); b.textContent = cy.name; const sm = document.createElement("small"); sm.textContent = cy.unit; t.append(b, sm);
+    const pr = document.createElement("span"); pr.className = "p"; pr.textContent = money(cy.price) + "／盒";
+    l.append(i, t, pr); box.appendChild(l);
+  }
+  const opts = [["", "請選擇"], ["0.00", "0.00（無度數）"]];
+  for (let v = 0.5; v <= 6.001; v += 0.25) opts.push([(-v).toFixed(2), (-v).toFixed(2)]);
+  for (let v = 6.5; v <= 10.001; v += 0.5) opts.push([(-v).toFixed(2), (-v).toFixed(2)]);
+  for (const id of ["pR", "pL"]) { const s = $(id); s.textContent = ""; for (const [v, t] of opts) s.add(new Option(t, v)); }
+}
+function syncSpec() {
+  $("pR").value = st.R.p; $("pL").value = st.same ? st.R.p : st.L.p; $("pL").disabled = st.same;
+  $("qR").textContent = st.R.q; $("qL").textContent = st.L.q; $("same").checked = st.same; $("sameHint").hidden = !st.same;
+}
+const boxes = () => st.R.q + st.L.q;
+const cycleOf = () => CONFIG.cycles.find(c => c.id === st.cycle);
+const total = () => boxes() * cycleOf().price;
 
-/* ---------- navigation ---------- */
-function go(step){if(step==='order'&&!hasDesign()){toast('先設計至少一眼的圖案再下單。');return}
-  const prev=ST.step;ST.step=step;$$('#steps button').forEach(b=>b.classList.toggle('on',b.dataset.step===step));$$('#shop .screen').forEach(s=>s.hidden=s.id!=='s-'+step);
-  if(step==='tryon')enterTry();else if(prev==='tryon')leaveTry();
-  if(step==='order')renderOrder();if(step==='design')redraw();syncDrawMode();window.scrollTo(0,0)}
-function setAppMode(m){ST.mode=m;$$('#modeSeg button').forEach(b=>b.classList.toggle('on',b.dataset.mode===m));$('#shop').hidden=m!=='shop';$('#admin').hidden=m!=='admin';
-  if(m==='admin'){if(ST.step==='tryon')leaveTry();renderOrderList()}else{closeSheet();if(ST.step==='tryon')enterTry()}syncDrawMode();window.scrollTo(0,0)}
-function refreshVisible(){if(ST.mode==='shop'){redraw();updateEstimate();if(ST.step==='tryon')refreshTryLens();renderList()}else{renderOrderList();if(OPEN)renderSheet()}}
+/* ============ 步驟 3：門市、時間、聯絡 ============ */
+function fill(sel, items, placeholder) { sel.textContent = ""; sel.add(new Option(placeholder, "")); for (const [v, t] of items) sel.add(new Option(t, v)); }
+function buildStores() {
+  fill($("county"), Object.keys(STORES).map(c => [c, `${c}（${Object.values(STORES[c]).reduce((n, a) => n + a.length, 0)}）`]), "請選擇縣市");
+  fill($("dist"), [], "請先選縣市"); fill($("store"), [], "請先選區域");
+  // 往後數滿 leadWorkdays 個工作天（不含今天、週六、週日與 CONFIG.holidays），隔天起才能取貨
+  const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  const d = new Date(); d.setHours(0, 0, 0, 0);
+  for (let n = 0; n < CONFIG.leadWorkdays;) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0 && d.getDay() !== 6 && !CONFIG.holidays.includes(iso(d))) n++; }
+  d.setDate(d.getDate() + 1);
+  const first = new Date(d), days = [];
+  for (let i = 0; i < CONFIG.pickupWindowDays; i++) { days.push([iso(d), `${d.getMonth() + 1}/${d.getDate()}（${"日一二三四五六"[d.getDay()]}）`]); d.setDate(d.getDate() + 1); }
+  fill($("date"), days, "請選擇日期");
+  $("leadNote").textContent = `製作需要 ${CONFIG.leadWorkdays} 個工作天（不含週六、週日），最快 ${first.getMonth() + 1} 月 ${first.getDate()} 日可以取貨，更早的日期不會出現在選單裡。`;
+}
+const storeOf = () => (st.county && st.dist && st.store >= 0) ? STORES[st.county][st.dist][st.store] : null;
+function fmtDate(v) { if (!v) return ""; const d = new Date(v + "T00:00:00"); return `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}（${"日一二三四五六"[d.getDay()]}）`; }
 
-document.addEventListener('DOMContentLoaded',()=>{
-  $('#brandName').textContent=CFG.shopName;document.title=CFG.shopName+'｜客製彩色隱形眼鏡';
-  initEditor();initTry();initOrder();fillStores();initAdmin();
-  $('#steps').addEventListener('click',e=>{const b=e.target.closest('[data-step]');if(b)go(b.dataset.step)});
-  document.addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)go(b.dataset.go)});
-  $('#modeSeg').addEventListener('click',e=>{const b=e.target.closest('[data-mode]');if(b)setAppMode(b.dataset.mode)});
+/* ============ 步驟 4：摘要 ============ */
+function summaryInto(box, editable) {
+  box.textContent = "";
+  const sec = (title, step, rows) => {
+    const s = document.createElement("div"); s.className = "sumsec";
+    const h = document.createElement("div"); h.className = "sumhead"; const b = document.createElement("b"); b.textContent = title; h.appendChild(b);
+    if (editable) { const e = document.createElement("button"); e.type = "button"; e.className = "link"; e.textContent = "修改"; e.addEventListener("click", () => go(step)); h.appendChild(e); }
+    const dl = document.createElement("dl"); dl.className = "sum";
+    for (const [k, v] of rows) { const dt = document.createElement("dt"); dt.textContent = k; const dd = document.createElement("dd"); dd.textContent = v; dl.append(dt, dd); }
+    s.append(h, dl); box.appendChild(s);
+  };
+  const cy = cycleOf(), s = storeOf(), pw = v => v === "0.00" ? "0.00（無度數）" : v;
+  sec("花紋", 1, st.sameDesign ? [["兩眼同款", nameOf(st.des.R)]] : [["右眼", nameOf(st.des.R)], ["左眼", nameOf(st.des.L)]]);
+  sec("度數與數量", 2, [["配戴週期", `${cy.name}（${cy.unit}）`], ["右眼", `${pw(st.R.p)}　${st.R.q} 盒`], ["左眼", `${pw(st.same ? st.R.p : st.L.p)}　${st.L.q} 盒`]]);
+  sec("取貨與聯絡", 3, [["門市", s ? `寶島眼鏡 ${s[0]}` : ""], ["地址", s ? s[1] : ""], ["取貨時間", `${fmtDate($("date").value)} ${$("slot").value}`], ["姓名", $("name").value.trim()], ["手機", $("phone").value.trim()], ...($("note").value.trim() ? [["備註", $("note").value.trim()]] : [])]);
+  const t = document.createElement("div"); t.className = "total";
+  const l = document.createElement("span"); l.textContent = `${boxes()} 盒 × ${money(cy.price)}，門市付款`; const b = document.createElement("b"); b.className = "serif"; b.textContent = money(total());
+  t.append(l, b); box.appendChild(t);
+}
+
+/* ============ 流程 ============ */
+function setMsg(kind, text) { const box = $("msgs"); box.textContent = ""; if (!text) return; const p = document.createElement("p"); p.className = "msg " + kind; p.textContent = text; box.appendChild(p); }
+function validate(step) {
+  if (step === 1) {
+    if (st.sameDesign) return has(st.des.R) ? "" : (st.des.R.src === "tpl" ? "請先選一款花紋。" : "請先選一張相片。");
+    if (!has(st.des.R)) return "右眼還沒選花紋。請點「右眼的花紋」選一款。";
+    if (!has(st.des.L)) return "左眼還沒選花紋。請點「左眼的花紋」選一款。";
+    return "";
+  }
+  if (step === 2) {
+    if (!st.R.p && st.R.q > 0) return "請選右眼的度數。";
+    if (!st.same && !st.L.p && st.L.q > 0) return "請選左眼的度數。";
+    if (boxes() < 1) return "至少要訂 1 盒。";
+    return "";
+  }
+  if (step === 3) {
+    if (!storeOf()) return "請選擇取貨門市。";
+    if (!$("date").value) return "請選擇取貨日期。";
+    if (!$("slot").value) return "請選擇取貨時段。";
+    if (!$("name").value.trim()) return "請填寫姓名。";
+    if (!/^09\d{8}$/.test($("phone").value.trim())) return "手機號碼請填 10 碼，例如 0912345678。";
+    return "";
+  }
+  if (step === 4) return $("agree").checked ? "" : "請先勾選下方的確認事項。";
+  return "";
+}
+const NEXT = { 1: "下一步", 2: "下一步", 3: "下一步", 4: "送出訂單" };
+function refreshBar() {
+  $("subLabel").textContent = st.step === 1 ? "每盒" : `小計（${boxes()} 盒）`;
+  $("subTotal").textContent = st.step === 1 ? money(Math.min(...CONFIG.cycles.map(c => c.price))) + " 起" : money(total());
+  $("next").textContent = NEXT[st.step] || ""; $("back").hidden = st.step === 1;
+  $("bar").hidden = st.step === 5;
+}
+function go(step) {
+  if (step > 1 && (live.on || live.starting)) stopLive();      // 離開選花紋的步驟就關掉鏡頭
+  st.step = step; setMsg("", "");
+  for (let i = 1; i <= 5; i++) $("s" + i).hidden = i !== step;
+  document.querySelectorAll("#steps li").forEach((li, i) => { li.className = i + 1 === step ? "on" : i + 1 < step ? "done" : ""; li.firstElementChild.disabled = step === 5 || i + 1 > step; });
+  document.body.classList.toggle("compact", step > 1); document.body.classList.toggle("step1", step === 1);
+  if (step === 2) syncSpec();
+  if (step === 4) summaryInto($("summary"), true);
+  if (step === 1) syncEditor();
+  refreshBar(); window.scrollTo({ top: 0 });
+}
+function next() {
+  const err = validate(st.step); if (err) { setMsg("err", err); return; }
+  if (st.step < 4) { go(st.step + 1); return; }
+  const d = new Date(), pad = n => String(n).padStart(2, "0");
+  st.orderNo = "TH" + String(d.getFullYear()).slice(2) + pad(d.getMonth() + 1) + pad(d.getDate()) + "-" + String(Math.floor(1000 + Math.random() * 9000));
+  $("orderNo").textContent = st.orderNo; summaryInto($("summary2"), false); $("dlNote").textContent = "";
+  const box = $("dlBox"); box.textContent = "";
+  const mk = (label, kind) => { const b = document.createElement("button"); b.type = "button"; b.className = "go"; b.textContent = label; b.addEventListener("click", () => download(kind)); box.appendChild(b); };
+  mk("下載訂單明細", "order");
+  if (st.sameDesign) mk("下載設計圖", "R"); else { mk("下載右眼設計圖", "R"); mk("下載左眼設計圖", "L"); }
+  go(5);
+}
+
+/* ============ 下載：訂單明細（圖片）與設計圖 ============ */
+/* 下載：發佈頁面用平台的下載功能，本機開啟時退回一般下載連結 */
+const downloadsReady = (window.claude && typeof window.claude.use === "function")
+  ? window.claude.use("downloads").catch(() => null) : Promise.resolve(null);
+async function saveBlob(blob, filename) {
+  const dl = await downloadsReady;
+  if (dl) { await dl.save({ filename, data: blob }); return; }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 60000);
+}
+
+function orderSlip() {
+  const W = 1080, cy = cycleOf(), s = storeOf(), pw = v => v === "0.00" ? "0.00（無度數）" : v;
+  const rows = [
+    ...(st.sameDesign ? [["花紋（兩眼同款）", nameOf(st.des.R)]] : [["右眼花紋", nameOf(st.des.R)], ["左眼花紋", nameOf(st.des.L)]]),
+    ["配戴週期", `${cy.name}（${cy.unit}）`],
+    ["右眼", `${pw(st.R.p)}　${st.R.q} 盒`], ["左眼", `${pw(st.same ? st.R.p : st.L.p)}　${st.L.q} 盒`],
+    ["取貨門市", `寶島眼鏡 ${s[0]}`], ["門市地址", s[1]], ["取貨時間", `${fmtDate($("date").value)} ${$("slot").value}`],
+    ["姓名", $("name").value.trim()], ["手機", $("phone").value.trim()],
+  ];
+  if ($("note").value.trim()) rows.push(["備註", $("note").value.trim()]);
+  const H = 620 + rows.length * 74 + 230, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+  const c = cv.getContext("2d"), sans = '"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif', serif = '"Noto Serif TC","Songti TC",serif';
+  c.fillStyle = "#fff"; c.fillRect(0, 0, W, H);
+  c.fillStyle = "#2B1D24"; c.textBaseline = "alphabetic";
+  c.font = `700 56px ${serif}`; c.fillText(CONFIG.brand, 70, 120);
+  c.font = `400 28px ${sans}`; c.fillStyle = "#77666E"; c.fillText("訂製花紋隱形眼鏡　訂單明細", 70, 168);
+  c.textAlign = "right"; c.fillText("訂單編號", W - 70, 96); c.fillStyle = "#2B1D24"; c.font = `700 40px ${serif}`; c.fillText(st.orderNo, W - 70, 150); c.textAlign = "left";
+  c.fillStyle = "#E6DCE0"; c.fillRect(70, 200, W - 140, 2);
+  const disc = (d, x, rad, label) => {
+    const img = designForPrint(d, rad * 2); c.save(); c.beginPath(); c.arc(x, 410, rad, 0, TAU); c.clip(); c.drawImage(img, x - rad, 410 - rad); c.restore();
+    c.fillStyle = "#fff"; c.beginPath(); c.arc(x, 410, rad * CONFIG.holeRatio, 0, TAU); c.fill();
+    c.strokeStyle = "#E6DCE0"; c.lineWidth = 2; c.beginPath(); c.arc(x, 410, rad, 0, TAU); c.stroke();
+    if (label) { c.fillStyle = "#77666E"; c.font = `400 26px ${sans}`; c.textAlign = "center"; c.fillText(label, x, 410 + rad + 40); c.textAlign = "left"; }
+  };
+  if (st.sameDesign) disc(st.des.R, W / 2, 180, ""); else { disc(st.des.R, W / 2 - 200, 160, "右眼"); disc(st.des.L, W / 2 + 200, 160, "左眼"); }
+  let y = 680;
+  for (const [k, v] of rows) {
+    c.font = `400 28px ${sans}`; c.fillStyle = "#77666E"; c.fillText(k, 70, y);
+    c.font = `500 30px ${sans}`; c.fillStyle = "#2B1D24"; c.textAlign = "right";
+    let t = v; while (c.measureText(t).width > W - 330 && t.length > 4) t = t.slice(0, -2) + "…";
+    c.fillText(t, W - 70, y); c.textAlign = "left";
+    c.fillStyle = "#F0E9EC"; c.fillRect(70, y + 24, W - 140, 1); y += 74;
+  }
+  y += 30; c.fillStyle = "#2B1D24"; c.fillRect(70, y - 40, W - 140, 3);
+  c.font = `400 30px ${sans}`; c.fillText(`${boxes()} 盒 × ${money(cy.price)}，門市付款`, 70, y + 30);
+  c.font = `700 60px ${serif}`; c.textAlign = "right"; c.fillText(money(total()), W - 70, y + 40); c.textAlign = "left";
+  c.font = `400 24px ${sans}`; c.fillStyle = "#77666E";
+  const now = new Date(); c.fillText(`下單時間 ${now.getFullYear()}/${now.getMonth() + 1}/${now.getDate()} ${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}　取貨時由門市人員確認度數`, 70, y + 120);
+  return cv;
+}
+async function download(kind) {
+  const note = $("dlNote"); note.textContent = "準備檔案中…";
+  try {
+    if (document.fonts && document.fonts.ready) await document.fonts.ready;
+    const cv = kind === "order" ? orderSlip() : designForPrint(desOf(kind), designSize(desOf(kind)));
+    const label = kind === "order" ? "訂單明細" : st.sameDesign ? "設計圖" : kind === "R" ? "設計圖_右眼" : "設計圖_左眼";
+    const blob = await new Promise((res, rej) => cv.toBlob(b => b ? res(b) : rej(new Error("無法產生圖檔")), "image/png"));
+    await saveBlob(blob, `${st.orderNo}_${label}.png`);
+    note.textContent = label.replace("_", "（") + (label.includes("_") ? "）" : "") + "已準備好。";
+  } catch (e) {
+    const code = e && e.code;
+    note.textContent = code === "declined" ? "已取消下載。" : code === "rate_limited" ? "下載提示還沒關閉，請稍後再按一次。" : code ? "這個畫面無法下載檔案。" : "下載失敗：" + (e && e.message ? e.message : e);
+  }
+}
+
+/* ============ 事件 ============ */
+for (const b of document.querySelectorAll("#srcSeg button")) b.addEventListener("click", () => setSource(b.dataset.src));
+for (const b of document.querySelectorAll("#eyeSeg button")) b.addEventListener("click", () => setEye(b.dataset.eye));
+$("sameDesign").addEventListener("change", () => {
+  st.sameDesign = $("sameDesign").checked;
+  if (!st.sameDesign) { const R = st.des.R; st.des.L = { ...R, img: R.img ? { ...R.img, place: { ...R.img.place } } : null }; st.eye = "L"; }   // 左眼先沿用右眼的，再讓使用者改
+  else st.eye = "R";
+  syncEditor(); drawLook(); refreshBar();
 });
+$("eye").addEventListener("click", e => {                       // 點預覽圖裡的哪隻眼，就編輯哪隻眼
+  if (st.sameDesign) return;
+  const r = e.currentTarget.getBoundingClientRect(), left = (e.clientX - r.left) < r.width / 2;
+  const flip = live.on ? true : !!(st.selfie && st.selfie.ready && st.selfie.swap);      // 鏡頭畫面是鏡像，左右相反
+  setEye(left !== flip ? "R" : "L");
+});
+for (const b of document.querySelectorAll("#steps button")) b.addEventListener("click", () => { const n = +b.dataset.go; if (n < st.step && st.step < 5) go(n); });
+$("next").addEventListener("click", next);
+for (const ev of ["input", "change", "click"]) document.querySelector("main").addEventListener(ev, () => setMsg("", ""));   // 使用者一動手就收掉舊的錯誤訊息
+$("back").addEventListener("click", () => go(Math.max(1, st.step - 1)));
+$("file").addEventListener("change", async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  const d = cur(); $("fileName").textContent = "讀取中…";
+  try {
+    d.img = await decodeImage(f); d.photoName = f.name || "photo"; d.rep = 1; d.repAng = 0; d.repMirror = false;
+    setMsg("", ""); syncEditor(); drawLook(); refreshBar();
+  } catch (err) { d.img = null; syncEditor(); $("fileName").textContent = "這張相片打不開，請換一張 JPG 或 PNG。"; drawLook(); }
+});
+
+/* 自拍試戴 */
+function openSelfie() {
+  const sf = st.selfie; $("sfCard").hidden = false; $("sfErr").textContent = ""; document.body.classList.add("sfopen");   // 設定自拍時先收起上方的預覽
+  if (sf && sf.pts.length === 2) { sfStage(2); $("sfSize").value = Math.round(sf.size * 100); $("sfThr").value = sf.thr; $("sfSizeOut").textContent = Math.round(sf.size * 100) + "%"; $("sfThrOut").textContent = sf.thr; renderStrip($("sfStrip")); }
+  else if (sf) { sfStage(1); drawSfPhoto(); } else sfStage(0);
+  $("sfCard").scrollIntoView({ block: "start" });
+}
+async function pickSelfie(e) {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  try { await loadSelfie(f); sfStage(1); drawSfPhoto(); drawLook(); }
+  catch (err) { st.selfie = null; sfStage(0); $("sfErr").textContent = "這張相片打不開，請再拍一次或換一張。"; }
+}
+$("sfOpen").addEventListener("click", () => { liveMsg(""); openSelfie(); }); $("sfEdit").addEventListener("click", openSelfie);
+$("liveOpen").addEventListener("click", startLive);
+$("liveOff").addEventListener("click", () => stopLive());
+document.addEventListener("visibilitychange", () => { if (document.hidden && (live.on || live.starting)) stopLive(); });   // 離開畫面就把鏡頭關掉
+$("sfCam").addEventListener("change", pickSelfie); $("sfPick").addEventListener("change", pickSelfie);
+const closeSelfie = () => { $("sfCard").hidden = true; document.body.classList.remove("sfopen"); };
+$("sfClose").addEventListener("click", closeSelfie);
+$("sfOff").addEventListener("click", () => { st.selfie = null; closeSelfie(); drawLook(); });
+for (const id of ["sfRetake", "sfRetake2"]) $(id).addEventListener("click", () => { st.selfie = null; sfStage(0); drawLook(); });
+$("sfRepick").addEventListener("click", () => { st.selfie.pts = []; st.selfie.ready = false; sfStage(1); drawSfPhoto(); drawLook(); });
+$("sfPhoto").addEventListener("click", e => {
+  const sf = st.selfie; if (!sf || sf.pts.length >= 2) return;
+  const r = e.currentTarget.getBoundingClientRect();
+  sf.pts.push({ x: (e.clientX - r.left) / r.width * sf.cv.width, y: (e.clientY - r.top) / r.height * sf.cv.height });
+  if (sf.pts.length < 2) { drawSfPhoto(); return; }
+  sf.pts.sort((a, b) => a.x - b.x);
+  if (Math.hypot(sf.pts[1].x - sf.pts[0].x, sf.pts[1].y - sf.pts[0].y) < sf.cv.width * .04) { sf.pts = []; drawSfPhoto(); $("sfHint").textContent = "兩個點太近了。請重新點：先點畫面「左邊」那隻眼睛的瞳孔。"; return; }
+  openSelfie();
+});
+$("sfSize").addEventListener("input", () => { st.selfie.size = +$("sfSize").value / 100; $("sfSizeOut").textContent = $("sfSize").value + "%"; renderStrip($("sfStrip")); if (st.selfie.ready) renderStrip($("eye")); });
+$("sfThr").addEventListener("input", () => { st.selfie.thr = +$("sfThr").value; $("sfThrOut").textContent = $("sfThr").value; renderStrip($("sfStrip")); if (st.selfie.ready) renderStrip($("eye")); });
+$("sfSwap").addEventListener("click", () => { st.selfie.swap = !st.selfie.swap; drawLook(); renderStrip($("sfStrip")); });
+$("sfDone").addEventListener("click", () => { st.selfie.ready = true; closeSelfie(); drawLook(); window.scrollTo({ top: 0 }); });
+{ // 在放大的雙眼畫面上拖曳，微調花紋的位置
+  const cv = $("sfStrip"); let drag = null;
+  const pos = e => { const r = cv.getBoundingClientRect(); return { x: (e.clientX - r.left) / r.width * cv.width, y: (e.clientY - r.top) / r.height * cv.height }; };
+  cv.addEventListener("pointerdown", e => { const sf = st.selfie; if (!sf || !sf.geo) return; const p = pos(e); drag = { i: Math.abs(p.x - sf.geo.ex[0]) < Math.abs(p.x - sf.geo.ex[1]) ? 0 : 1, last: p }; try { cv.setPointerCapture(e.pointerId); } catch (err) {} e.preventDefault(); });
+  cv.addEventListener("pointermove", e => {
+    const sf = st.selfie; if (!drag || !sf) return;
+    const p = pos(e), dx = p.x - drag.last.x, dy = p.y - drag.last.y, g = sf.geo, co = Math.cos(g.ang), si = Math.sin(g.ang);
+    sf.pts[drag.i].x += (dx * co - dy * si) / g.k; sf.pts[drag.i].y += (dx * si + dy * co) / g.k; drag.last = p;
+    renderStrip(cv); e.preventDefault();
+  });
+  const end = () => { if (drag && st.selfie && st.selfie.ready) renderStrip($("eye")); drag = null; };
+  cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+  for (const ev of ["touchstart", "touchmove"]) cv.addEventListener(ev, e => { if (e.cancelable) e.preventDefault(); }, { passive: false });
+}
+$("pR").addEventListener("change", () => { st.R.p = $("pR").value; if (st.same) $("pL").value = st.R.p; });
+$("pL").addEventListener("change", () => { st.L.p = $("pL").value; });
+$("same").addEventListener("change", () => { st.same = $("same").checked; if (!st.same && !st.L.p) st.L.p = st.R.p; syncSpec(); });
+for (const b of document.querySelectorAll(".qty button")) b.addEventListener("click", () => { const e = st[b.dataset.q]; e.q = Math.min(Math.max(e.q + +b.dataset.d, 0), CONFIG.maxBoxes); syncSpec(); refreshBar(); });
+$("county").addEventListener("change", () => {
+  st.county = $("county").value; st.dist = ""; st.store = -1; $("addr").hidden = true;
+  fill($("dist"), st.county ? Object.keys(STORES[st.county]).map(d => [d, d]) : [], st.county ? "請選擇區域" : "請先選縣市"); $("dist").disabled = !st.county;
+  fill($("store"), [], "請先選區域"); $("store").disabled = true;
+});
+$("dist").addEventListener("change", () => {
+  st.dist = $("dist").value; st.store = -1; $("addr").hidden = true;
+  fill($("store"), st.dist ? STORES[st.county][st.dist].map((s, i) => [String(i), s[0]]) : [], st.dist ? "請選擇門市" : "請先選區域"); $("store").disabled = !st.dist;
+  if (st.dist && STORES[st.county][st.dist].length === 1) { $("store").value = "0"; $("store").dispatchEvent(new Event("change")); }
+});
+$("store").addEventListener("change", () => { st.store = $("store").value === "" ? -1 : +$("store").value; const s = storeOf(); $("addr").hidden = !s; if (s) $("addr").textContent = `寶島眼鏡 ${s[0]}｜${s[1]}`; });
+$("again").addEventListener("click", () => { $("agree").checked = false; go(1); });
+
+/* 相片：點一下或拖曳移動圓環、滑桿調整位置與大小 */
+{
+  const ov = $("ov"); let last = null, travel = 0, lastClient = null;
+  const clampX = v => Math.min(Math.max(v, 0), st.img.w), clampY = v => Math.min(Math.max(v, 0), st.img.h);
+  const toImg = e => { const r = ov.getBoundingClientRect(), g = st.img.ovGeo; return { x: (e.clientX - r.left) / r.width * ov.width / g.k - g.pad, y: (e.clientY - r.top) / r.height * ov.height / g.k - g.pad }; };
+  const changed = () => { drawOverview(readParams()); schedule(); };
+  ov.addEventListener("pointerdown", e => {
+    if (!st.img || !st.img.ovGeo) return;
+    last = toImg(e); travel = 0; lastClient = { x: e.clientX, y: e.clientY };
+    try { ov.setPointerCapture(e.pointerId); } catch (err) { /* 沒有也能用 */ }
+    e.preventDefault();
+  });
+  ov.addEventListener("pointermove", e => {
+    if (!last || !st.img) return;
+    const pt = toImg(e), pl = st.img.place;
+    travel += Math.hypot(e.clientX - lastClient.x, e.clientY - lastClient.y); lastClient = { x: e.clientX, y: e.clientY };
+    pl.cx = clampX(pl.cx + pt.x - last.x); pl.cy = clampY(pl.cy + pt.y - last.y);
+    last = pt; changed(); e.preventDefault();
+  });
+  ov.addEventListener("pointerup", e => {
+    if (last && st.img && travel < 6) { const pt = toImg(e); st.img.place.cx = clampX(pt.x); st.img.place.cy = clampY(pt.y); changed(); }   // 點一下：圓心移到那裡
+    last = null;
+  });
+  ov.addEventListener("pointercancel", () => { last = null; });
+  // 手指在縮圖上移動時不要讓頁面跟著捲動（有些手機瀏覽器只認這個）
+  for (const ev of ["touchstart", "touchmove"]) ov.addEventListener(ev, e => { if (e.cancelable) e.preventDefault(); }, { passive: false });
+  $("posX").addEventListener("input", () => { if (!st.img) return; st.img.place.cx = +$("posX").value / 100 * st.img.w; changed(); });
+  $("posY").addEventListener("input", () => { if (!st.img) return; st.img.place.cy = +$("posY").value / 100 * st.img.h; changed(); });
+  $("ringScale").addEventListener("input", () => { if (!st.img) return; st.img.place.s = +$("ringScale").value / 100; drawOverview(readParams()); schedule(); });
+  for (const [id, ev] of [["rep", "input"], ["repAng", "input"], ["repMirror", "change"]])
+    $(id).addEventListener(ev, () => { if (!st.img) return; drawOverview(readParams()); schedule(); });
+  $("ringReset").addEventListener("click", () => { if (!st.img) return; st.img.place = { s: 1, ...st.img.home }; $("ringScale").value = 100; drawOverview(readParams()); schedule(); });
+}
+
+
+/* ============ 啟動 ============ */
+{ const box = $("tones"); TONES.forEach((t, i) => { const b = document.createElement("button"); b.type = "button"; b.style.background = t.c; b.title = t.n; b.setAttribute("aria-label", "原本瞳色：" + t.n); b.setAttribute("aria-pressed", i === st.tone);
+    b.addEventListener("click", () => { st.tone = i; box.querySelectorAll("button").forEach((x, k) => x.setAttribute("aria-pressed", k === i)); drawLook(); }); box.appendChild(b); }); }
+buildSpec(); buildStores(); go(1); drawLook();
+if (window.matchMedia) window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawLook);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(drawLook);
 </script>
-</body></html>
+</body>
+</html>
